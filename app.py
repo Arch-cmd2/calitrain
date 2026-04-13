@@ -1,13 +1,13 @@
 import os
-from flask import Flask, send_from_directory
+from flask import Flask, Response
 
 app = Flask(__name__)
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
 @app.route("/")
 def index():
-    return send_from_directory(os.path.join(BASE_DIR, "templates"), "index.html")
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "index.html")
+    with open(path, "r", encoding="utf-8") as f:
+        return Response(f.read(), mimetype="text/html")
 
 if __name__ == "__main__":
     app.run(debug=True)
