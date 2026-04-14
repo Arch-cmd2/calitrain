@@ -1,103 +1,83 @@
 import os
+import re
 import uuid
 from datetime import date
 from flask import Flask, Response, request, jsonify, make_response
 
 app = Flask(__name__)
-
 DATABASE_URL = os.environ.get('DATABASE_URL', '')
 
-# ── Database helpers ─────────────────────────────────────────────────────────
+if DATABASE_URL:
+    import pg8000.native
 
-if DATABASE_URL.startswith('postgres'):
-    import psycopg2
-    from psycopg2.extras import RealDictCursor
-
-    def get_db():
-        return psycopg2.connect(DATABASE_URL, sslmode='require')
+    def get_conn():
+        m = re.match(r'postgres(?:ql)?://([^:]+):([^@]+)@([^:/]+):(\d+)/(.+)', DATABASE_URL)
+        return pg8000.native.Connection(
+            user=m.group(1), password=m.group(2),
+            host=m.group(3), port=int(m.group(4)), database=m.group(5),
+            ssl_context=True
+        )
 
     def init_db():
-        with get_db() as conn:
-            with conn.cursor() as cur:
-                cur.execute('''
-                    CREATE TABLE IF NOT EXISTS progress (
-                        session_id TEXT NOT NULL,
-                        set_key    TEXT NOT NULL,
-                        done       BOOLEAN NOT NULL DEFAULT FALSE,
-                        saved_date DATE NOT NULL,
-                        PRIMARY KEY (session_id, set_key)
-                    )
-                ''')
-            conn.commit()
+        conn = get_conn()
+        conn.run('''CREATE TABLE IF NOT EXISTS progress (
+            session_id TEXT NOT NULL,
+            set_key    TEXT NOT NULL,
+            done       BOOLEAN NOT NULL DEFAULT FALSE,
+            saved_date DATE NOT NULL,
+            PRIMARY KEY (session_id, set_key))''')
 
     def fetch_progress(session_id, today):
-        with get_db() as conn:
-            with conn.cursor(cursor_factory=RealDictCursor) as cur:
-                cur.execute(
-                    'SELECT set_key, done FROM progress '
-                    'WHERE session_id = %s AND saved_date = %s',
-                    (session_id, today)
-                )
-                return cur.fetchall()
+        conn = get_conn()
+        rows = conn.run(
+            'SELECT set_key, done FROM progress WHERE session_id = :sid AND saved_date = :d',
+            sid=session_id, d=today)
+        return [{'set_key': r[0], 'done': r[1]} for r in rows]
 
     def upsert_set(session_id, set_key, done, today):
-        with get_db() as conn:
-            with conn.cursor() as cur:
-                cur.execute('''
-                    INSERT INTO progress (session_id, set_key, done, saved_date)
-                    VALUES (%s, %s, %s, %s)
-                    ON CONFLICT (session_id, set_key)
-                    DO UPDATE SET done = EXCLUDED.done, saved_date = EXCLUDED.saved_date
-                ''', (session_id, set_key, done, today))
-            conn.commit()
+        conn = get_conn()
+        conn.run('''INSERT INTO progress (session_id, set_key, done, saved_date)
+            VALUES (:sid, :k, :done, :d)
+            ON CONFLICT (session_id, set_key)
+            DO UPDATE SET done = EXCLUDED.done, saved_date = EXCLUDED.saved_date''',
+            sid=session_id, k=set_key, done=done, d=today)
 
 else:
     import sqlite3
     DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'progress.db')
 
-    def get_db():
+    def get_conn():
         conn = sqlite3.connect(DB_PATH)
         conn.row_factory = sqlite3.Row
         return conn
 
     def init_db():
-        with get_db() as conn:
-            conn.execute('''
-                CREATE TABLE IF NOT EXISTS progress (
-                    session_id TEXT NOT NULL,
-                    set_key    TEXT NOT NULL,
-                    done       INTEGER NOT NULL DEFAULT 0,
-                    saved_date TEXT NOT NULL,
-                    PRIMARY KEY (session_id, set_key)
-                )
-            ''')
+        with get_conn() as conn:
+            conn.execute('''CREATE TABLE IF NOT EXISTS progress (
+                session_id TEXT NOT NULL, set_key TEXT NOT NULL,
+                done INTEGER NOT NULL DEFAULT 0, saved_date TEXT NOT NULL,
+                PRIMARY KEY (session_id, set_key))''')
             conn.commit()
 
     def fetch_progress(session_id, today):
-        with get_db() as conn:
+        with get_conn() as conn:
             return conn.execute(
-                'SELECT set_key, done FROM progress '
-                'WHERE session_id = ? AND saved_date = ?',
-                (session_id, today)
-            ).fetchall()
+                'SELECT set_key, done FROM progress WHERE session_id = ? AND saved_date = ?',
+                (session_id, today)).fetchall()
 
     def upsert_set(session_id, set_key, done, today):
-        with get_db() as conn:
-            conn.execute('''
-                INSERT OR REPLACE INTO progress (session_id, set_key, done, saved_date)
-                VALUES (?, ?, ?, ?)
-            ''', (session_id, set_key, int(done), today))
+        with get_conn() as conn:
+            conn.execute('''INSERT OR REPLACE INTO progress (session_id, set_key, done, saved_date)
+                VALUES (?, ?, ?, ?)''', (session_id, set_key, int(done), today))
             conn.commit()
 
 init_db()
-
-# ── Routes ───────────────────────────────────────────────────────────────────
 
 def ensure_session(req, resp):
     sid = req.cookies.get('calitrain_session')
     if not sid:
         sid = str(uuid.uuid4())
-        resp.set_cookie('calitrain_session', sid, max_age=365 * 24 * 3600)
+        resp.set_cookie('calitrain_session', sid, max_age=365*24*3600)
     return sid
 
 @app.route('/')
