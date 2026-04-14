@@ -346,7 +346,6 @@ const WEEK = [
   {day:"THU",dIdx:2},{day:"FRI",dIdx:3},{day:"SAT",dIdx:4},{day:"SUN",rest:true}
 ];
 
-// Mon=1,Tue=2,Thu=4,Fri=5,Sat=6 → DAYS indices 0-4
 const DAY_MAP = {1:0, 2:1, 4:2, 5:3, 6:4};
 const todayDayIdx = DAY_MAP[new Date().getDay()];
 let activeDay = (todayDayIdx !== undefined) ? todayDayIdx : 0;
