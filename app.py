@@ -1,26 +1,30 @@
 import os
+import re
 import uuid
 from datetime import date
-from urllib.parse import urlparse
 from flask import Flask, Response, request, jsonify, make_response
 
 app = Flask(__name__)
 DATABASE_URL = os.environ.get('DATABASE_URL', '')
 
+# Fix: Render uses postgres:// but pg8000 needs postgresql://
+if DATABASE_URL.startswith('postgres://'):
+    DATABASE_URL = DATABASE_URL.replace('postgres://', 'postgresql://', 1)
+
 if DATABASE_URL:
+    print("✅ Using PostgreSQL database")
     import pg8000.native
 
     def get_conn():
-        url = urlparse(DATABASE_URL)
+        m = re.match(r'postgresql://([^:]+):([^@]+)@([^:/]+):(\d+)/(.+)', DATABASE_URL)
+        if not m:
+            raise Exception(f"Could not parse DATABASE_URL: {DATABASE_URL[:30]}...")
         return pg8000.native.Connection(
-            user=url.username,
-            password=url.password,
-            host=url.hostname,
-            port=url.port or 5432,
-            database=url.path.lstrip('/'),
+            user=m.group(1), password=m.group(2),
+            host=m.group(3), port=int(m.group(4)), database=m.group(5),
             ssl_context=True
         )
- 
+
     def init_db():
         conn = get_conn()
         conn.run('''CREATE TABLE IF NOT EXISTS progress (
@@ -29,14 +33,15 @@ if DATABASE_URL:
             done       BOOLEAN NOT NULL DEFAULT FALSE,
             saved_date DATE NOT NULL,
             PRIMARY KEY (session_id, set_key))''')
- 
+        print("✅ PostgreSQL table ready")
+
     def fetch_progress(session_id, today):
         conn = get_conn()
         rows = conn.run(
             'SELECT set_key, done FROM progress WHERE session_id = :sid AND saved_date = :d',
             sid=session_id, d=today)
         return [{'set_key': r[0], 'done': r[1]} for r in rows]
- 
+
     def upsert_set(session_id, set_key, done, today):
         conn = get_conn()
         conn.run('''INSERT INTO progress (session_id, set_key, done, saved_date)
@@ -44,16 +49,17 @@ if DATABASE_URL:
             ON CONFLICT (session_id, set_key)
             DO UPDATE SET done = EXCLUDED.done, saved_date = EXCLUDED.saved_date''',
             sid=session_id, k=set_key, done=done, d=today)
- 
+
 else:
+    print("⚠️  DATABASE_URL not set — using SQLite (data will reset on restart!)")
     import sqlite3
     DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'progress.db')
- 
+
     def get_conn():
         conn = sqlite3.connect(DB_PATH)
         conn.row_factory = sqlite3.Row
         return conn
- 
+
     def init_db():
         with get_conn() as conn:
             conn.execute('''CREATE TABLE IF NOT EXISTS progress (
@@ -61,28 +67,28 @@ else:
                 done INTEGER NOT NULL DEFAULT 0, saved_date TEXT NOT NULL,
                 PRIMARY KEY (session_id, set_key))''')
             conn.commit()
- 
+
     def fetch_progress(session_id, today):
         with get_conn() as conn:
             return conn.execute(
                 'SELECT set_key, done FROM progress WHERE session_id = ? AND saved_date = ?',
                 (session_id, today)).fetchall()
- 
+
     def upsert_set(session_id, set_key, done, today):
         with get_conn() as conn:
             conn.execute('''INSERT OR REPLACE INTO progress (session_id, set_key, done, saved_date)
                 VALUES (?, ?, ?, ?)''', (session_id, set_key, int(done), today))
             conn.commit()
- 
+
 init_db()
- 
+
 def ensure_session(req, resp):
     sid = req.cookies.get('calitrain_session')
     if not sid:
         sid = str(uuid.uuid4())
         resp.set_cookie('calitrain_session', sid, max_age=365*24*3600)
     return sid
- 
+
 @app.route('/')
 def index():
     path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'index.html')
@@ -91,7 +97,7 @@ def index():
     resp = make_response(Response(content, mimetype='text/html'))
     ensure_session(request, resp)
     return resp
- 
+
 @app.route('/api/progress')
 def get_progress():
     sid   = request.cookies.get('calitrain_session', str(uuid.uuid4()))
@@ -99,7 +105,7 @@ def get_progress():
     rows  = fetch_progress(sid, today)
     completed = {row['set_key']: bool(row['done']) for row in rows}
     return jsonify({'completed': completed, 'date': today})
- 
+
 @app.route('/api/toggle', methods=['POST'])
 def toggle_set():
     sid   = request.cookies.get('calitrain_session', str(uuid.uuid4()))
@@ -108,6 +114,6 @@ def toggle_set():
     set_key = f"{data['day']}-{data['exercise']}-{data['set']}"
     upsert_set(sid, set_key, data['done'], today)
     return jsonify({'ok': True})
- 
+
 if __name__ == '__main__':
     app.run(debug=True)
