@@ -1,27 +1,24 @@
 import os
-import re
 import uuid
 from datetime import date
+from urllib.parse import urlparse
 from flask import Flask, Response, request, jsonify, make_response
 
 app = Flask(__name__)
 DATABASE_URL = os.environ.get('DATABASE_URL', '')
-
-# Fix: Render uses postgres:// but pg8000 needs postgresql://
-if DATABASE_URL.startswith('postgres://'):
-    DATABASE_URL = DATABASE_URL.replace('postgres://', 'postgresql://', 1)
 
 if DATABASE_URL:
     print("✅ Using PostgreSQL database")
     import pg8000.native
 
     def get_conn():
-        m = re.match(r'postgresql://([^:]+):([^@]+)@([^:/]+):(\d+)/(.+)', DATABASE_URL)
-        if not m:
-            raise Exception(f"Could not parse DATABASE_URL: {DATABASE_URL[:30]}...")
+        url = urlparse(DATABASE_URL)
         return pg8000.native.Connection(
-            user=m.group(1), password=m.group(2),
-            host=m.group(3), port=int(m.group(4)), database=m.group(5),
+            user=url.username,
+            password=url.password,
+            host=url.hostname,
+            port=url.port or 5432,
+            database=url.path.lstrip('/'),
             ssl_context=True
         )
 
