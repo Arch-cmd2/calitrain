@@ -1198,6 +1198,9 @@ function showAdminSettings(data){
   document.getElementById('adminStreakNote').innerHTML =
     `Current streak: <strong>${streak} days</strong> &nbsp;|&nbsp; Total completed: <strong>${total} days</strong><br>
      Level Up unlocks at: <strong>${req} streak days</strong> or <strong>${data.manual_days_required||5} total days</strong>`;
+  // Pre-fill override with current streak
+  document.getElementById('settingStreakOverride').value = streak;
+  document.getElementById('streakOverrideMsg').style.display = 'none';
 }
 
 async function saveAdminSettings(){
@@ -1226,6 +1229,39 @@ async function doAdminLogout(){
   document.getElementById('adminLogin').style.display='block';
   document.getElementById('adminSettings').style.display='none';
   closeAdmin();
+}
+
+function applyStreakOverride(){
+  const n = parseInt(document.getElementById('settingStreakOverride').value);
+  if(isNaN(n) || n < 0) return;
+
+  // Build n consecutive dates ending today
+  const existing = getCompletedDates();
+  const today = new Date();
+
+  // Remove dates that overlap with the range we'll write (last n days)
+  const cutoff = new Date(today);
+  cutoff.setDate(cutoff.getDate() - n);
+  const cutoffStr = cutoff.toISOString().split('T')[0];
+  const filtered = existing.filter(d => d < cutoffStr);
+
+  if(n > 0){
+    for(let i = n - 1; i >= 0; i--){
+      const d = new Date(today);
+      d.setDate(d.getDate() - i);
+      const ds = d.toISOString().split('T')[0];
+      if(!filtered.includes(ds)) filtered.push(ds);
+    }
+  }
+
+  filtered.sort();
+  localStorage.setItem('calitrainDates', JSON.stringify(filtered));
+  updateStreakBar();
+
+  const msg = document.getElementById('streakOverrideMsg');
+  msg.textContent = n === 0 ? '✅ Streak cleared.' : `✅ Streak set to ${n} day${n===1?'':'s'}.`;
+  msg.style.display = 'block';
+  setTimeout(() => msg.style.display = 'none', 3000);
 }
 
 async function loadProgress(){
@@ -1284,6 +1320,18 @@ loadSettings().then(()=>{ initProfile(); loadProgress(); });
           <div class="admin-setting-sub">% of sets needed to count as a completed day</div>
         </div>
         <input class="admin-setting-input" id="settingPct" type="number" min="10" max="100" value="70" />
+      </div>
+      <div class="admin-divider"></div>
+      <div class="admin-setting-row" style="border:none;flex-direction:column;align-items:flex-start;gap:10px">
+        <div>
+          <div class="admin-setting-label">Override Current Streak 🔥</div>
+          <div class="admin-setting-sub" style="margin-top:2px">Manually set streak count — injects consecutive completed dates into local storage</div>
+        </div>
+        <div style="display:flex;gap:10px;width:100%;align-items:center">
+          <input class="admin-setting-input" id="settingStreakOverride" type="number" min="0" max="365" value="0" style="width:80px" />
+          <button class="admin-btn" style="margin:0;flex:1;padding:10px 0" onclick="applyStreakOverride()">SET STREAK →</button>
+        </div>
+        <div id="streakOverrideMsg" style="font-family:'Space Mono',monospace;font-size:11px;color:#4ade80;display:none"></div>
       </div>
       <div class="admin-divider"></div>
       <button class="admin-btn" onclick="saveAdminSettings()">SAVE SETTINGS</button>
