@@ -258,7 +258,7 @@
 <div class="overlay" id="overlay" onclick="closeOverlay(event)">
   <div class="overlay-sheet">
     <div class="overlay-head">
-      <div><div class="overlay-title">🫁 Asthma Safety</div><div class="overlay-sub">Read before every session</div></div>
+      <div><div class="overlay-title">⚠️ Asthma Safety</div><div class="overlay-sub">Read before every session</div></div>
       <button class="close-btn" onclick="toggleOverlay()">×</button>
     </div>
     <div class="a-rule"><span style="font-size:20px;flex-shrink:0">💨</span><p>Always have your inhaler nearby before starting.</p></div>
@@ -836,6 +836,26 @@ function startRestTimer(s){
   document.getElementById('timerSub').textContent='REST TIMER — tap START';
 }
 
+function playTimerDoneSound(){
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    // Three quick ascending beeps
+    [[0, 880], [0.18, 1046], [0.36, 1318]].forEach(([delay, freq]) => {
+      const osc  = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0, ctx.currentTime + delay);
+      gain.gain.linearRampToValueAtTime(0.4, ctx.currentTime + delay + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + delay + 0.25);
+      osc.start(ctx.currentTime + delay);
+      osc.stop(ctx.currentTime + delay + 0.3);
+    });
+  } catch(e) {}
+}
+
 function toggleTimer(){
   if(!timerRunning){
     timerRunning=true;
@@ -845,6 +865,7 @@ function toggleTimer(){
       timerSeconds--;
       updateTimerDisplay();
       if(timerSeconds<=0){
+        playTimerDoneSound();
         stopTimer();
         document.getElementById('timerSub').textContent='✅ REST DONE!';
         setTimeout(()=>document.getElementById('timerBar').classList.remove('visible'),2000);
