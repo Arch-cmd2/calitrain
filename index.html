@@ -9,19 +9,19 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'DM Sans', sans-serif; background: #f7f4ef; color: #1a1a1a; min-height: 100vh; overflow-x: hidden; padding-bottom: 80px; }
   button { cursor: pointer; font-family: inherit; }
- 
+
   .header { background: #1a1a1a; padding: 18px 20px 14px; position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; }
   .header-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 3px; font-weight: 700; margin-bottom: 3px; }
   .header-title { font-family: 'Instrument Serif', serif; font-size: 22px; color: #fff; font-weight: 400; font-style: italic; }
   .asthma-btn { background: #dc2626; border-radius: 10px; padding: 8px 11px; display: flex; align-items: center; gap: 5px; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; color: #fff; letter-spacing: 1px; border: none; cursor: pointer; }
- 
+
   .alert-bar { background: #fef3c7; border-bottom: 2px solid #f59e0b; padding: 9px 18px; display: flex; gap: 10px; align-items: center; }
   .alert-bar p { font-size: 12px; color: #92400e; line-height: 1.4; font-weight: 500; }
- 
+
   .goal-banner { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-bottom: 3px solid #f59e0b; padding: 14px 20px; display: flex; gap: 12px; align-items: center; transition: border-color 0.3s; }
   .goal-text-title { font-family: 'Instrument Serif', serif; font-size: 18px; color: #fff; font-style: italic; }
   .goal-text-sub { font-size: 12px; color: #aaa; margin-top: 2px; }
- 
+
   .week-strip { display: flex; gap: 4px; padding: 14px 12px 0; background: #fff; border-bottom: 1px solid #eee; }
   .week-day { flex: 1; min-width: 38px; text-align: center; padding-bottom: 10px; cursor: pointer; }
   .week-day.rest { cursor: default; opacity: 0.4; }
@@ -31,22 +31,22 @@
   .week-day.active .week-day-bar { background: var(--accent, #f59e0b); }
   .week-day-num { margin-top: 5px; font-size: 10px; color: #ccc; font-weight: 600; }
   .week-day.active .week-day-num { color: #1a1a1a; }
- 
+
   .day-tabs { display: flex; background: #fff; border-bottom: 2px solid #eee; overflow-x: auto; }
   .day-tab { flex: 1; min-width: 54px; padding: 11px 2px; font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1px; color: #aaa; border: none; border-bottom: 3px solid transparent; margin-bottom: -2px; background: none; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
   .day-tab.active { color: #1a1a1a; border-bottom-color: var(--accent, #f59e0b); }
- 
+
   .day-info { padding: 18px 18px 12px; background: #fff; }
   .day-info-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
   .day-title { font-family: 'Instrument Serif', serif; font-size: 28px; font-weight: 400; }
   .day-sub { font-size: 13px; color: #888; margin-top: 2px; }
   .intensity-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; }
   .day-dur { font-size: 12px; color: #aaa; margin-top: 4px; text-align: right; }
- 
+
   .muscle-map { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
   .muscle-chip { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; background: #f7f4ef; color: #666; border: 1px solid #e8e3dc; }
   .muscle-chip.primary { color: #fff; border: none; }
- 
+
   .progress-row { display: flex; justify-content: space-between; margin-bottom: 6px; }
   .progress-label { font-family: 'Space Mono', monospace; font-size: 11px; color: #aaa; }
   .progress-pct { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; }
@@ -56,11 +56,11 @@
   .stat-box { flex: 1; background: #f7f4ef; border-radius: 10px; padding: 10px 8px; text-align: center; }
   .stat-val { font-family: 'Instrument Serif', serif; font-size: 22px; }
   .stat-lbl { font-family: 'Space Mono', monospace; font-size: 9px; color: #aaa; letter-spacing: 1px; }
- 
+
   .warmup-box { margin: 12px 16px 0; background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 12px; padding: 12px 14px; display: flex; gap: 10px; }
   .warmup-title { font-family: 'Space Mono', monospace; font-size: 11px; color: #16a34a; font-weight: 700; }
   .warmup-text { font-size: 12px; color: #166534; line-height: 1.5; margin-top: 4px; }
- 
+
   .ex-list { padding: 12px 16px 16px; display: flex; flex-direction: column; gap: 10px; }
   .ex-card { background: #fff; border: 1.5px solid #ede9e3; border-radius: 16px; overflow: hidden; transition: border-color 0.2s, box-shadow 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
   .ex-header { padding: 14px 16px; cursor: pointer; display: flex; gap: 14px; align-items: center; }
@@ -71,7 +71,7 @@
   .ex-chevron.open { transform: rotate(180deg); }
   .ex-body { border-top: 1px solid #f0ece6; padding: 14px 16px 16px; display: none; }
   .ex-body.open { display: block; }
- 
+
   .info-box { border-radius: 10px; padding: 10px 12px; margin-bottom: 10px; display: flex; gap: 8px; align-items: flex-start; }
   .info-box-title { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; }
   .info-box-text { font-size: 13px; line-height: 1.5; margin-top: 3px; }
@@ -83,11 +83,11 @@
   .tip-box .info-box-text { color: #444; }
   .mod-box { background: #fefce8; border: 1px solid #fde68a; }
   .mod-box .info-box-text { color: #78350f; }
- 
+
   .sets-label { font-family: 'Space Mono', monospace; font-size: 10px; color: #bbb; letter-spacing: 1px; margin: 14px 0 8px; }
   .sets-row { display: flex; gap: 8px; }
   .set-btn { flex: 1; height: 48px; border-radius: 10px; background: #f7f4ef; border: 1.5px solid #e8e3dc; color: #888; font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.15s; }
- 
+
   .bottom-box { margin: 0 16px 14px; border-radius: 14px; padding: 14px 16px; }
   .cooldown-box { background: #fdf4ff; border: 1.5px solid #e9d5ff; }
   .cooldown-box .b-title { font-family: 'Space Mono', monospace; font-size: 11px; color: #9333ea; font-weight: 700; }
@@ -95,7 +95,7 @@
   .prog-box { background: #fff; border: 1.5px solid #ede9e3; margin-bottom: 16px; }
   .prog-box .b-title { font-family: 'Space Mono', monospace; font-size: 11px; color: #888; font-weight: 700; }
   .prog-box .b-text { font-size: 13px; color: #555; line-height: 1.7; margin-top: 6px; }
- 
+
   .timer-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #1a1a1a; padding: 12px 20px 20px; display: flex; gap: 12px; align-items: center; z-index: 90; transform: translateY(100%); transition: transform 0.3s; border-top: 2px solid #333; }
   .timer-bar.visible { transform: translateY(0); }
   .timer-display { font-family: 'Space Mono', monospace; font-size: 30px; font-weight: 700; color: #fff; flex: 1; }
@@ -104,7 +104,7 @@
   .t-start { background: #4ade80; color: #000; }
   .t-stop { background: #ef4444; color: #fff; }
   .t-skip { background: #333; color: #aaa; }
- 
+
   .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200; display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
   .overlay.open { opacity: 1; pointer-events: all; }
   .overlay-sheet { width: 100%; background: #fff; border-radius: 20px 20px 0 0; padding: 28px 24px 44px; transform: translateY(100%); transition: transform 0.3s ease; }
@@ -117,7 +117,48 @@
   .a-rule p { font-size: 14px; color: #333; line-height: 1.6; }
   .a-warn { margin-top: 20px; background: #fff5f5; border: 1.5px solid #fca5a5; border-radius: 12px; padding: 12px 16px; }
   .a-warn p { font-size: 13px; color: #dc2626; font-weight: 600; }
- 
+
+
+  /* ── FEEL & DEMO ─────────────────────────────────────────────────── */
+  .feel-box { background: #fff8f0; border: 1.5px solid #fed7aa; border-radius: 10px; padding: 10px 12px; margin-bottom: 10px; }
+  .feel-title { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; color: #ea580c; margin-bottom: 7px; }
+  .feel-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
+  .feel-chip { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; border: 1.5px solid; }
+  .feel-chip.primary { background: #ea580c; color: #fff; border-color: #ea580c; }
+  .feel-chip.secondary { background: #fff8f0; color: #ea580c; border-color: #fed7aa; }
+  .feel-desc { font-size: 12px; color: #9a3412; line-height: 1.5; margin-top: 4px; }
+
+  .demo-box { border-radius: 14px; overflow: hidden; margin-bottom: 10px; position: relative; background: #111; }
+  .demo-img { width: 100%; display: block; max-height: 200px; object-fit: cover; border-radius: 14px; }
+  .demo-img-loading { width: 100%; height: 140px; background: linear-gradient(90deg,#1a1a1a 25%,#2a2a2a 50%,#1a1a1a 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 14px; display: flex; align-items: center; justify-content: center; }
+  @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+  .demo-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 1px; color: #666; padding: 6px 12px 2px; }
+  .demo-watch-btn { display: flex; align-items: center; gap: 6px; width: 100%; padding: 10px 12px; background: #f7f4ef; border: 1.5px solid #ede9e3; border-radius: 10px; margin-bottom: 10px; cursor: pointer; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; color: #555; letter-spacing: 1px; text-decoration: none; }
+  .demo-watch-btn:hover { background: #ede9e3; }
+
+  /* ── ADMIN PANEL ─────────────────────────────────────────────────── */
+  .admin-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:700;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity 0.25s; }
+  .admin-overlay.open { opacity:1;pointer-events:all; }
+  .admin-card { background:#111;border-radius:24px;padding:28px 24px;width:100%;max-width:380px;border:1.5px solid #2a2a2a; }
+  .admin-title { font-family:'Instrument Serif',serif;font-size:22px;color:#fff;margin-bottom:4px; }
+  .admin-sub { font-size:12px;color:#555;margin-bottom:22px;font-family:'Space Mono',monospace;letter-spacing:1px; }
+  .admin-field { margin-bottom:16px; }
+  .admin-label { font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;color:#666;margin-bottom:8px; }
+  .admin-input { width:100%;background:#1a1a1a;border:1.5px solid #2a2a2a;border-radius:10px;padding:12px 14px;font-size:15px;color:#fff;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s; }
+  .admin-input:focus { border-color:#f59e0b; }
+  .admin-btn { width:100%;padding:14px;background:#f59e0b;border-radius:12px;border:none;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:#000;letter-spacing:2px;cursor:pointer;margin-top:4px; }
+  .admin-btn.danger { background:#ef4444;color:#fff; }
+  .admin-btn.secondary { background:#2a2a2a;color:#aaa;margin-top:10px; }
+  .admin-error { color:#ef4444;font-size:12px;margin-bottom:12px;font-family:'Space Mono',monospace;display:none; }
+  .admin-success { color:#4ade80;font-size:12px;margin-bottom:12px;font-family:'Space Mono',monospace;display:none; }
+  .admin-setting-row { display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #1e1e1e; }
+  .admin-setting-label { font-size:13px;color:#ccc; }
+  .admin-setting-sub { font-size:11px;color:#555;margin-top:2px; }
+  .admin-setting-input { width:70px;background:#1a1a1a;border:1.5px solid #2a2a2a;border-radius:8px;padding:8px 10px;font-size:14px;color:#fff;font-family:'Space Mono',monospace;text-align:center;outline:none; }
+  .admin-setting-input:focus { border-color:#f59e0b; }
+  .admin-divider { height:1px;background:#1e1e1e;margin:16px 0; }
+  .admin-close { position:absolute;top:16px;right:16px;background:#2a2a2a;border:none;border-radius:50%;width:32px;height:32px;color:#aaa;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center; }
+  .admin-streak-note { background:#1c1000;border:1px solid #f59e0b33;border-radius:10px;padding:10px 12px;font-size:12px;color:#d97706;margin-bottom:16px;line-height:1.5; }
   .rest-timer-btn { width: 100%; margin-top: 10px; padding: 10px; border-radius: 10px; font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; cursor: pointer; letter-spacing: 1px; border: none; }
   /* ── STREAK & LEVEL UP ───────────────────────────────────────────── */
   .streak-bar { background: #111; border-bottom: 1px solid #2a2a2a; padding: 10px 18px; display: flex; justify-content: space-between; align-items: center; }
@@ -129,10 +170,10 @@
   .streak-prog-label { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; margin-bottom: 4px; text-align: right; }
   .streak-prog-bg { height: 4px; background: #2a2a2a; border-radius: 2px; overflow: hidden; }
   .streak-prog-fill { height: 100%; border-radius: 2px; background: #f59e0b; transition: width 0.5s ease; }
- 
+
   .levelup-btn { background: linear-gradient(135deg, #f59e0b, #ef4444); border: none; border-radius: 10px; padding: 8px 12px; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; color: #fff; cursor: pointer; letter-spacing: 1px; animation: pulse-glow 1.5s infinite; }
   @keyframes pulse-glow { 0%,100%{box-shadow:0 0 8px #f59e0b88} 50%{box-shadow:0 0 18px #f59e0bcc} }
- 
+
   .levelup-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 400; display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
   .levelup-overlay.open { opacity: 1; pointer-events: all; }
   .levelup-card { background: #1a1a1a; border-radius: 24px; padding: 32px 24px; width: 100%; max-width: 380px; text-align: center; border: 1.5px solid #f59e0b44; }
@@ -149,10 +190,10 @@
   .levelup-btns { display: flex; gap: 10px; }
   .levelup-confirm { flex: 1; padding: 14px; background: #f59e0b; border-radius: 12px; border: none; font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; color: #000; cursor: pointer; letter-spacing: 1px; }
   .levelup-cancel { padding: 14px 18px; background: #2a2a2a; border-radius: 12px; border: none; font-family: 'Space Mono', monospace; font-size: 12px; color: #888; cursor: pointer; }
- 
+
   .tier-up-toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-20px); background: linear-gradient(135deg,#f59e0b,#ef4444); color: #fff; font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; padding: 12px 24px; border-radius: 30px; z-index: 600; opacity: 0; transition: all 0.4s; pointer-events: none; white-space: nowrap; letter-spacing: 1px; }
   .tier-up-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
- 
+
   /* ── SETUP SCREEN ─────────────────────────────────────────────────── */
   .setup-screen { position: fixed; inset: 0; background: #1a1a1a; z-index: 500; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px 24px; overflow-y: auto; }
   .setup-screen.hidden { display: none; }
@@ -174,15 +215,15 @@
   .tier-preview-desc { font-size: 12px; margin-top: 4px; line-height: 1.5; opacity: 0.85; }
   .setup-btn { width: 100%; padding: 16px; background: #f59e0b; border-radius: 14px; border: none; font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; color: #000; letter-spacing: 2px; cursor: pointer; margin-top: 4px; transition: opacity 0.2s; }
   .setup-btn:active { opacity: 0.8; }
- 
+
   /* ── PROFILE BUTTON ───────────────────────────────────────────────── */
   .profile-btn { background: #2a2a2a; border: none; border-radius: 10px; padding: 8px 11px; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; color: #aaa; letter-spacing: 1px; cursor: pointer; margin-right: 8px; }
   .tier-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; margin-left: 8px; vertical-align: middle; }
- 
+
 </style>
 </head>
 <body>
- 
+
 <!-- SETUP SCREEN -->
 <div class="setup-screen" id="setupScreen">
   <div class="setup-logo">CALITRAIN 🌞</div>
@@ -212,7 +253,7 @@
     <button class="setup-btn" onclick="saveProfile()">START TRAINING →</button>
   </div>
 </div>
- 
+
 <!-- ASTHMA OVERLAY -->
 <div class="overlay" id="overlay" onclick="closeOverlay(event)">
   <div class="overlay-sheet">
@@ -229,7 +270,7 @@
     <div class="a-warn"><p>⚠️ This is NOT a substitute for medical advice. Always follow your doctor's recommendations.</p></div>
   </div>
 </div>
- 
+
 <!-- REST TIMER -->
 <div class="timer-bar" id="timerBar">
   <div>
@@ -239,21 +280,21 @@
   <button class="timer-btn t-skip" onclick="stopTimer()">SKIP</button>
   <button class="timer-btn t-start" id="timerToggleBtn" onclick="toggleTimer()">START</button>
 </div>
- 
+
 <!-- HEADER -->
 <div class="header">
   <div>
     <div class="header-label" id="headerLabel" style="color:#f59e0b">BEGINNER · 69 KG · SUMMER EDITION</div>
-    <div class="header-title">CALITRAIN 🌞</div>
+    <div class="header-title" id="headerTitle" onclick="handleSecretTap()" style="cursor:default;user-select:none">CALITRAIN 🌞</div>
   </div>
   <button class="profile-btn" onclick="openProfile()">👤 PROFILE</button><button class="asthma-btn" onclick="toggleOverlay()">🫁 ASTHMA</button>
 </div>
- 
+
 <div class="alert-bar">
   <span style="font-size:16px">⚠️</span>
   <p><strong>Asthmatic athlete mode.</strong> No explosive jumps. Breathing cues on every exercise. Upper body added for summer. 🌊</p>
 </div>
- 
+
 <div class="goal-banner" id="goalBanner">
   <span style="font-size:28px">🌊</span>
   <div>
@@ -261,8 +302,8 @@
     <div class="goal-text-sub">7 days · Legs · Push · Core · Pull · Mobility · Strength A · Strength B — Zero equipment</div>
   </div>
 </div>
- 
- 
+
+
 <!-- STREAK BAR -->
 <div class="streak-bar" id="streakBar" style="display:none">
   <div class="streak-left">
@@ -278,7 +319,7 @@
   </div>
   <button class="levelup-btn" id="levelupBtn" style="display:none" onclick="openLevelUp()">LEVEL UP ↑</button>
 </div>
- 
+
 <!-- LEVEL UP OVERLAY -->
 <div class="levelup-overlay" id="levelupOverlay">
   <div class="levelup-card">
@@ -293,14 +334,14 @@
     </div>
   </div>
 </div>
- 
+
 <!-- TOAST -->
 <div class="tier-up-toast" id="tierUpToast"></div>
- 
+
 <div class="week-strip" id="weekStrip"></div>
 <div class="day-tabs" id="dayTabs"></div>
 <div id="mainContent"></div>
- 
+
 <script>
 const DAYS = [
   {
@@ -532,12 +573,58 @@ const DAYS = [
     ]
   }
 ];
- 
+
+
+// ── MUSCLE FEEL MAP ──────────────────────────────────────────────────────
+const FEEL_MAP = {
+  "Pause Squat":              { primary:["Quads","Glutes"], secondary:["Hamstrings","Core"], desc:"Deep quad burn at the bottom — feel both thighs fire hard when you pause. Glutes kick in as you rise." },
+  "Reverse Lunge":            { primary:["Glutes","Quads"], secondary:["Hamstrings","Calves"], desc:"Front glute and quad doing all the work. Feel your glute squeeze at the top of each rep." },
+  "Glute Bridge + 2s Hold":   { primary:["Glutes","Hamstrings"], secondary:["Lower Back","Core"], desc:"Intense squeeze in your butt at the top. If you feel your lower back instead — tuck your chin and push through your heels." },
+  "Single-Leg Calf Raise":    { primary:["Calves"], secondary:["Ankle Stabilisers"], desc:"Full burn in the calf (back of lower leg). Rise as high as possible — you should feel a peak contraction at the top." },
+  "Wall Sit":                 { primary:["Quads"], secondary:["Glutes","Calves"], desc:"Quads should be on fire within 10 seconds. Front of both thighs — if it's too easy, slide lower." },
+  "Knee Push-Up":             { primary:["Chest","Triceps"], secondary:["Shoulders","Core"], desc:"Feel the chest stretch going down and squeeze together coming up. Triceps (back of arms) burn on the press." },
+  "Wide Push-Up (Knee)":      { primary:["Outer Chest","Shoulders"], secondary:["Triceps"], desc:"More chest stretch than a regular push-up. Feel the outer pec fibres engaging as you lower." },
+  "Pike Push-Up":             { primary:["Shoulders"], secondary:["Triceps","Upper Chest"], desc:"Front and side delts should burn — top of your shoulders. Not your neck. Keep traps relaxed." },
+  "Tricep Floor Dip":         { primary:["Triceps"], secondary:["Shoulders"], desc:"Back of the arms — the 'squishy' part. If your shoulders ache instead, keep elbows pointing backward not outward." },
+  "Shoulder Tap Plank":       { primary:["Core","Shoulders"], secondary:["Glutes","Obliques"], desc:"Obliques working hard to stop your hips rotating. Squeeze your core like you're bracing for a punch." },
+  "Slow Negative Push-Up":    { primary:["Chest","Triceps"], secondary:["Shoulders","Core"], desc:"Chest should tremble lowering down — that's the eccentric work. More burn here than the press up." },
+  "Full Plank":               { primary:["Core","Shoulders"], secondary:["Glutes","Quads"], desc:"Deep core tight — feel a brace around your entire midsection. Squeeze glutes too for full body tension." },
+  "Dead Bug":                 { primary:["Deep Core","Abs"], secondary:["Hip Flexors"], desc:"Lower back must stay glued to floor — if it lifts, your core has disengaged. Feel the lower abs working." },
+  "Full Side Plank":          { primary:["Obliques"], secondary:["Shoulders","Glutes"], desc:"Side of your waist burning — that's the obliques. Hip should be lifted high. Don't let it sag." },
+  "Slow Bicycle Crunch":      { primary:["Obliques","Abs"], secondary:["Hip Flexors"], desc:"Side of your abs — feel the rotation happening in your ribcage, not just your elbow swinging." },
+  "Marching in Place":        { primary:["Hip Flexors","Calves"], secondary:["Core","Quads"], desc:"Light burn in hip flexors (front of hips). Focus on breathing rhythm — nose in, mouth out." },
+  "Superman Hold":            { primary:["Lower Back","Glutes"], secondary:["Hamstrings","Upper Back"], desc:"Lower back and glutes working together. Squeeze your butt to help lift your legs. Back of the body fires here." },
+  "Table Row (Underhand)":    { primary:["Biceps","Upper Back"], secondary:["Rear Delts","Core"], desc:"Biceps and mid-back both pulling. Feel your shoulder blades squeeze together at the top of each rep." },
+  "Reverse Snow Angels":      { primary:["Rear Delts","Rhomboids"], secondary:["Traps","Lats"], desc:"Back of the shoulders and between the shoulder blades. Tiny burn — this is a small muscle, don't expect huge fatigue." },
+  "Y-T-W Raises":             { primary:["Rear Delts","Rhomboids"], secondary:["Lower Traps","Rotator Cuff"], desc:"Upper back lit up — between and below the shoulder blades. Each shape hits a different part. Burn should move around." },
+  "Doorframe Row":            { primary:["Lats","Mid Back"], secondary:["Biceps","Rear Delts"], desc:"Lats — the wide muscles on the sides of your back. Feel them pulling your elbows down and back." },
+  "Scapular Push-Up":         { primary:["Serratus Anterior"], secondary:["Shoulders"], desc:"Underneath the armpits — the serratus. Small movement, unusual feeling. Shoulder blades spreading apart." },
+  "Prone Back Extension":     { primary:["Lower Back","Erectors"], secondary:["Glutes","Hamstrings"], desc:"Entire lower back lit up. If it hurts, you're going too high — just a small lift is enough." },
+  "Hip Circles":              { primary:["Hip Flexors","Glutes"], secondary:["IT Band","Adductors"], desc:"Hips loosening up — feeling warmth and mobility. Should feel like a release, not a burn." },
+  "Donkey Kicks":             { primary:["Glutes"], secondary:["Hamstrings","Lower Back"], desc:"Glute of the kicking leg — squeeze hard at the top. Feel your butt contracting, not your lower back." },
+  "Glute Bridge March":       { primary:["Glutes","Core"], secondary:["Hamstrings"], desc:"Single glute firing with every march. Core fighting to keep hips level — feel the anti-rotation demand." },
+  "Cat-Cow Stretch":          { primary:["Spine","Thoracic"], secondary:["Hip Flexors","Abs"], desc:"Lengthening through the whole spine. Each vertebra moving. Should feel like a wave — no sharp points." },
+  "Low Lunge Hip Flexor Hold":{ primary:["Hip Flexors"], secondary:["Quad Stretch","Groin"], desc:"Front of the hip/groin on the back leg. One of the tightest spots on most people — breathe into it." },
+  "Wall Angel":               { primary:["Rear Delts","Lower Traps"], secondary:["Rhomboids","Rotator Cuff"], desc:"Upper back and backs of shoulders working. Arms should stay flat on the wall — if they can't, that's your mobility limit." },
+  "Bulgarian Split Squat":    { primary:["Quads","Glutes"], secondary:["Hamstrings","Core"], desc:"Front quad and glute screaming by rep 6. Hardest leg exercise here — shake is normal. Feel the front thigh doing everything." },
+  "Sissy Squat":              { primary:["Quads"], secondary:["Knee Stabilisers"], desc:"Pure quad isolation — the whole front of the thigh. Nothing else should be working. This is one of the best quad exercises." },
+  "Single-Leg Glute Bridge":  { primary:["Glutes","Hamstrings"], secondary:["Core","Lower Back"], desc:"Full glute on the working side. Should feel much harder than the regular version — double the load, double the burn." },
+  "Nordic Hamstring Curl":    { primary:["Hamstrings"], secondary:["Glutes","Lower Back"], desc:"Back of the thigh — hamstrings under maximum tension. The most intense hamstring exercise with no equipment." },
+  "Slow Negative Squat":      { primary:["Quads","Glutes"], secondary:["Hamstrings","Core"], desc:"Quad burn building second by second on the way down. Eccentric load — you'll feel this tomorrow." },
+  "Deep Squat Hold":          { primary:["Hip Flexors","Ankles"], secondary:["Quads","Glutes"], desc:"Hip flexors and ankles opening up. Feel the stretch in your hips — this is mobility work, not strength." },
+  "Archer Push-Up":           { primary:["Chest","Shoulder"], secondary:["Triceps","Core"], desc:"One side of your chest under nearly full bodyweight. Feel the pec stretch deeply on the working arm." },
+  "Diamond Push-Up":          { primary:["Triceps","Inner Chest"], secondary:["Shoulders"], desc:"Back of the arms burning hard. If your chest hurts instead, bring hands slightly wider." },
+  "Pseudo Planche Lean":      { primary:["Serratus","Shoulders"], secondary:["Core","Wrists"], desc:"Shoulders and serratus under straight-arm tension. Feels unusual — like you're pushing the floor away from you." },
+  "Pike Push-Up Negative":    { primary:["Shoulders"], secondary:["Triceps","Upper Chest"], desc:"Front and side deltoids on fire lowering down. Much harder than a regular pike push-up." },
+  "Typewriter Push-Up":       { primary:["Chest","Shoulders"], secondary:["Triceps","Core"], desc:"Chest stretching sideways — unusual range. Feel each pec getting loaded individually as you slide." },
+  "Hollow Body Hold":         { primary:["Deep Core","Abs"], secondary:["Hip Flexors","Quads"], desc:"Entire core braced — front and sides. Lower back must stay pressed down. Feels like every ab muscle is working at once." }
+};
+
 const WEEK = [
   {day:"MON",dIdx:0},{day:"TUE",dIdx:1},{day:"WED",dIdx:2},
   {day:"THU",dIdx:3},{day:"FRI",dIdx:4},{day:"SAT",dIdx:5},{day:"SUN",dIdx:6}
 ];
- 
+
 const DAY_MAP = {1:0, 2:1, 3:2, 4:3, 5:4, 6:5, 0:6};
 const todayDayIdx = DAY_MAP[new Date().getDay()];
 let activeDay = (todayDayIdx !== undefined) ? todayDayIdx : 0;
@@ -545,11 +632,57 @@ let completedSets = {};
 let timerInterval = null;
 let timerSeconds = 0;
 let timerRunning = false;
- 
+
 function totalSets(d){ return DAYS[d].exercises.reduce((a,e)=>a+adjEx(e).sets,0); }
 function doneSets(d){ return Object.keys(completedSets).filter(k=>k.startsWith(d+'-')&&completedSets[k]).length; }
 function pct(d){ return Math.round((doneSets(d)/totalSets(d))*100); }
- 
+
+
+// ── DEMO & FEEL HELPERS ──────────────────────────────────────────────────
+
+function buildFeelBox(name, accent){
+  const f = FEEL_MAP[name];
+  if(!f) return '';
+  const primaryChips = f.primary.map(m=>`<span class="feel-chip primary">${m}</span>`).join('');
+  const secondaryChips = f.secondary.map(m=>`<span class="feel-chip secondary">${m}</span>`).join('');
+  return `<div class="feel-box">
+    <div class="feel-title">🎯 YOU SHOULD FEEL THIS IN</div>
+    <div class="feel-chips">${primaryChips}${secondaryChips}</div>
+    <div class="feel-desc">${f.desc}</div>
+  </div>`;
+}
+
+function buildDemoBox(name){
+  const query = encodeURIComponent(name + ' exercise tutorial proper form');
+  const ytSearch = 'https://www.youtube.com/results?search_query=' + query;
+  // Use YouTube thumbnail from a curated video ID map (fallback to search)
+  const VIDEO_IDS = {
+    "Pause Squat":"TG6hzmfh_Tg","Reverse Lunge":"csOgFMNKpv0","Glute Bridge + 2s Hold":"8bbE64NuDTU",
+    "Single-Leg Calf Raise":"gwLzBJYoWlI","Wall Sit":"y-wV4Venusw","Knee Push-Up":"jWxvty2KROs",
+    "Wide Push-Up (Knee)":"IODxDxX7oi4","Pike Push-Up":"x7_I5SO4_QA","Tricep Floor Dip":"6kALZikXxLc",
+    "Shoulder Tap Plank":"LEZck1e5R9M","Slow Negative Push-Up":"IODxDxX7oi4","Full Plank":"ASdvN_XEl_c",
+    "Dead Bug":"YBq_QCPSkso","Full Side Plank":"_rdfjFSFKMY","Slow Bicycle Crunch":"9FGilxCbdz8",
+    "Marching in Place":"HhEIuYYOX7I","Superman Hold":"z6PJMT2y8GQ","Table Row (Underhand)":"iBtSBmBiQ5o",
+    "Reverse Snow Angels":"l9MIw3QKDYI","Y-T-W Raises":"oqDtZxFGr7Y","Doorframe Row":"nOIMnvfuTvA",
+    "Scapular Push-Up":"GQvUw2AqmYE","Prone Back Extension":"qtVYU5FECPA","Hip Circles":"LJNI62N5R8M",
+    "Donkey Kicks":"NXt0RzJ8GEo","Glute Bridge March":"bJG5Wj7jNc8","Cat-Cow Stretch":"kqnua4rHVVA",
+    "Low Lunge Hip Flexor Hold":"YQmpO19RNXI","Wall Angel":"xyRLqoUvWy8","Bulgarian Split Squat":"2C-uNgKwPLE",
+    "Sissy Squat":"6YvKOvJmjHc","Single-Leg Glute Bridge":"8bbE64NuDTU","Nordic Hamstring Curl":"GQJaZMonh2c",
+    "Slow Negative Squat":"TG6hzmfh_Tg","Deep Squat Hold":"naqKh1wULpk","Archer Push-Up":"gKF-pBHdlKA",
+    "Diamond Push-Up":"J0DXoz5_-1U","Pseudo Planche Lean":"KGzObNCS_k4","Pike Push-Up Negative":"x7_I5SO4_QA",
+    "Typewriter Push-Up":"gKF-pBHdlKA","Hollow Body Hold":"LlDNef_Ztsc"
+  };
+  const vid = VIDEO_IDS[name];
+  const thumb = vid ? `https://img.youtube.com/vi/${vid}/mqdefault.jpg` : null;
+  const watchUrl = vid ? `https://www.youtube.com/watch?v=${vid}` : ytSearch;
+  return `<div style="margin-bottom:10px">
+    ${thumb ? `<div class="demo-box"><img class="demo-img" src="${thumb}" alt="${name} demo" onerror="this.parentElement.style.display='none'" loading="lazy" /><div class="demo-label">EXERCISE PREVIEW</div></div>` : ''}
+    <a class="demo-watch-btn" href="${watchUrl}" target="_blank" rel="noopener">
+      <span style="font-size:16px">▶️</span> WATCH FULL TUTORIAL
+    </a>
+  </div>`;
+}
+
 function render(){
   const d = DAYS[activeDay];
   document.documentElement.style.setProperty('--accent', d.accent);
@@ -558,7 +691,7 @@ function render(){
   renderWeek(); renderTabs(); renderMain();
   updateStreakBar();
 }
- 
+
 function renderWeek(){
   const el = document.getElementById('weekStrip');
   el.innerHTML = '';
@@ -571,7 +704,7 @@ function renderWeek(){
     el.appendChild(div);
   });
 }
- 
+
 function renderTabs(){
   const el=document.getElementById('dayTabs');
   el.innerHTML='';
@@ -583,17 +716,17 @@ function renderTabs(){
     el.appendChild(b);
   });
 }
- 
+
 function renderMain(){
   const d=DAYS[activeDay];
   const p=pct(activeDay);
   const done=doneSets(activeDay);
   const total=totalSets(activeDay);
- 
+
   const muscleHTML=d.muscles.map((m,i)=>
     `<span class="muscle-chip${i<2?' primary':''}" style="${i<2?`background:${d.accent};border:none;`:''}">${m}</span>`
   ).join('');
- 
+
   const exHTML=d.exercises.map((ex,i)=>{ ex=adjEx(ex);
     const allDone=Array.from({length:ex.sets},(_,s)=>s).every(s=>completedSets[`${activeDay}-${i}-${s}`]);
     const setsHTML=Array.from({length:ex.sets},(_,s)=>{
@@ -611,6 +744,8 @@ function renderMain(){
         <div class="ex-chevron" id="chev${i}">▾</div>
       </div>
       <div class="ex-body" id="eb${i}">
+        ${buildDemoBox(ex.name)}
+        ${buildFeelBox(ex.name, d.accent)}
         <div class="info-box breath-box">
           <span style="font-size:16px;flex-shrink:0">😮‍💨</span>
           <div><div class="info-box-title">BREATHING</div><div class="info-box-text">${ex.breath}</div></div>
@@ -628,7 +763,7 @@ function renderMain(){
       </div>
     </div>`;
   }).join('');
- 
+
   document.getElementById('mainContent').innerHTML=`
     <div class="day-info">
       <div class="day-info-top">
@@ -666,7 +801,7 @@ function renderMain(){
       </div>
     </div>`;
 }
- 
+
 function toggleEx(i){
   const body=document.getElementById('eb'+i);
   const chev=document.getElementById('chev'+i);
@@ -675,7 +810,7 @@ function toggleEx(i){
   document.querySelectorAll('.ex-chevron').forEach(c=>c.classList.remove('open'));
   if(!open){body.classList.add('open');chev.classList.add('open');}
 }
- 
+
 async function toggleSet(exIdx,setIdx){
   const key=`${activeDay}-${exIdx}-${setIdx}`;
   completedSets[key]=!completedSets[key];
@@ -690,7 +825,7 @@ async function toggleSet(exIdx,setIdx){
   });
   checkDayComplete();
 }
- 
+
 function startRestTimer(s){
   stopTimer();
   timerSeconds=s; timerRunning=false;
@@ -700,7 +835,7 @@ function startRestTimer(s){
   document.getElementById('timerToggleBtn').className='timer-btn t-start';
   document.getElementById('timerSub').textContent='REST TIMER — tap START';
 }
- 
+
 function toggleTimer(){
   if(!timerRunning){
     timerRunning=true;
@@ -721,34 +856,34 @@ function toggleTimer(){
     document.getElementById('timerToggleBtn').className='timer-btn t-start';
   }
 }
- 
+
 function stopTimer(){
   timerRunning=false; clearInterval(timerInterval);
   document.getElementById('timerBar').classList.remove('visible');
 }
- 
+
 function updateTimerDisplay(){
   const m=Math.floor(timerSeconds/60), s=timerSeconds%60;
   document.getElementById('timerDisplay').textContent=m+':'+(s<10?'0':'')+s;
   document.getElementById('timerDisplay').style.color=timerSeconds<=5?'#ef4444':DAYS[activeDay].accent;
 }
- 
+
 function toggleOverlay(){ document.getElementById('overlay').classList.toggle('open'); }
 function closeOverlay(e){ if(e.target===document.getElementById('overlay')) toggleOverlay(); }
- 
- 
+
+
 // ── PROFILE & TIER SYSTEM ────────────────────────────────────────────────
- 
+
 let userProfile = null;
- 
+
 const TIER_CONFIG = {
   beginner:     { label:"BEGINNER",     color:"#4ade80", bg:"#052e16", desc:"Sets reduced by 1, rest extended by 20s. Focus on form — strength comes fast.", setsAdj:-1, restAdj:+20 },
   intermediate: { label:"INTERMEDIATE", color:"#f59e0b", bg:"#1c1000", desc:"Default workout values. Push yourself — this is where real progress happens.", setsAdj:0,  restAdj:0  },
   advanced:     { label:"ADVANCED",     color:"#f472b6", bg:"#2d0a1a", desc:"Extra set added, rest reduced by 10s. You're ready for a challenge.", setsAdj:+1, restAdj:-10 }
 };
- 
+
 function calcBMI(weight, height){ return weight / ((height/100)**2); }
- 
+
 function calcTier(age, weight, height){
   const bmi = calcBMI(weight, height);
   if (age < 16 || age > 55 || bmi > 30) return 'beginner';
@@ -756,7 +891,7 @@ function calcTier(age, weight, height){
   if (bmi < 23 && age >= 16 && age <= 45) return 'advanced';
   return 'intermediate';
 }
- 
+
 function adjEx(ex){
   if(!userProfile) return ex;
   const cfg = TIER_CONFIG[userProfile.tier];
@@ -765,7 +900,7 @@ function adjEx(ex){
     rest: Math.max(20, ex.rest + cfg.restAdj)
   });
 }
- 
+
 function previewTier(){
   const age=parseInt(document.getElementById('setupAge').value);
   const weight=parseFloat(document.getElementById('setupWeight').value);
@@ -783,7 +918,7 @@ function previewTier(){
     <div class="tier-preview-desc" style="color:#ccc">${cfg.desc}</div>
     <div style="font-family:'Space Mono',monospace;font-size:10px;color:#666;margin-top:8px">BMI ${bmi}</div>`;
 }
- 
+
 function saveProfile(){
   const name=document.getElementById('setupName').value.trim();
   const age=parseInt(document.getElementById('setupAge').value);
@@ -797,7 +932,7 @@ function saveProfile(){
   applyProfileToHeader();
   render();
 }
- 
+
 function applyProfileToHeader(){
   if(!userProfile) return;
   const cfg=TIER_CONFIG[userProfile.tier];
@@ -805,7 +940,7 @@ function applyProfileToHeader(){
   const tierBadge=`<span class="tier-badge" style="background:${cfg.color}22;color:${cfg.color}">${cfg.label}</span>`;
   document.getElementById('headerLabel').innerHTML=greet+'BEGINNER · 69 KG · SUMMER EDITION'+tierBadge;
 }
- 
+
 function openProfile(){
   const p=userProfile;
   if(p){
@@ -817,7 +952,7 @@ function openProfile(){
   }
   document.getElementById('setupScreen').classList.remove('hidden');
 }
- 
+
 function initProfile(){
   const saved=localStorage.getItem('calitrainProfile');
   if(saved){
@@ -826,17 +961,17 @@ function initProfile(){
     applyProfileToHeader();
   }
 }
- 
- 
+
+
 // ── STREAK & PROGRESSION SYSTEM ─────────────────────────────────────────
- 
+
 const TIER_ORDER = ['beginner','intermediate','advanced'];
- 
+
 function getCompletedDates(){
   const raw = localStorage.getItem('calitrainDates');
   return raw ? JSON.parse(raw) : [];
 }
- 
+
 function markTodayComplete(){
   const dates = getCompletedDates();
   const today = new Date().toISOString().split('T')[0];
@@ -845,7 +980,7 @@ function markTodayComplete(){
     localStorage.setItem('calitrainDates', JSON.stringify(dates));
   }
 }
- 
+
 function calcStreak(){
   const dates = getCompletedDates().sort();
   if(!dates.length) return 0;
@@ -868,11 +1003,11 @@ function calcStreak(){
   }
   return streak;
 }
- 
+
 function totalCompleted(){
   return getCompletedDates().length;
 }
- 
+
 function updateStreakBar(){
   if(!userProfile) return;
   const streak = calcStreak();
@@ -880,23 +1015,23 @@ function updateStreakBar(){
   const tierIdx = TIER_ORDER.indexOf(userProfile.tier);
   const bar = document.getElementById('streakBar');
   bar.style.display = 'flex';
- 
+
   document.getElementById('streakCount').textContent = streak;
   document.getElementById('streakFire').textContent = streak >= 7 ? '🔥' : streak >= 3 ? '✨' : '💪';
- 
+
   const canLevelUp = tierIdx < TIER_ORDER.length - 1;
-  const streakReady = streak >= 7;
-  const manualReady = total >= 5;
+  const streakReady = streak >= appSettings.streak_required;
+  const manualReady = total >= appSettings.manual_days_required;
   const showBtn = canLevelUp && (streakReady || manualReady);
- 
+
   document.getElementById('levelupBtn').style.display = showBtn ? 'block' : 'none';
- 
+
   // Progress bar toward next level up (streak-based = /7, manual = /5)
-  const target = streakReady ? 7 : 5;
+  const target = streakReady ? appSettings.streak_required : appSettings.manual_days_required;
   const prog = streakReady ? Math.min(streak,7) : Math.min(total,5);
   const pct = Math.round((prog/target)*100);
   document.getElementById('streakProgFill').style.width = pct+'%';
- 
+
   if(streakReady){
     document.getElementById('streakProgLabel').textContent = '🔥 Streak ready to level up!';
     document.getElementById('streakProgFill').style.background = '#ef4444';
@@ -909,15 +1044,15 @@ function updateStreakBar(){
     document.getElementById('streakProgFill').style.background = '#f59e0b';
   }
 }
- 
+
 function checkDayComplete(){
   const p = pct(activeDay);
-  if(p >= 70){
+  if(p >= appSettings.completion_pct){
     markTodayComplete();
     updateStreakBar();
   }
 }
- 
+
 function openLevelUp(){
   const tierIdx = TIER_ORDER.indexOf(userProfile.tier);
   if(tierIdx >= TIER_ORDER.length-1) return;
@@ -925,34 +1060,34 @@ function openLevelUp(){
   const to   = TIER_CONFIG[TIER_ORDER[tierIdx+1]];
   const streak = calcStreak();
   const total = totalCompleted();
- 
+
   document.getElementById('levelupSub').textContent =
     streak >= 7
       ? `${streak}-day streak! Your body is adapting — time to push harder.`
       : `${total} workout days completed. You've built the base — now let's build the gains.`;
- 
+
   document.getElementById('levelupFrom').innerHTML =
     `<div class="levelup-tier-box" style="background:${from.color}22;color:${from.color}">${from.label}</div>
      <div class="levelup-arrow">→</div>
      <div class="levelup-tier-box" style="background:${to.color}22;color:${to.color}">${to.label}</div>`;
- 
+
   const fromCfg = TIER_CONFIG[TIER_ORDER[tierIdx]];
   const toCfg   = TIER_CONFIG[TIER_ORDER[tierIdx+1]];
   const setsDiff = toCfg.setsAdj - fromCfg.setsAdj;
   const restDiff = toCfg.restAdj - fromCfg.restAdj;
- 
+
   document.getElementById('levelupChanges').innerHTML =
     `<div class="levelup-change-row"><span>Sets per exercise</span><span class="levelup-change-val">${setsDiff>0?'+':''}${setsDiff} set${Math.abs(setsDiff)!==1?'s':''}</span></div>
      <div class="levelup-change-row"><span>Rest between sets</span><span class="levelup-change-val">${restDiff>0?'+':''}${restDiff}s</span></div>
      <div class="levelup-change-row"><span>New tier</span><span class="levelup-change-val" style="color:${to.color}">${to.label}</span></div>`;
- 
+
   document.getElementById('levelupOverlay').classList.add('open');
 }
- 
+
 function closeLevelUp(){
   document.getElementById('levelupOverlay').classList.remove('open');
 }
- 
+
 function confirmLevelUp(){
   const tierIdx = TIER_ORDER.indexOf(userProfile.tier);
   if(tierIdx >= TIER_ORDER.length-1) return;
@@ -966,14 +1101,133 @@ function confirmLevelUp(){
   localStorage.setItem('calitrainDates', JSON.stringify([]));
   showToast('🏆 LEVELLED UP TO '+TIER_CONFIG[userProfile.tier].label+'!');
 }
- 
+
 function showToast(msg){
   const t = document.getElementById('tierUpToast');
   t.textContent = msg;
   t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'), 3500);
 }
- 
+
+
+// ── ADMIN PANEL ──────────────────────────────────────────────────────────
+
+let secretTaps = 0, secretTimer = null;
+let appSettings = { streak_required: 7, manual_days_required: 5, completion_pct: 70 };
+
+async function loadSettings(){
+  try {
+    const res = await fetch('/api/settings');
+    const data = await res.json();
+    appSettings.streak_required     = parseInt(data.streak_required)     || 7;
+    appSettings.manual_days_required = parseInt(data.manual_days_required) || 5;
+    appSettings.completion_pct       = parseInt(data.completion_pct)       || 70;
+  } catch(e) {}
+}
+
+function handleSecretTap(){
+  secretTaps++;
+  clearTimeout(secretTimer);
+  secretTimer = setTimeout(()=>{ secretTaps=0; }, 1500);
+  if(secretTaps >= 5){
+    secretTaps = 0;
+    openAdmin();
+  }
+}
+
+function openAdmin(){
+  document.getElementById('adminOverlay').classList.add('open');
+  document.getElementById('adminError').style.display='none';
+  document.getElementById('adminUser').value='';
+  document.getElementById('adminPass').value='';
+  // Check if already logged in
+  checkAdminSession();
+}
+
+function closeAdmin(){
+  document.getElementById('adminOverlay').classList.remove('open');
+}
+
+async function checkAdminSession(){
+  try {
+    const res = await fetch('/api/admin/settings');
+    if(res.ok){
+      const data = await res.json();
+      showAdminSettings(data);
+    } else {
+      document.getElementById('adminLogin').style.display='block';
+      document.getElementById('adminSettings').style.display='none';
+    }
+  } catch(e){
+    document.getElementById('adminLogin').style.display='block';
+    document.getElementById('adminSettings').style.display='none';
+  }
+}
+
+async function doAdminLogin(){
+  const username = document.getElementById('adminUser').value.trim();
+  const password = document.getElementById('adminPass').value;
+  try {
+    const res = await fetch('/api/admin/login', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({username, password})
+    });
+    if(res.ok){
+      const data = await fetch('/api/admin/settings').then(r=>r.json());
+      showAdminSettings(data);
+    } else {
+      document.getElementById('adminError').style.display='block';
+    }
+  } catch(e){
+    document.getElementById('adminError').style.display='block';
+  }
+}
+
+function showAdminSettings(data){
+  document.getElementById('adminLogin').style.display='none';
+  document.getElementById('adminSettings').style.display='block';
+  document.getElementById('adminSuccess').style.display='none';
+  document.getElementById('settingStreak').value  = data.streak_required     || 7;
+  document.getElementById('settingManual').value  = data.manual_days_required || 5;
+  document.getElementById('settingPct').value     = data.completion_pct       || 70;
+  // Show current streak info
+  const streak = calcStreak();
+  const total  = totalCompleted();
+  const req    = parseInt(data.streak_required) || 7;
+  document.getElementById('adminStreakNote').innerHTML =
+    `Current streak: <strong>${streak} days</strong> &nbsp;|&nbsp; Total completed: <strong>${total} days</strong><br>
+     Level Up unlocks at: <strong>${req} streak days</strong> or <strong>${data.manual_days_required||5} total days</strong>`;
+}
+
+async function saveAdminSettings(){
+  const streak  = parseInt(document.getElementById('settingStreak').value);
+  const manual  = parseInt(document.getElementById('settingManual').value);
+  const pct     = parseInt(document.getElementById('settingPct').value);
+  try {
+    const res = await fetch('/api/admin/settings', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ streak_required: streak, manual_days_required: manual, completion_pct: pct })
+    });
+    if(res.ok){
+      appSettings.streak_required      = streak;
+      appSettings.manual_days_required = manual;
+      appSettings.completion_pct       = pct;
+      document.getElementById('adminSuccess').style.display='block';
+      setTimeout(()=>document.getElementById('adminSuccess').style.display='none', 2500);
+      updateStreakBar();
+    }
+  } catch(e) {}
+}
+
+async function doAdminLogout(){
+  await fetch('/api/admin/logout', { method:'POST' });
+  document.getElementById('adminLogin').style.display='block';
+  document.getElementById('adminSettings').style.display='none';
+  closeAdmin();
+}
+
 async function loadProgress(){
   try {
     const res = await fetch('/api/progress');
@@ -982,8 +1236,61 @@ async function loadProgress(){
   } catch(e) { completedSets = {}; }
   render();
 }
-initProfile();
-loadProgress();
+loadSettings().then(()=>{ initProfile(); loadProgress(); });
 </script>
+
+<!-- ADMIN OVERLAY -->
+<div class="admin-overlay" id="adminOverlay">
+  <div class="admin-card" style="position:relative">
+    <button class="admin-close" onclick="closeAdmin()">×</button>
+    <!-- LOGIN VIEW -->
+    <div id="adminLogin">
+      <div class="admin-title">Admin Panel 🔐</div>
+      <div class="admin-sub">CALITRAIN · RESTRICTED</div>
+      <div class="admin-error" id="adminError">Wrong username or password.</div>
+      <div class="admin-field">
+        <div class="admin-label">USERNAME</div>
+        <input class="admin-input" id="adminUser" type="text" placeholder="Enter username" />
+      </div>
+      <div class="admin-field">
+        <div class="admin-label">PASSWORD</div>
+        <input class="admin-input" id="adminPass" type="password" placeholder="Enter password" onkeydown="if(event.key==='Enter')doAdminLogin()" />
+      </div>
+      <button class="admin-btn" onclick="doAdminLogin()">UNLOCK →</button>
+    </div>
+    <!-- SETTINGS VIEW -->
+    <div id="adminSettings" style="display:none">
+      <div class="admin-title">Streak Settings ⚡</div>
+      <div class="admin-sub">CALITRAIN · ADMIN</div>
+      <div class="admin-streak-note" id="adminStreakNote"></div>
+      <div class="admin-success" id="adminSuccess">✅ Settings saved!</div>
+      <div class="admin-setting-row">
+        <div>
+          <div class="admin-setting-label">Streak days to Level Up</div>
+          <div class="admin-setting-sub">Consecutive days needed for auto Level Up button</div>
+        </div>
+        <input class="admin-setting-input" id="settingStreak" type="number" min="1" max="60" value="7" />
+      </div>
+      <div class="admin-setting-row">
+        <div>
+          <div class="admin-setting-label">Manual Level Up after</div>
+          <div class="admin-setting-sub">Total workout days to unlock manual Level Up</div>
+        </div>
+        <input class="admin-setting-input" id="settingManual" type="number" min="1" max="60" value="5" />
+      </div>
+      <div class="admin-setting-row" style="border:none">
+        <div>
+          <div class="admin-setting-label">Day completion threshold</div>
+          <div class="admin-setting-sub">% of sets needed to count as a completed day</div>
+        </div>
+        <input class="admin-setting-input" id="settingPct" type="number" min="10" max="100" value="70" />
+      </div>
+      <div class="admin-divider"></div>
+      <button class="admin-btn" onclick="saveAdminSettings()">SAVE SETTINGS</button>
+      <button class="admin-btn secondary" onclick="doAdminLogout()">LOG OUT</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
