@@ -119,9 +119,65 @@
   .a-warn p { font-size: 13px; color: #dc2626; font-weight: 600; }
 
   .rest-timer-btn { width: 100%; margin-top: 10px; padding: 10px; border-radius: 10px; font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; cursor: pointer; letter-spacing: 1px; border: none; }
+  /* ── SETUP SCREEN ─────────────────────────────────────────────────── */
+  .setup-screen { position: fixed; inset: 0; background: #1a1a1a; z-index: 500; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px 24px; overflow-y: auto; }
+  .setup-screen.hidden { display: none; }
+  .setup-logo { font-family: 'Instrument Serif', serif; font-size: 32px; color: #fff; font-style: italic; margin-bottom: 6px; }
+  .setup-tagline { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 3px; color: #f59e0b; margin-bottom: 36px; }
+  .setup-card { background: #242424; border-radius: 20px; padding: 28px 24px; width: 100%; max-width: 400px; }
+  .setup-title { font-family: 'Instrument Serif', serif; font-size: 22px; color: #fff; margin-bottom: 6px; }
+  .setup-sub { font-size: 13px; color: #888; margin-bottom: 24px; line-height: 1.5; }
+  .setup-field { margin-bottom: 18px; }
+  .setup-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; color: #aaa; margin-bottom: 8px; display: flex; justify-content: space-between; }
+  .setup-input { width: 100%; background: #2e2e2e; border: 1.5px solid #3a3a3a; border-radius: 12px; padding: 14px 16px; font-size: 16px; color: #fff; font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s; }
+  .setup-input:focus { border-color: #f59e0b; }
+  .setup-row { display: flex; gap: 12px; }
+  .setup-row .setup-field { flex: 1; }
+  .tier-preview { border-radius: 12px; padding: 14px 16px; margin-top: 8px; margin-bottom: 20px; display: none; }
+  .tier-preview.show { display: block; }
+  .tier-preview-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; margin-bottom: 4px; }
+  .tier-preview-val { font-family: 'Instrument Serif', serif; font-size: 20px; font-style: italic; }
+  .tier-preview-desc { font-size: 12px; margin-top: 4px; line-height: 1.5; opacity: 0.85; }
+  .setup-btn { width: 100%; padding: 16px; background: #f59e0b; border-radius: 14px; border: none; font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; color: #000; letter-spacing: 2px; cursor: pointer; margin-top: 4px; transition: opacity 0.2s; }
+  .setup-btn:active { opacity: 0.8; }
+
+  /* ── PROFILE BUTTON ───────────────────────────────────────────────── */
+  .profile-btn { background: #2a2a2a; border: none; border-radius: 10px; padding: 8px 11px; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; color: #aaa; letter-spacing: 1px; cursor: pointer; margin-right: 8px; }
+  .tier-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; margin-left: 8px; vertical-align: middle; }
+
 </style>
 </head>
 <body>
+
+<!-- SETUP SCREEN -->
+<div class="setup-screen" id="setupScreen">
+  <div class="setup-logo">CALITRAIN 🌞</div>
+  <div class="setup-tagline">SUMMER BODY EDITION</div>
+  <div class="setup-card">
+    <div class="setup-title">Let's personalise your plan</div>
+    <div class="setup-sub">Enter your stats and we'll adjust your sets, reps, and rest times automatically.</div>
+    <div class="setup-field">
+      <div class="setup-label">YOUR NAME (OPTIONAL)</div>
+      <input class="setup-input" id="setupName" type="text" placeholder="e.g. Jojo" />
+    </div>
+    <div class="setup-row">
+      <div class="setup-field">
+        <div class="setup-label">AGE <span style="color:#666">years</span></div>
+        <input class="setup-input" id="setupAge" type="number" placeholder="e.g. 22" min="10" max="80" oninput="previewTier()" />
+      </div>
+      <div class="setup-field">
+        <div class="setup-label">WEIGHT <span style="color:#666">kg</span></div>
+        <input class="setup-input" id="setupWeight" type="number" placeholder="e.g. 69" min="30" max="250" oninput="previewTier()" />
+      </div>
+    </div>
+    <div class="setup-field">
+      <div class="setup-label">HEIGHT <span style="color:#666">cm</span></div>
+      <input class="setup-input" id="setupHeight" type="number" placeholder="e.g. 170" min="100" max="230" oninput="previewTier()" />
+    </div>
+    <div class="tier-preview" id="tierPreview"></div>
+    <button class="setup-btn" onclick="saveProfile()">START TRAINING →</button>
+  </div>
+</div>
 
 <!-- ASTHMA OVERLAY -->
 <div class="overlay" id="overlay" onclick="closeOverlay(event)">
@@ -156,7 +212,7 @@
     <div class="header-label" id="headerLabel" style="color:#f59e0b">BEGINNER · 69 KG · SUMMER EDITION</div>
     <div class="header-title">CALITRAIN 🌞</div>
   </div>
-  <button class="asthma-btn" onclick="toggleOverlay()">🫁 ASTHMA</button>
+  <button class="profile-btn" onclick="openProfile()">👤 PROFILE</button><button class="asthma-btn" onclick="toggleOverlay()">🫁 ASTHMA</button>
 </div>
 
 <div class="alert-bar">
@@ -168,7 +224,7 @@
   <span style="font-size:28px">🌊</span>
   <div>
     <div class="goal-text-title">Built for Summer</div>
-    <div class="goal-text-sub">5 days · Legs · Push · Core · Pull · Mobility — Zero equipment</div>
+    <div class="goal-text-sub">7 days · Legs · Push · Core · Pull · Mobility · Strength A · Strength B — Zero equipment</div>
   </div>
 </div>
 
@@ -339,14 +395,81 @@ const DAYS = [
         mod:"Only go as far as your arms can stay flat on the wall." }
     ]
   }
+,
+  {
+    label:"DAY 6", title:"Lower Strength", subtitle:"Pistols, Hamstrings & Explosive Legs",
+    accent:"#34d399", intensity:"HIGH", intColor:"#34d399", duration:"~35 min",
+    muscles:["Quads","Glutes","Hamstrings","Calves","Core"],
+    warmup:"March in place 2 min → Leg swings 30s each → Deep squat hold 30s → 3 deep belly breaths.",
+    cooldown:"Standing quad stretch 30s each → Seated hamstring fold 40s → Hip flexor lunge 30s each → 5 deep breaths.",
+    exercises:[
+      { name:"Bulgarian Split Squat", sets:4, reps:"10 each leg", rest:60,
+        breath:"Inhale lowering DOWN → Exhale driving UP through front heel",
+        tip:"Rear foot on a chair or step, drop the back knee toward the floor. One of the hardest single-leg strength moves — builds quad and glute strength far beyond regular squats.",
+        mod:"Lower only halfway if knees feel unstable. Hold a wall for balance." },
+      { name:"Sissy Squat", sets:3, reps:"10", rest:55,
+        breath:"Inhale leaning BACK and lowering → Exhale driving back UP",
+        tip:"Hold a wall lightly, lean back as you lower your body keeping hips straight. Isolates the quads completely — the best bodyweight quad isolation exercise you can do.",
+        mod:"Only lean back slightly at first. Increase range as strength builds." },
+      { name:"Single-Leg Glute Bridge", sets:4, reps:"12 each leg", rest:45,
+        breath:"Inhale flat → Exhale driving one hip UP → Hold 2s → Inhale lowering",
+        tip:"One leg extended, drive the planted foot into the floor. Double the load on each glute compared to a regular bridge — essential for single-leg running power.",
+        mod:"Bend the raised leg instead of extending it to reduce difficulty." },
+      { name:"Nordic Hamstring Curl", sets:3, reps:"6", rest:65,
+        breath:"Exhale bracing as you LOWER slowly → Inhale at the bottom",
+        tip:"Hook feet under a sofa, lower your body as slowly as possible using only your hamstrings. The most effective bodyweight hamstring exercise — prevents injury and builds the back of the legs.",
+        mod:"Use your hands to catch yourself at the bottom and push back up if needed." },
+      { name:"Slow Negative Squat", sets:3, reps:"8", rest:50,
+        breath:"Inhale the full way DOWN (5 seconds) → Exhale standing back UP",
+        tip:"Lower in 5 full seconds, stand up normally. Eccentric loading on the quads creates faster strength gains than normal squats — maximum muscle under minimal effort.",
+        mod:"Hold a doorframe while lowering if balance is an issue." },
+      { name:"Deep Squat Hold", sets:3, reps:"40 sec hold", rest:40,
+        breath:"Slow belly breaths — try to relax deeper into the squat on every exhale.",
+        tip:"Full depth squat, heels on the floor. Improves ankle and hip mobility — directly increases your squat depth and reduces knee strain in every lower body exercise.",
+        mod:"Put a folded towel under your heels if they lift off the floor." }
+    ]
+  },
+  {
+    label:"DAY 7", title:"Upper Strength", subtitle:"Archer Push-Ups, Triceps & Shoulder Power",
+    accent:"#f472b6", intensity:"HIGH", intColor:"#f472b6", duration:"~35 min",
+    muscles:["Chest","Shoulders","Triceps","Biceps","Core"],
+    warmup:"Arm circles 30s forward + back → Shoulder rolls 20s → Wall chest stretch 20s each → 3 deep belly breaths.",
+    cooldown:"Cross-arm shoulder stretch 30s each → Tricep overhead stretch 30s each → Chest doorframe stretch 30s → 5 deep breaths.",
+    exercises:[
+      { name:"Archer Push-Up", sets:3, reps:"6 each side", rest:60,
+        breath:"Inhale lowering toward ONE hand → Exhale pressing back to centre",
+        tip:"Wide push-up position, bend one arm and lower toward it while the other stays straight. Puts almost full bodyweight on one arm — builds the unilateral chest and shoulder strength needed for advanced calisthenics.",
+        mod:"Stay wide and reduce range of motion. Start with 4 reps each side." },
+      { name:"Diamond Push-Up", sets:3, reps:"10", rest:55,
+        breath:"Inhale lowering DOWN → Exhale pressing UP",
+        tip:"Hands touching in a diamond shape under your chest. Shifts almost all load to the triceps and inner chest — the exercise that builds arm thickness fastest with no equipment.",
+        mod:"Do from knees. Keep elbows pointing straight back, not flared out." },
+      { name:"Pseudo Planche Lean", sets:3, reps:"20 sec hold", rest:55,
+        breath:"Slow steady breaths — do not hold your breath during the lean.",
+        tip:"In a push-up position, lean forward so shoulders pass your hands. Builds straight-arm pushing strength and the serratus anterior — creates the athletic wing-muscle look under your arms.",
+        mod:"Lean only slightly forward at first. Increase lean each week." },
+      { name:"Pike Push-Up Negative", sets:3, reps:"6", rest:60,
+        breath:"Inhale the entire way DOWN (4 seconds) → Exhale pressing back UP",
+        tip:"Hips high, lower your head to the floor in 4 seconds. Eccentric shoulder loading — builds the deltoid strength and size that makes arms look wider from the front.",
+        mod:"Only lower halfway. Control is more important than depth here." },
+      { name:"Typewriter Push-Up", sets:3, reps:"5 each side", rest:55,
+        breath:"Exhale as you SLIDE to each side → Inhale returning to centre",
+        tip:"At the bottom of a push-up, slide side to side like a typewriter carriage. Loads each pec independently and trains horizontal pushing range of motion — great for chest width.",
+        mod:"Do from knees. Slide only as far as comfortable without shoulder pain." },
+      { name:"Hollow Body Hold", sets:3, reps:"25 sec hold", rest:45,
+        breath:"Exhale FULLY pressing lower back to floor → Hold and breathe shallow",
+        tip:"Lie flat, press lower back down, raise arms overhead and legs slightly off the floor. The foundation of all gymnastics strength — creates the rigid core needed to transfer power from your legs to your upper body.",
+        mod:"Bend your knees or keep arms by your sides to make it easier." }
+    ]
+  }
 ];
 
 const WEEK = [
-  {day:"MON",dIdx:0},{day:"TUE",dIdx:1},{day:"WED",rest:true},
-  {day:"THU",dIdx:2},{day:"FRI",dIdx:3},{day:"SAT",dIdx:4},{day:"SUN",rest:true}
+  {day:"MON",dIdx:0},{day:"TUE",dIdx:1},{day:"WED",dIdx:2},
+  {day:"THU",dIdx:3},{day:"FRI",dIdx:4},{day:"SAT",dIdx:5},{day:"SUN",dIdx:6}
 ];
 
-const DAY_MAP = {1:0, 2:1, 4:2, 5:3, 6:4};
+const DAY_MAP = {1:0, 2:1, 3:2, 4:3, 5:4, 6:5, 0:6};
 const todayDayIdx = DAY_MAP[new Date().getDay()];
 let activeDay = (todayDayIdx !== undefined) ? todayDayIdx : 0;
 let completedSets = {};
@@ -354,7 +477,7 @@ let timerInterval = null;
 let timerSeconds = 0;
 let timerRunning = false;
 
-function totalSets(d){ return DAYS[d].exercises.reduce((a,e)=>a+e.sets,0); }
+function totalSets(d){ return DAYS[d].exercises.reduce((a,e)=>a+adjEx(e).sets,0); }
 function doneSets(d){ return Object.keys(completedSets).filter(k=>k.startsWith(d+'-')&&completedSets[k]).length; }
 function pct(d){ return Math.round((doneSets(d)/totalSets(d))*100); }
 
@@ -401,7 +524,7 @@ function renderMain(){
     `<span class="muscle-chip${i<2?' primary':''}" style="${i<2?`background:${d.accent};border:none;`:''}">${m}</span>`
   ).join('');
 
-  const exHTML=d.exercises.map((ex,i)=>{
+  const exHTML=d.exercises.map((ex,i)=>{ ex=adjEx(ex);
     const allDone=Array.from({length:ex.sets},(_,s)=>s).every(s=>completedSets[`${activeDay}-${i}-${s}`]);
     const setsHTML=Array.from({length:ex.sets},(_,s)=>{
       const done=completedSets[`${activeDay}-${i}-${s}`];
@@ -542,6 +665,97 @@ function updateTimerDisplay(){
 function toggleOverlay(){ document.getElementById('overlay').classList.toggle('open'); }
 function closeOverlay(e){ if(e.target===document.getElementById('overlay')) toggleOverlay(); }
 
+
+// ── PROFILE & TIER SYSTEM ────────────────────────────────────────────────
+
+let userProfile = null;
+
+const TIER_CONFIG = {
+  beginner:     { label:"BEGINNER",     color:"#4ade80", bg:"#052e16", desc:"Sets reduced by 1, rest extended by 20s. Focus on form — strength comes fast.", setsAdj:-1, restAdj:+20 },
+  intermediate: { label:"INTERMEDIATE", color:"#f59e0b", bg:"#1c1000", desc:"Default workout values. Push yourself — this is where real progress happens.", setsAdj:0,  restAdj:0  },
+  advanced:     { label:"ADVANCED",     color:"#f472b6", bg:"#2d0a1a", desc:"Extra set added, rest reduced by 10s. You're ready for a challenge.", setsAdj:+1, restAdj:-10 }
+};
+
+function calcBMI(weight, height){ return weight / ((height/100)**2); }
+
+function calcTier(age, weight, height){
+  const bmi = calcBMI(weight, height);
+  if (age < 16 || age > 55 || bmi > 30) return 'beginner';
+  if (bmi >= 23 && bmi <= 30 && age <= 45) return 'intermediate';
+  if (bmi < 23 && age >= 16 && age <= 45) return 'advanced';
+  return 'intermediate';
+}
+
+function adjEx(ex){
+  if(!userProfile) return ex;
+  const cfg = TIER_CONFIG[userProfile.tier];
+  return Object.assign({}, ex, {
+    sets: Math.max(1, ex.sets + cfg.setsAdj),
+    rest: Math.max(20, ex.rest + cfg.restAdj)
+  });
+}
+
+function previewTier(){
+  const age=parseInt(document.getElementById('setupAge').value);
+  const weight=parseFloat(document.getElementById('setupWeight').value);
+  const height=parseFloat(document.getElementById('setupHeight').value);
+  const el=document.getElementById('tierPreview');
+  if(!age||!weight||!height){ el.classList.remove('show'); return; }
+  const tier=calcTier(age,weight,height);
+  const cfg=TIER_CONFIG[tier];
+  const bmi=calcBMI(weight,height).toFixed(1);
+  el.className='tier-preview show';
+  el.style.background=cfg.bg;
+  el.style.border='1.5px solid '+cfg.color+'40';
+  el.innerHTML=`<div class="tier-preview-label" style="color:${cfg.color}">YOUR TIER</div>
+    <div class="tier-preview-val" style="color:${cfg.color}">${cfg.label}</div>
+    <div class="tier-preview-desc" style="color:#ccc">${cfg.desc}</div>
+    <div style="font-family:'Space Mono',monospace;font-size:10px;color:#666;margin-top:8px">BMI ${bmi}</div>`;
+}
+
+function saveProfile(){
+  const name=document.getElementById('setupName').value.trim();
+  const age=parseInt(document.getElementById('setupAge').value);
+  const weight=parseFloat(document.getElementById('setupWeight').value);
+  const height=parseFloat(document.getElementById('setupHeight').value);
+  if(!age||!weight||!height){ alert('Please fill in age, weight and height.'); return; }
+  const tier=calcTier(age,weight,height);
+  userProfile={name,age,weight,height,tier};
+  localStorage.setItem('calitrainProfile', JSON.stringify(userProfile));
+  document.getElementById('setupScreen').classList.add('hidden');
+  applyProfileToHeader();
+  render();
+}
+
+function applyProfileToHeader(){
+  if(!userProfile) return;
+  const cfg=TIER_CONFIG[userProfile.tier];
+  const greet=userProfile.name ? userProfile.name.toUpperCase()+' · ' : '';
+  const tierBadge=`<span class="tier-badge" style="background:${cfg.color}22;color:${cfg.color}">${cfg.label}</span>`;
+  document.getElementById('headerLabel').innerHTML=greet+'BEGINNER · 69 KG · SUMMER EDITION'+tierBadge;
+}
+
+function openProfile(){
+  const p=userProfile;
+  if(p){
+    document.getElementById('setupName').value=p.name||'';
+    document.getElementById('setupAge').value=p.age;
+    document.getElementById('setupWeight').value=p.weight;
+    document.getElementById('setupHeight').value=p.height;
+    previewTier();
+  }
+  document.getElementById('setupScreen').classList.remove('hidden');
+}
+
+function initProfile(){
+  const saved=localStorage.getItem('calitrainProfile');
+  if(saved){
+    userProfile=JSON.parse(saved);
+    document.getElementById('setupScreen').classList.add('hidden');
+    applyProfileToHeader();
+  }
+}
+
 async function loadProgress(){
   try {
     const res = await fetch('/api/progress');
@@ -550,6 +764,7 @@ async function loadProgress(){
   } catch(e) { completedSets = {}; }
   render();
 }
+initProfile();
 loadProgress();
 </script>
 </body>
