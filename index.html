@@ -133,8 +133,7 @@
   .demo-img-loading { width: 100%; height: 140px; background: linear-gradient(90deg,#1a1a1a 25%,#2a2a2a 50%,#1a1a1a 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 14px; display: flex; align-items: center; justify-content: center; }
   @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
   .demo-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 1px; color: #666; padding: 6px 12px 2px; }
-  .demo-watch-btn { display: flex; align-items: center; gap: 6px; width: 100%; padding: 10px 12px; background: #f7f4ef; border: 1.5px solid #ede9e3; border-radius: 10px; margin-bottom: 10px; cursor: pointer; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; color: #555; letter-spacing: 1px; text-decoration: none; }
-  .demo-watch-btn:hover { background: #ede9e3; }
+  .demo-watch-btn { display:none; }
 
   /* ── ADMIN PANEL ─────────────────────────────────────────────────── */
   .admin-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:700;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity 0.25s; }
@@ -233,7 +232,7 @@
     <div class="setup-sub">Enter your stats and we'll adjust your sets, reps, and rest times automatically.</div>
     <div class="setup-field">
       <div class="setup-label">YOUR NAME (OPTIONAL)</div>
-      <input class="setup-input" id="setupName" type="text" placeholder="e.g. Josh" />
+      <input class="setup-input" id="setupName" type="text" placeholder="e.g. Jojo" />
     </div>
     <div class="setup-row">
       <div class="setup-field">
@@ -258,7 +257,7 @@
 <div class="overlay" id="overlay" onclick="closeOverlay(event)">
   <div class="overlay-sheet">
     <div class="overlay-head">
-      <div><div class="overlay-title">⚠️ Asthma Safety</div><div class="overlay-sub">Read before every session</div></div>
+      <div><div class="overlay-title">🫁 Asthma Safety</div><div class="overlay-sub">Read before every session</div></div>
       <button class="close-btn" onclick="toggleOverlay()">×</button>
     </div>
     <div class="a-rule"><span style="font-size:20px;flex-shrink:0">💨</span><p>Always have your inhaler nearby before starting.</p></div>
@@ -267,7 +266,7 @@
     <div class="a-rule"><span style="font-size:20px;flex-shrink:0">🔥</span><p>Never skip your warm-up — it primes your airways for exercise.</p></div>
     <div class="a-rule"><span style="font-size:20px;flex-shrink:0">😮‍💨</span><p>Breathe through your nose when possible to warm and filter air.</p></div>
     <div class="a-rule"><span style="font-size:20px;flex-shrink:0">💪</span><p>Upper body work raises breathing rate less than cardio — still stay controlled.</p></div>
-    <div class="a-warn"><p>⚠️ This is NOT a substitute for medical advice. Always follow your doctor's recommendations.</p></div>
+    <div class="a-warn"><p><span style="display:inline-flex;align-items:center;gap:5px;background:#dc2626;color:#fff;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:1.5px;padding:3px 8px;border-radius:20px;vertical-align:middle;margin-right:6px">⚠ NOTE</span>This is NOT a substitute for medical advice. Always follow your doctor's recommendations.</p></div>
   </div>
 </div>
 
@@ -291,7 +290,7 @@
 </div>
 
 <div class="alert-bar">
-  <span style="font-size:16px">⚠️</span>
+  <span style="display:inline-flex;align-items:center;gap:5px;background:#92400e;color:#fef3c7;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1.5px;padding:4px 10px;border-radius:20px;flex-shrink:0">⚠ ASTHMA</span>
   <p><strong>Asthmatic athlete mode.</strong> No explosive jumps. Breathing cues on every exercise. Upper body added for summer. 🌊</p>
 </div>
 
@@ -653,33 +652,56 @@ function buildFeelBox(name, accent){
 }
 
 function buildDemoBox(name){
-  const query = encodeURIComponent(name + ' exercise tutorial proper form');
-  const ytSearch = 'https://www.youtube.com/results?search_query=' + query;
-  // Use YouTube thumbnail from a curated video ID map (fallback to search)
-  const VIDEO_IDS = {
-    "Pause Squat":"TG6hzmfh_Tg","Reverse Lunge":"csOgFMNKpv0","Glute Bridge + 2s Hold":"8bbE64NuDTU",
-    "Single-Leg Calf Raise":"gwLzBJYoWlI","Wall Sit":"y-wV4Venusw","Knee Push-Up":"jWxvty2KROs",
-    "Wide Push-Up (Knee)":"IODxDxX7oi4","Pike Push-Up":"x7_I5SO4_QA","Tricep Floor Dip":"6kALZikXxLc",
-    "Shoulder Tap Plank":"LEZck1e5R9M","Slow Negative Push-Up":"IODxDxX7oi4","Full Plank":"ASdvN_XEl_c",
-    "Dead Bug":"YBq_QCPSkso","Full Side Plank":"_rdfjFSFKMY","Slow Bicycle Crunch":"9FGilxCbdz8",
-    "Marching in Place":"HhEIuYYOX7I","Superman Hold":"z6PJMT2y8GQ","Table Row (Underhand)":"iBtSBmBiQ5o",
-    "Reverse Snow Angels":"l9MIw3QKDYI","Y-T-W Raises":"oqDtZxFGr7Y","Doorframe Row":"nOIMnvfuTvA",
-    "Scapular Push-Up":"GQvUw2AqmYE","Prone Back Extension":"qtVYU5FECPA","Hip Circles":"LJNI62N5R8M",
-    "Donkey Kicks":"NXt0RzJ8GEo","Glute Bridge March":"bJG5Wj7jNc8","Cat-Cow Stretch":"kqnua4rHVVA",
-    "Low Lunge Hip Flexor Hold":"YQmpO19RNXI","Wall Angel":"xyRLqoUvWy8","Bulgarian Split Squat":"2C-uNgKwPLE",
-    "Sissy Squat":"6YvKOvJmjHc","Single-Leg Glute Bridge":"8bbE64NuDTU","Nordic Hamstring Curl":"GQJaZMonh2c",
-    "Slow Negative Squat":"TG6hzmfh_Tg","Deep Squat Hold":"naqKh1wULpk","Archer Push-Up":"gKF-pBHdlKA",
-    "Diamond Push-Up":"J0DXoz5_-1U","Pseudo Planche Lean":"KGzObNCS_k4","Pike Push-Up Negative":"x7_I5SO4_QA",
-    "Typewriter Push-Up":"gKF-pBHdlKA","Hollow Body Hold":"LlDNef_Ztsc"
+  const IMAGE_URLS = {
+    "Pause Squat":                  "https://fitnessprogramer.com/wp-content/uploads/2021/02/Squat.gif",
+    "Reverse Lunge":                "https://fitnessprogramer.com/wp-content/uploads/2021/09/Reverse-Lunge.gif",
+    "Glute Bridge + 2s Hold":       "https://fitnessprogramer.com/wp-content/uploads/2021/04/Glute-Bridge.gif",
+    "Single-Leg Calf Raise":        "https://fitnessprogramer.com/wp-content/uploads/2021/06/Single-Leg-Calf-Raise.gif",
+    "Wall Sit":                     "https://fitnessprogramer.com/wp-content/uploads/2021/10/Wall-Sit.gif",
+    "Knee Push-Up":                 "https://fitnessprogramer.com/wp-content/uploads/2021/02/Knee-Push-Up.gif",
+    "Wide Push-Up (Knee)":          "https://fitnessprogramer.com/wp-content/uploads/2021/02/Wide-Push-Up.gif",
+    "Pike Push-Up":                 "https://fitnessprogramer.com/wp-content/uploads/2021/06/Pike-Push-Up.gif",
+    "Tricep Floor Dip":             "https://fitnessprogramer.com/wp-content/uploads/2021/02/Triceps-Dips-On-Floor.gif",
+    "Shoulder Tap Plank":           "https://fitnessprogramer.com/wp-content/uploads/2021/06/Plank-Shoulder-Tap.gif",
+    "Slow Negative Push-Up":        "https://fitnessprogramer.com/wp-content/uploads/2021/02/Push-Up.gif",
+    "Full Plank":                   "https://fitnessprogramer.com/wp-content/uploads/2021/02/Plank.gif",
+    "Dead Bug":                     "https://fitnessprogramer.com/wp-content/uploads/2021/06/Dead-Bug.gif",
+    "Full Side Plank":              "https://fitnessprogramer.com/wp-content/uploads/2021/04/Side-Plank.gif",
+    "Slow Bicycle Crunch":          "https://fitnessprogramer.com/wp-content/uploads/2021/02/Bicycle-Crunch.gif",
+    "Marching in Place":            "https://fitnessprogramer.com/wp-content/uploads/2021/02/High-Knee.gif",
+    "Superman Hold":                "https://fitnessprogramer.com/wp-content/uploads/2021/02/Superman.gif",
+    "Table Row (Underhand)":        "https://fitnessprogramer.com/wp-content/uploads/2021/06/Bodyweight-Rows.gif",
+    "Reverse Snow Angels":          "https://fitnessprogramer.com/wp-content/uploads/2021/06/Reverse-Snow-Angel.gif",
+    "Y-T-W Raises":                 "https://fitnessprogramer.com/wp-content/uploads/2021/10/YTW-Raises.gif",
+    "Doorframe Row":                "https://fitnessprogramer.com/wp-content/uploads/2021/06/Bodyweight-Rows.gif",
+    "Scapular Push-Up":             "https://fitnessprogramer.com/wp-content/uploads/2021/06/Scapular-Push-Up.gif",
+    "Prone Back Extension":         "https://fitnessprogramer.com/wp-content/uploads/2021/06/Back-Extension.gif",
+    "Hip Circles":                  "https://fitnessprogramer.com/wp-content/uploads/2021/04/Hip-Circles.gif",
+    "Donkey Kicks":                 "https://fitnessprogramer.com/wp-content/uploads/2021/04/Donkey-Kick.gif",
+    "Glute Bridge March":           "https://fitnessprogramer.com/wp-content/uploads/2021/06/Glute-Bridge-March.gif",
+    "Cat-Cow Stretch":              "https://fitnessprogramer.com/wp-content/uploads/2021/04/Cat-Cow.gif",
+    "Low Lunge Hip Flexor Hold":    "https://fitnessprogramer.com/wp-content/uploads/2021/06/Low-Lunge.gif",
+    "Wall Angel":                   "https://fitnessprogramer.com/wp-content/uploads/2021/10/Wall-Angel.gif",
+    "Bulgarian Split Squat":        "https://fitnessprogramer.com/wp-content/uploads/2021/09/Bulgarian-Split-Squat.gif",
+    "Sissy Squat":                  "https://fitnessprogramer.com/wp-content/uploads/2021/09/Sissy-Squat.gif",
+    "Single-Leg Glute Bridge":      "https://fitnessprogramer.com/wp-content/uploads/2021/06/Single-Leg-Glute-Bridge.gif",
+    "Nordic Hamstring Curl":        "https://fitnessprogramer.com/wp-content/uploads/2021/06/Nordic-Hamstring-Curl.gif",
+    "Slow Negative Squat":          "https://fitnessprogramer.com/wp-content/uploads/2021/02/Squat.gif",
+    "Deep Squat Hold":              "https://fitnessprogramer.com/wp-content/uploads/2021/10/Deep-Squat.gif",
+    "Archer Push-Up":               "https://fitnessprogramer.com/wp-content/uploads/2021/09/Archer-Push-Up.gif",
+    "Diamond Push-Up":              "https://fitnessprogramer.com/wp-content/uploads/2021/09/Diamond-Push-Up.gif",
+    "Pseudo Planche Lean":          "https://fitnessprogramer.com/wp-content/uploads/2021/10/Pseudo-Planche-Push-Up.gif",
+    "Pike Push-Up Negative":        "https://fitnessprogramer.com/wp-content/uploads/2021/06/Pike-Push-Up.gif",
+    "Typewriter Push-Up":           "https://fitnessprogramer.com/wp-content/uploads/2021/09/Typewriter-Push-Up.gif",
+    "Hollow Body Hold":             "https://fitnessprogramer.com/wp-content/uploads/2021/06/Hollow-Body-Hold.gif"
   };
-  const vid = VIDEO_IDS[name];
-  const thumb = vid ? `https://img.youtube.com/vi/${vid}/mqdefault.jpg` : null;
-  const watchUrl = vid ? `https://www.youtube.com/watch?v=${vid}` : ytSearch;
-  return `<div style="margin-bottom:10px">
-    ${thumb ? `<div class="demo-box"><img class="demo-img" src="${thumb}" alt="${name} demo" onerror="this.parentElement.style.display='none'" loading="lazy" /><div class="demo-label">EXERCISE PREVIEW</div></div>` : ''}
-    <a class="demo-watch-btn" href="${watchUrl}" target="_blank" rel="noopener">
-      <span style="font-size:16px">▶️</span> WATCH FULL TUTORIAL
-    </a>
+  const imgUrl = IMAGE_URLS[name];
+  if(!imgUrl) return '';
+  return `<div class="demo-box">
+    <img class="demo-img" src="${imgUrl}" alt="${name} demonstration"
+         onerror="this.parentElement.style.display='none'" loading="lazy"
+         style="max-height:220px;width:100%;object-fit:contain;background:#111;border-radius:14px;" />
+    <div class="demo-label">EXERCISE DEMO</div>
   </div>`;
 }
 
