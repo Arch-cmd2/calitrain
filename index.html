@@ -1017,7 +1017,7 @@ function updateStreakBar(){
   bar.style.display = 'flex';
 
   document.getElementById('streakCount').textContent = streak;
-  document.getElementById('streakFire').textContent = streak >= 7 ? '🔥' : streak >= 3 ? '✨' : '💪';
+  document.getElementById('streakFire').textContent = streak >= appSettings.streak_required ? '🔥' : streak >= 3 ? '✨' : '💪';
 
   const canLevelUp = tierIdx < TIER_ORDER.length - 1;
   const streakReady = streak >= appSettings.streak_required;
@@ -1026,10 +1026,12 @@ function updateStreakBar(){
 
   document.getElementById('levelupBtn').style.display = showBtn ? 'block' : 'none';
 
-  // Progress bar toward next level up (streak-based = /7, manual = /5)
-  const target = streakReady ? appSettings.streak_required : appSettings.manual_days_required;
-  const prog = streakReady ? Math.min(streak,7) : Math.min(total,5);
-  const pct = Math.round((prog/target)*100);
+  // Progress bar toward next level up
+  const sreq = appSettings.streak_required;
+  const mreq = appSettings.manual_days_required;
+  const target = streakReady ? sreq : mreq;
+  const prog = streakReady ? Math.min(streak, sreq) : Math.min(total, mreq);
+  const pct = Math.round((prog / target) * 100);
   document.getElementById('streakProgFill').style.width = pct+'%';
 
   if(streakReady){
@@ -1039,8 +1041,9 @@ function updateStreakBar(){
     document.getElementById('streakProgLabel').textContent = total+' days done — level up available';
     document.getElementById('streakProgFill').style.background = '#f59e0b';
   } else {
-    const remaining = Math.min(7-streak, 5-total);
-    document.getElementById('streakProgLabel').textContent = (streakReady?streak:Math.max(streak,total))+' / '+(streak>total?7:5)+' to level up';
+    const display = streak > total ? streak : total;
+    const denom   = streak > total ? sreq : mreq;
+    document.getElementById('streakProgLabel').textContent = display+' / '+denom+' to level up';
     document.getElementById('streakProgFill').style.background = '#f59e0b';
   }
 }
