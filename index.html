@@ -113,8 +113,8 @@
   .intensity-badge { display: inline-block; padding: 3px 10px; border-radius: 2px; font-family: 'Space Mono', monospace; font-size: 8px; font-weight: 700; letter-spacing: 1px; }
   .day-dur { font-size: 9px; color: var(--muted); margin-top: 5px; text-align: right; font-family: 'Space Mono', monospace; letter-spacing: 1px; }
   .muscle-map { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
-  .muscle-chip { padding: 3px 10px; border-radius: 2px; font-size: 10px; font-weight: 400; background: var(--dark3); color: var(--muted); border: 1px solid var(--border); letter-spacing: 0.5px; }
-  .muscle-chip.primary { color: var(--gold); border-color: var(--gold-dim); background: rgba(201,169,110,0.08); }
+  .muscle-chip { padding: 4px 11px; border-radius: 2px; font-size: 10px; font-weight: 500; background: rgba(255,255,255,0.05); color: rgba(232,228,222,0.75); border: none; letter-spacing: 0.5px; font-family: "DM Sans", sans-serif; }
+  .muscle-chip.primary { color: var(--gold); background: rgba(201,169,110,0.12); border: none; }
   .progress-row { display: flex; justify-content: space-between; margin-bottom: 5px; }
   .progress-label { font-family: 'Space Mono', monospace; font-size: 8px; color: var(--muted); letter-spacing: 2px; }
   .progress-pct { font-family: 'Space Mono', monospace; font-size: 8px; font-weight: 700; color: var(--gold); }
@@ -132,16 +132,16 @@
   .warmup-text { font-size: 12px; color: rgba(74,222,128,0.7); line-height: 1.7; margin-top: 5px; }
 
   /* ── EXERCISE CARDS ── */
-  .ex-list { padding: 14px 20px 20px; display: flex; flex-direction: column; gap: 6px; }
-  .ex-card { background: var(--dark2); border: 1px solid var(--border); transition: border-color 0.2s; }
-  .ex-card:hover { border-color: rgba(255,255,255,0.1); }
+  .ex-list { padding: 14px 20px 20px; display: flex; flex-direction: column; gap: 10px; }
+  .ex-card { background: #1c1c1c; border: none; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04); transition: all 0.2s; overflow: hidden; }
+  .ex-card:hover { background: #202020; box-shadow: 0 4px 20px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.07); }
   .ex-header { padding: 16px 18px; cursor: pointer; display: flex; gap: 14px; align-items: center; }
-  .ex-num { width: 32px; height: 32px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; color: var(--muted); border: 1px solid var(--border); transition: all 0.2s; }
-  .ex-name { font-size: 14px; font-weight: 400; color: var(--text); letter-spacing: 0.3px; }
-  .ex-meta { font-size: 10px; color: var(--muted); margin-top: 3px; letter-spacing: 0.5px; font-family: 'Space Mono', monospace; }
+  .ex-num { width: 30px; height: 30px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; color: rgba(201,169,110,0.5); border: none; transition: all 0.2s; }
+  .ex-name { font-size: 15px; font-weight: 500; color: #ffffff; letter-spacing: 0.2px; }
+  .ex-meta { font-size: 10px; color: rgba(200,196,190,0.6); margin-top: 3px; letter-spacing: 0.5px; font-family: 'Space Mono', monospace; }
   .ex-chevron { color: var(--muted); font-size: 12px; flex-shrink: 0; transition: transform 0.2s; margin-left: auto; }
   .ex-chevron.open { transform: rotate(180deg); }
-  .ex-body { border-top: 1px solid var(--border); padding: 16px 18px 18px; display: none; background: var(--dark3); }
+  .ex-body { border-top: 1px solid rgba(255,255,255,0.05); padding: 16px 18px 18px; display: none; background: #161616; border-radius: 0 0 14px 14px; }
   .ex-body.open { display: block; }
 
   /* ── INFO BOXES ── */
@@ -203,7 +203,7 @@
   .feel-chip.primary { background: var(--gold); color: #000; border-color: var(--gold); }
   .feel-chip.secondary { background: transparent; color: var(--gold-dim); border-color: var(--gold-dim); }
   .feel-desc { font-size: 11px; color: rgba(201,169,110,0.6); line-height: 1.6; margin-top: 4px; }
-  .demo-box { overflow: hidden; margin-bottom: 8px; position: relative; background: var(--dark4); }
+  .demo-box { overflow: hidden; margin-bottom: 8px; position: relative; background: #141414; border-radius: 10px; }
   .demo-img { width: 100%; display: block; max-height: 200px; object-fit: contain; }
   .demo-label { font-family: 'Space Mono', monospace; font-size: 7px; letter-spacing: 2px; color: var(--muted); padding: 4px 10px 3px; }
   .demo-watch-btn { display: none; }
@@ -704,54 +704,54 @@ function buildFeelBox(name, accent){
 
 function buildDemoBox(name){
   const IMAGE_URLS = {
-    "Pause Squat":                  "https://fitnessprogramer.com/wp-content/uploads/2021/02/Squat.gif",
-    "Reverse Lunge":                "https://fitnessprogramer.com/wp-content/uploads/2021/09/Reverse-Lunge.gif",
-    "Glute Bridge + 2s Hold":       "https://fitnessprogramer.com/wp-content/uploads/2021/04/Glute-Bridge.gif",
-    "Single-Leg Calf Raise":        "https://fitnessprogramer.com/wp-content/uploads/2021/06/Single-Leg-Calf-Raise.gif",
-    "Wall Sit":                     "https://fitnessprogramer.com/wp-content/uploads/2021/10/Wall-Sit.gif",
-    "Knee Push-Up":                 "https://fitnessprogramer.com/wp-content/uploads/2021/02/Knee-Push-Up.gif",
-    "Wide Push-Up (Knee)":          "https://fitnessprogramer.com/wp-content/uploads/2021/02/Wide-Push-Up.gif",
-    "Pike Push-Up":                 "https://fitnessprogramer.com/wp-content/uploads/2021/06/Pike-Push-Up.gif",
-    "Tricep Floor Dip":             "https://fitnessprogramer.com/wp-content/uploads/2021/02/Triceps-Dips-On-Floor.gif",
-    "Shoulder Tap Plank":           "https://fitnessprogramer.com/wp-content/uploads/2021/06/Plank-Shoulder-Tap.gif",
-    "Slow Negative Push-Up":        "https://fitnessprogramer.com/wp-content/uploads/2021/02/Push-Up.gif",
-    "Full Plank":                   "https://fitnessprogramer.com/wp-content/uploads/2021/02/Plank.gif",
-    "Dead Bug":                     "https://fitnessprogramer.com/wp-content/uploads/2021/06/Dead-Bug.gif",
-    "Full Side Plank":              "https://fitnessprogramer.com/wp-content/uploads/2021/04/Side-Plank.gif",
-    "Slow Bicycle Crunch":          "https://fitnessprogramer.com/wp-content/uploads/2021/02/Bicycle-Crunch.gif",
-    "Marching in Place":            "https://fitnessprogramer.com/wp-content/uploads/2021/02/High-Knee.gif",
-    "Superman Hold":                "https://fitnessprogramer.com/wp-content/uploads/2021/02/Superman.gif",
-    "Table Row (Underhand)":        "https://fitnessprogramer.com/wp-content/uploads/2021/06/Bodyweight-Rows.gif",
-    "Reverse Snow Angels":          "https://fitnessprogramer.com/wp-content/uploads/2021/06/Reverse-Snow-Angel.gif",
-    "Y-T-W Raises":                 "https://fitnessprogramer.com/wp-content/uploads/2021/10/YTW-Raises.gif",
-    "Doorframe Row":                "https://fitnessprogramer.com/wp-content/uploads/2021/06/Bodyweight-Rows.gif",
-    "Scapular Push-Up":             "https://fitnessprogramer.com/wp-content/uploads/2021/06/Scapular-Push-Up.gif",
-    "Prone Back Extension":         "https://fitnessprogramer.com/wp-content/uploads/2021/06/Back-Extension.gif",
-    "Hip Circles":                  "https://fitnessprogramer.com/wp-content/uploads/2021/04/Hip-Circles.gif",
-    "Donkey Kicks":                 "https://fitnessprogramer.com/wp-content/uploads/2021/04/Donkey-Kick.gif",
-    "Glute Bridge March":           "https://fitnessprogramer.com/wp-content/uploads/2021/06/Glute-Bridge-March.gif",
-    "Cat-Cow Stretch":              "https://fitnessprogramer.com/wp-content/uploads/2021/04/Cat-Cow.gif",
-    "Low Lunge Hip Flexor Hold":    "https://fitnessprogramer.com/wp-content/uploads/2021/06/Low-Lunge.gif",
-    "Wall Angel":                   "https://fitnessprogramer.com/wp-content/uploads/2021/10/Wall-Angel.gif",
-    "Bulgarian Split Squat":        "https://fitnessprogramer.com/wp-content/uploads/2021/09/Bulgarian-Split-Squat.gif",
-    "Sissy Squat":                  "https://fitnessprogramer.com/wp-content/uploads/2021/09/Sissy-Squat.gif",
-    "Single-Leg Glute Bridge":      "https://fitnessprogramer.com/wp-content/uploads/2021/06/Single-Leg-Glute-Bridge.gif",
-    "Nordic Hamstring Curl":        "https://fitnessprogramer.com/wp-content/uploads/2021/06/Nordic-Hamstring-Curl.gif",
-    "Slow Negative Squat":          "https://fitnessprogramer.com/wp-content/uploads/2021/02/Squat.gif",
-    "Deep Squat Hold":              "https://fitnessprogramer.com/wp-content/uploads/2021/10/Deep-Squat.gif",
-    "Archer Push-Up":               "https://fitnessprogramer.com/wp-content/uploads/2021/09/Archer-Push-Up.gif",
-    "Diamond Push-Up":              "https://fitnessprogramer.com/wp-content/uploads/2021/09/Diamond-Push-Up.gif",
-    "Pseudo Planche Lean":          "https://fitnessprogramer.com/wp-content/uploads/2021/10/Pseudo-Planche-Push-Up.gif",
-    "Pike Push-Up Negative":        "https://fitnessprogramer.com/wp-content/uploads/2021/06/Pike-Push-Up.gif",
-    "Typewriter Push-Up":           "https://fitnessprogramer.com/wp-content/uploads/2021/09/Typewriter-Push-Up.gif",
-    "Hollow Body Hold":             "https://fitnessprogramer.com/wp-content/uploads/2021/06/Hollow-Body-Hold.gif"
+    "Pause Squat":                "https://fitnessprogramer.com/wp-content/uploads/2021/02/Squat.gif",
+    "Reverse Lunge":              "https://fitnessprogramer.com/wp-content/uploads/2021/09/Reverse-Lunge.gif",
+    "Glute Bridge + 2s Hold":    "https://fitnessprogramer.com/wp-content/uploads/2021/04/Glute-Bridge.gif",
+    "Single-Leg Calf Raise":     "https://fitnessprogramer.com/wp-content/uploads/2021/06/Single-Leg-Calf-Raise.gif",
+    "Wall Sit":                   "https://fitnessprogramer.com/wp-content/uploads/2021/10/Wall-Sit.gif",
+    "Knee Push-Up":              "https://fitnessprogramer.com/wp-content/uploads/2021/02/Knee-Push-Up.gif",
+    "Wide Push-Up (Knee)":       "https://fitnessprogramer.com/wp-content/uploads/2021/02/Wide-Push-Up.gif",
+    "Pike Push-Up":              "https://fitnessprogramer.com/wp-content/uploads/2021/06/Pike-Push-Up.gif",
+    "Tricep Floor Dip":          "https://fitnessprogramer.com/wp-content/uploads/2021/02/Triceps-Dips-On-Floor.gif",
+    "Shoulder Tap Plank":        "https://fitnessprogramer.com/wp-content/uploads/2021/06/Plank-Shoulder-Tap.gif",
+    "Slow Negative Push-Up":     "https://fitnessprogramer.com/wp-content/uploads/2021/02/Push-Up.gif",
+    "Full Plank":                "https://fitnessprogramer.com/wp-content/uploads/2021/02/Plank.gif",
+    "Dead Bug":                  "https://fitnessprogramer.com/wp-content/uploads/2021/06/Dead-Bug.gif",
+    "Full Side Plank":           "https://fitnessprogramer.com/wp-content/uploads/2021/04/Side-Plank.gif",
+    "Slow Bicycle Crunch":       "https://fitnessprogramer.com/wp-content/uploads/2021/02/Bicycle-Crunch.gif",
+    "Marching in Place":         "https://fitnessprogramer.com/wp-content/uploads/2021/02/High-Knee.gif",
+    "Superman Hold":             "https://fitnessprogramer.com/wp-content/uploads/2021/02/Superman.gif",
+    "Table Row (Underhand)":     "https://fitnessprogramer.com/wp-content/uploads/2021/06/Bodyweight-Rows.gif",
+    "Reverse Snow Angels":       "https://fitnessprogramer.com/wp-content/uploads/2021/06/Reverse-Snow-Angel.gif",
+    "Y-T-W Raises":              "https://fitnessprogramer.com/wp-content/uploads/2021/10/YTW-Raises.gif",
+    "Doorframe Row":             "https://fitnessprogramer.com/wp-content/uploads/2021/06/Bodyweight-Rows.gif",
+    "Scapular Push-Up":          "https://fitnessprogramer.com/wp-content/uploads/2021/06/Scapular-Push-Up.gif",
+    "Prone Back Extension":      "https://fitnessprogramer.com/wp-content/uploads/2021/06/Back-Extension.gif",
+    "Hip Circles":               "https://fitnessprogramer.com/wp-content/uploads/2021/04/Hip-Circles.gif",
+    "Donkey Kicks":              "https://fitnessprogramer.com/wp-content/uploads/2021/04/Donkey-Kick.gif",
+    "Glute Bridge March":        "https://fitnessprogramer.com/wp-content/uploads/2021/06/Glute-Bridge-March.gif",
+    "Cat-Cow Stretch":           "https://fitnessprogramer.com/wp-content/uploads/2021/04/Cat-Cow.gif",
+    "Low Lunge Hip Flexor Hold": "https://fitnessprogramer.com/wp-content/uploads/2021/06/Low-Lunge.gif",
+    "Wall Angel":                "https://fitnessprogramer.com/wp-content/uploads/2021/10/Wall-Angel.gif",
+    "Bulgarian Split Squat":     "https://fitnessprogramer.com/wp-content/uploads/2021/09/Bulgarian-Split-Squat.gif",
+    "Sissy Squat":               "https://fitnessprogramer.com/wp-content/uploads/2021/09/Sissy-Squat.gif",
+    "Single-Leg Glute Bridge":   "https://fitnessprogramer.com/wp-content/uploads/2021/06/Single-Leg-Glute-Bridge.gif",
+    "Nordic Hamstring Curl":     "https://fitnessprogramer.com/wp-content/uploads/2021/06/Nordic-Hamstring-Curl.gif",
+    "Slow Negative Squat":       "https://fitnessprogramer.com/wp-content/uploads/2021/02/Squat.gif",
+    "Deep Squat Hold":           "https://fitnessprogramer.com/wp-content/uploads/2021/10/Deep-Squat.gif",
+    "Archer Push-Up":            "https://fitnessprogramer.com/wp-content/uploads/2021/09/Archer-Push-Up.gif",
+    "Diamond Push-Up":           "https://fitnessprogramer.com/wp-content/uploads/2021/09/Diamond-Push-Up.gif",
+    "Pseudo Planche Lean":       "https://fitnessprogramer.com/wp-content/uploads/2021/10/Pseudo-Planche-Push-Up.gif",
+    "Pike Push-Up Negative":     "https://fitnessprogramer.com/wp-content/uploads/2021/06/Pike-Push-Up.gif",
+    "Typewriter Push-Up":        "https://fitnessprogramer.com/wp-content/uploads/2021/09/Typewriter-Push-Up.gif",
+    "Hollow Body Hold":          "https://fitnessprogramer.com/wp-content/uploads/2021/06/Hollow-Body-Hold.gif"
   };
   const imgUrl = IMAGE_URLS[name];
   if(!imgUrl) return '';
   return `<div class="demo-box">
     <img class="demo-img" src="${imgUrl}" alt="${name} demonstration"
          onerror="this.parentElement.style.display='none'" loading="lazy"
-         style="max-height:220px;width:100%;object-fit:contain;background:#111;border-radius:14px;" />
+         style="max-height:220px;width:100%;object-fit:contain;background:#111;border-radius:10px;" />
     <div class="demo-label">EXERCISE DEMO</div>
   </div>`;
 }
@@ -768,21 +768,18 @@ function render(){
 function renderWeek(){
   const el = document.getElementById('weekStrip');
   el.innerHTML = '';
-  const completedDates = getCompletedDates();
-  const today = new Date().toISOString().split('T')[0];
+  // daysDone maps date -> dayIdx that was completed that day
+  const daysDone = JSON.parse(localStorage.getItem('calitrainDaysDone') || '{}');
+  // Build set of completed dayIdx values from the last 7 days
+  const completedDayIdxSet = new Set(Object.values(daysDone));
   WEEK.forEach(w=>{
     const div = document.createElement('div');
     const isA = !w.rest && w.dIdx===activeDay;
-    // Check if this weekday slot corresponds to a date that was completed
-    // We map week slots to the last 7 days to show completion
-    const slotOffset = WEEK.indexOf(w);
-    const slotDate = new Date();
-    slotDate.setDate(slotDate.getDate() - (6 - slotOffset));
-    const slotDateStr = slotDate.toISOString().split('T')[0];
-    const isDone = !w.rest && completedDates.includes(slotDateStr);
+    // A slot glows only if its specific day index was completed
+    const isDone = !w.rest && completedDayIdxSet.has(w.dIdx);
     div.className='week-day'+(w.rest?' rest':'')+(isA?' active':'')+(isDone?' done':'');
     if(!w.rest) div.onclick=()=>{activeDay=w.dIdx;render();};
-    div.innerHTML=`<div class="week-day-top-bar"></div><div class="week-day-label">${w.day}</div><div class="week-day-bar"></div><div class="week-day-num">${w.rest?'REST':'D'+(w.dIdx+1)}</div>`;
+    div.innerHTML=`<div class="week-day-top-bar"></div><div class="week-day-label">${w.day}</div><div class="week-day-num">${w.rest?'REST':'D'+(w.dIdx+1)}</div>`;
     el.appendChild(div);
   });
 }
@@ -1082,6 +1079,10 @@ function markTodayComplete(){
     dates.push(today);
     localStorage.setItem('calitrainDates', JSON.stringify(dates));
   }
+  // Also track which day index was completed on which date
+  const daysDone = JSON.parse(localStorage.getItem('calitrainDaysDone') || '{}');
+  daysDone[today] = activeDay;
+  localStorage.setItem('calitrainDaysDone', JSON.stringify(daysDone));
 }
 
 function calcStreak(){
@@ -1156,6 +1157,7 @@ function checkDayComplete(){
   if(p >= appSettings.completion_pct){
     markTodayComplete();
     updateStreakBar();
+    renderWeek(); // update glow
   }
 }
 
@@ -1205,6 +1207,7 @@ function confirmLevelUp(){
   render();
   // Reset completed dates so streak resets fresh
   localStorage.setItem('calitrainDates', JSON.stringify([]));
+  localStorage.removeItem('calitrainDaysDone');
   showToast('🏆 LEVELLED UP TO '+TIER_CONFIG[userProfile.tier].label+'!');
 }
 
