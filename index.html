@@ -267,6 +267,19 @@
   .admin-streak-note { background:rgba(201,169,110,0.06);border:1px solid rgba(201,169,110,0.15);padding:10px 12px;font-size:10px;color:var(--gold-dim);margin-bottom:14px;line-height:1.6;font-family:'Space Mono',monospace; }
 
   @keyframes pulse-glow { 0%,100%{opacity:1} 50%{opacity:0.7} }
+  /* ── SETUP MULTI-STEP ── */
+  .exp-grid, .gym-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 6px; }
+  .exp-card, .gym-card { background: var(--dark3); border: 1.5px solid var(--border); padding: 14px 12px; cursor: pointer; transition: all 0.2s; text-align: center; }
+  .exp-card:hover, .gym-card:hover { border-color: var(--gold-dim); background: var(--dark4); }
+  .exp-card.selected, .gym-card.selected { border-color: var(--gold); background: rgba(201,169,110,0.1); }
+  .exp-icon, .gym-icon { font-size: 24px; margin-bottom: 6px; }
+  .exp-label, .gym-label { font-family: 'Space Mono', monospace; font-size: 8px; font-weight: 700; color: var(--gold); letter-spacing: 2px; margin-bottom: 5px; }
+  .exp-desc, .gym-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
+  .exp-card.selected .exp-desc, .gym-card.selected .gym-desc { color: var(--text); }
+  .setup-steps { display: flex; justify-content: center; gap: 8px; margin-top: 20px; }
+  .setup-step { width: 6px; height: 6px; border-radius: 50%; background: var(--dark4); border: 1px solid var(--border); transition: all 0.2s; }
+  .setup-step.active { background: var(--gold); border-color: var(--gold); width: 20px; border-radius: 3px; }
+
 </style>
 </head>
 <body>
@@ -276,28 +289,100 @@
   <div class="setup-logo">CALITRAIN</div>
   <div class="setup-tagline">SUMMER BODY EDITION</div>
   <div class="setup-card">
-    <div class="setup-title">Let's personalise your plan</div>
-    <div class="setup-sub">Enter your stats and we'll adjust your sets, reps, and rest times automatically.</div>
-    <div class="setup-field">
-      <div class="setup-label">YOUR NAME (OPTIONAL)</div>
-      <input class="setup-input" id="setupName" type="text" placeholder="e.g. Jojo" />
-    </div>
-    <div class="setup-row">
+    <div class="setup-title">Let's build your plan</div>
+    <div class="setup-sub">Your answers shape your workout tier, exercises, and rest times.</div>
+
+    <!-- Step 1: Personal -->
+    <div id="setupStep1">
       <div class="setup-field">
-        <div class="setup-label">AGE <span style="color:#666">years</span></div>
-        <input class="setup-input" id="setupAge" type="number" placeholder="e.g. 22" min="10" max="80" oninput="previewTier()" />
+        <div class="setup-label">YOUR NAME (OPTIONAL)</div>
+        <input class="setup-input" id="setupName" type="text" placeholder="e.g. Jojo" />
+      </div>
+      <div class="setup-row">
+        <div class="setup-field">
+          <div class="setup-label">AGE <span style="color:#666">yrs</span></div>
+          <input class="setup-input" id="setupAge" type="number" placeholder="22" min="10" max="80" oninput="previewTier()" />
+        </div>
+        <div class="setup-field">
+          <div class="setup-label">WEIGHT <span style="color:#666">kg</span></div>
+          <input class="setup-input" id="setupWeight" type="number" placeholder="70" min="30" max="250" oninput="previewTier()" />
+        </div>
       </div>
       <div class="setup-field">
-        <div class="setup-label">WEIGHT <span style="color:#666">kg</span></div>
-        <input class="setup-input" id="setupWeight" type="number" placeholder="e.g. 69" min="30" max="250" oninput="previewTier()" />
+        <div class="setup-label">HEIGHT <span style="color:#666">cm</span></div>
+        <input class="setup-input" id="setupHeight" type="number" placeholder="170" min="100" max="230" oninput="previewTier()" />
+      </div>
+      <button class="setup-btn" onclick="goStep(2)">NEXT &#x2192;</button>
+    </div>
+
+    <!-- Step 2: Calisthenics Experience -->
+    <div id="setupStep2" style="display:none">
+      <div class="setup-field">
+        <div class="setup-label" style="margin-bottom:14px">CALISTHENICS EXPERIENCE</div>
+        <div class="exp-grid" id="expGrid">
+          <div class="exp-card" onclick="selectExp('beginner', this)">
+            <div class="exp-icon">🌱</div>
+            <div class="exp-label">COMPLETE BEGINNER</div>
+            <div class="exp-desc">Never trained calisthenics. Can't do a full push-up yet.</div>
+          </div>
+          <div class="exp-card" onclick="selectExp('some', this)">
+            <div class="exp-icon">🔥</div>
+            <div class="exp-label">SOME EXPERIENCE</div>
+            <div class="exp-desc">Can do push-ups and squats. Trained occasionally before.</div>
+          </div>
+          <div class="exp-card" onclick="selectExp('intermediate', this)">
+            <div class="exp-icon">💪</div>
+            <div class="exp-label">INTERMEDIATE</div>
+            <div class="exp-desc">Consistent training for 6+ months. Comfortable with most bodyweight moves.</div>
+          </div>
+          <div class="exp-card" onclick="selectExp('advanced', this)">
+            <div class="exp-icon">⚡</div>
+            <div class="exp-label">ADVANCED</div>
+            <div class="exp-desc">Training 1+ years. Comfortable with pull-ups, dips, and compound movements.</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:4px">
+        <button class="setup-btn" style="background:var(--dark4);color:var(--muted);border:1px solid var(--border);flex:0 0 auto;width:auto;padding:14px 20px" onclick="goStep(1)">&#x2190;</button>
+        <button class="setup-btn" style="flex:1" onclick="goStep(3)">NEXT &#x2192;</button>
       </div>
     </div>
-    <div class="setup-field">
-      <div class="setup-label">HEIGHT <span style="color:#666">cm</span></div>
-      <input class="setup-input" id="setupHeight" type="number" placeholder="e.g. 170" min="100" max="230" oninput="previewTier()" />
+
+    <!-- Step 3: Gym Access -->
+    <div id="setupStep3" style="display:none">
+      <div class="setup-field">
+        <div class="setup-label" style="margin-bottom:14px">GYM ACCESS</div>
+        <div class="gym-grid" id="gymGrid">
+          <div class="gym-card" onclick="selectGym('none', this)">
+            <div class="gym-icon">🏠</div>
+            <div class="gym-label">NO GYM</div>
+            <div class="gym-desc">Bodyweight only. Floor, walls, a chair. That's all you need.</div>
+          </div>
+          <div class="gym-card" onclick="selectGym('home', this)">
+            <div class="gym-icon">🎽</div>
+            <div class="gym-label">HOME EQUIPMENT</div>
+            <div class="gym-desc">Resistance bands, dumbbells, pull-up bar, or similar.</div>
+          </div>
+          <div class="gym-card" onclick="selectGym('gym', this)">
+            <div class="gym-icon">🏋️</div>
+            <div class="gym-label">FULL GYM</div>
+            <div class="gym-desc">Access to barbells, cables, machines, and full free weights.</div>
+          </div>
+        </div>
+      </div>
+      <div class="tier-preview" id="tierPreview"></div>
+      <div style="display:flex;gap:10px;margin-top:4px">
+        <button class="setup-btn" style="background:var(--dark4);color:var(--muted);border:1px solid var(--border);flex:0 0 auto;width:auto;padding:14px 20px" onclick="goStep(2)">&#x2190;</button>
+        <button class="setup-btn" style="flex:1" onclick="saveProfile()">START TRAINING &#x2192;</button>
+      </div>
     </div>
-    <div class="tier-preview" id="tierPreview"></div>
-    <button class="setup-btn" onclick="saveProfile()">START TRAINING &#x2192;</button>
+
+    <!-- Step indicator -->
+    <div class="setup-steps" id="setupSteps">
+      <div class="setup-step active" id="dot1"></div>
+      <div class="setup-step" id="dot2"></div>
+      <div class="setup-step" id="dot3"></div>
+    </div>
   </div>
 </div>
 
@@ -661,6 +746,92 @@ const FEEL_MAP = {
   "Hollow Body Hold":         { primary:["Deep Core","Abs"], secondary:["Hip Flexors","Quads"], desc:"Entire core braced — front and sides. Lower back must stay pressed down. Feels like every ab muscle is working at once." }
 };
 
+
+// ── EXERCISE UPGRADES (unlock at elite/master/legend) ───────────────────
+const EXERCISE_UPGRADES = {
+  // Level 4 (ELITE): swap beginner-friendly moves for harder versions
+  4: {
+    "Knee Push-Up":         { name:"Full Push-Up",          sets:4, reps:"12", rest:50,
+      breath:"Inhale lowering DOWN → Exhale pressing UP",
+      tip:"Full bodyweight push-up — no knee assistance. Now you're building real chest and tricep strength with complete load.",
+      mod:"Drop back to knees for final set if needed." },
+    "Wide Push-Up (Knee)":  { name:"Wide Push-Up",          sets:4, reps:"10", rest:50,
+      breath:"Inhale lowering DOWN → Exhale pressing UP",
+      tip:"Full wide push-up on toes. Outer chest and shoulder load is now complete — the pec width builder.",
+      mod:"Lower reps before lowering to knees." },
+    "Pause Squat":          { name:"Tempo Squat (4 sec)",   sets:4, reps:"10", rest:55,
+      breath:"Inhale the full 4 seconds DOWN → Exhale driving UP",
+      tip:"Lower in 4 full seconds. More eccentric time under tension than a pause squat — quads get worked from every angle.",
+      mod:"Reduce to 3-second tempo if balance is shaky." },
+    "Wall Sit":             { name:"Single-Leg Wall Sit",   sets:3, reps:"20 sec each", rest:60,
+      breath:"Slow deep belly breaths — count exhales.",
+      tip:"One leg extended, full weight on the working quad. Double the intensity of a regular wall sit — direct single-leg endurance.",
+      mod:"Keep both feet down but shift 80% weight to one side." },
+    "Full Plank":           { name:"Plank With Leg Raise",  sets:3, reps:"30 sec", rest:40,
+      breath:"Exhale as you LIFT the leg → Inhale lowering.",
+      tip:"Full plank, alternately raise each leg 2 inches. Adds anti-rotation and glute demand to standard core bracing.",
+      mod:"Smaller leg lifts if hips rotate." }
+  },
+  // Level 5 (MASTER): compound and unilateral progressions
+  5: {
+    "Full Push-Up":         { name:"Close-Grip Push-Up",    sets:4, reps:"10", rest:55,
+      breath:"Inhale lowering DOWN → Exhale pressing UP",
+      tip:"Hands shoulder-width, elbows track back. Tricep and inner chest dominant — next step toward diamond push-up.",
+      mod:"Widen grip slightly if elbows flare." },
+    "Reverse Lunge":        { name:"Bulgarian Split Squat", sets:4, reps:"8 each leg", rest:65,
+      breath:"Inhale lowering DOWN → Exhale driving UP through front heel",
+      tip:"Rear foot elevated — the hardest bodyweight leg exercise. If you can do this, you have elite single-leg strength.",
+      mod:"Lower rear foot height to reduce difficulty." },
+    "Glute Bridge + 2s Hold":{ name:"Single-Leg Glute Bridge",sets:4, reps:"10 each leg", rest:50,
+      breath:"Inhale flat → Exhale driving one hip UP → Hold 2s → Inhale lowering",
+      tip:"Single leg only — double the glute load. Directly builds running power and glute definition.",
+      mod:"Bend the raised leg instead of extending." },
+    "Tempo Squat (4 sec)":  { name:"Shrimp Squat Assisted", sets:3, reps:"6 each leg", rest:65,
+      breath:"Inhale lowering DOWN → Exhale pressing UP",
+      tip:"Hold a doorframe, single-leg squat down. The step before pistol squat — requires serious quad and balance.",
+      mod:"Use strong support and only lower halfway." },
+    "Marching in Place":    { name:"Step-Up Knee Drive",    sets:3, reps:"12 each leg", rest:45,
+      breath:"Exhale DRIVING knee up → Inhale stepping back down.",
+      tip:"Use a sturdy chair or step, drive the opposite knee up at the top. Running-specific hip flexor and glute power.",
+      mod:"Lower step height. Hold a wall for balance." }
+  },
+  // Level 6 (LEGEND): elite calisthenics
+  6: {
+    "Close-Grip Push-Up":   { name:"Diamond Push-Up",       sets:5, reps:"10", rest:55,
+      breath:"Inhale lowering DOWN → Exhale pressing UP",
+      tip:"Hands form a diamond under your chest. Maximum tricep and inner chest isolation — you've earned this.",
+      mod:"From knees if needed. Form beats reps." },
+    "Bulgarian Split Squat":{ name:"Shrimp Squat",          sets:4, reps:"5 each leg", rest:70,
+      breath:"Inhale lowering DOWN → Exhale pressing UP through front foot",
+      tip:"No support — rear foot held behind you. One of the hardest bodyweight movements. Elite quad and balance.",
+      mod:"Hold a wall lightly. It still counts." },
+    "Single-Leg Glute Bridge":{ name:"Nordic Hamstring Curl",sets:3, reps:"5", rest:70,
+      breath:"Exhale bracing as you LOWER → Inhale at the bottom",
+      tip:"Hook feet under a sofa. Lower body to floor using only hamstrings. Injury prevention + elite posterior chain.",
+      mod:"Use hands to help push back up from the floor." },
+    "Dead Bug":             { name:"Ab Wheel Rollout",       sets:3, reps:"8", rest:55,
+      breath:"Exhale rolling OUT → Inhale pulling BACK",
+      tip:"Roll forward keeping lower back flat. The hardest anti-extension core exercise — ab wheel separates serious athletes.",
+      mod:"Only roll out 50% of the way until strong enough." },
+    "Plank With Leg Raise": { name:"Pseudo Planche Lean",   sets:3, reps:"20 sec hold", rest:60,
+      breath:"Slow steady breaths — do not hold your breath.",
+      tip:"Push-up position, lean shoulders past hands. Straight-arm strength and serratus — pre-planche training.",
+      mod:"Only lean slightly forward. Increase each week." }
+  }
+};
+
+function getUpgradedExercise(ex, tierLevel){
+  if(tierLevel < 4) return ex;
+  // Check from highest level down
+  for(let lvl = Math.min(tierLevel, 6); lvl >= 4; lvl--){
+    if(EXERCISE_UPGRADES[lvl] && EXERCISE_UPGRADES[lvl][ex.name]){
+      const upgrade = EXERCISE_UPGRADES[lvl][ex.name];
+      return Object.assign({}, ex, upgrade);
+    }
+  }
+  return ex;
+}
+
 const WEEK = [
   {day:"MON",dIdx:0},{day:"TUE",dIdx:1},{day:"WED",dIdx:2},
   {day:"THU",dIdx:3},{day:"FRI",dIdx:4},{day:"SAT",dIdx:5},{day:"SUN",dIdx:6}
@@ -809,6 +980,7 @@ function renderMain(){
         <div style="flex:1;min-width:0">
           <div class="ex-name" style="${allDone?`color:${d.accent}`:''}">${ex.name}</div>
           <div class="ex-meta">${ex.sets} sets · ${ex.reps} · ${ex.rest}s rest</div>
+          ${ex.name !== DAYS[activeDay].exercises[i]?.name ? '<div style="font-family:\'Space Mono\',monospace;font-size:8px;color:#60a5fa;margin-top:3px;letter-spacing:1px">⬆ UPGRADED EXERCISE</div>' : ''}
         </div>
         <div class="ex-chevron" id="chev${i}">▾</div>
       </div>
@@ -978,9 +1150,12 @@ function closeOverlay(e){ if(e.target===document.getElementById('overlay')) togg
 let userProfile = null;
 
 const TIER_CONFIG = {
-  beginner:     { label:"BEGINNER",     color:"#4ade80", bg:"#052e16", desc:"Sets reduced by 1, rest extended by 20s. Focus on form — strength comes fast.", setsAdj:-1, restAdj:+20 },
-  intermediate: { label:"INTERMEDIATE", color:"#f59e0b", bg:"#1c1000", desc:"Default workout values. Push yourself — this is where real progress happens.", setsAdj:0,  restAdj:0  },
-  advanced:     { label:"ADVANCED",     color:"#f472b6", bg:"#2d0a1a", desc:"Extra set added, rest reduced by 10s. You're ready for a challenge.", setsAdj:+1, restAdj:-10 }
+  beginner:     { label:"BEGINNER",     color:"#4ade80", bg:"#052e16", desc:"Sets reduced by 1, rest +20s. Focus on form — strength comes fast.",          setsAdj:-1, restAdj:+20, upgradeLevel:0 },
+  intermediate: { label:"INTERMEDIATE", color:"#f59e0b", bg:"#1c1000", desc:"Default values. Push yourself — this is where real progress happens.",         setsAdj:0,  restAdj:0,   upgradeLevel:0 },
+  advanced:     { label:"ADVANCED",     color:"#f472b6", bg:"#2d0a1a", desc:"+1 set, rest -10s. Harder variations unlock next level.",                       setsAdj:+1, restAdj:-10, upgradeLevel:0 },
+  elite:        { label:"ELITE",        color:"#60a5fa", bg:"#0a1628", desc:"+2 sets, rest -20s. Harder exercise variants now active.",                      setsAdj:+2, restAdj:-20, upgradeLevel:4 },
+  master:       { label:"MASTER",       color:"#a78bfa", bg:"#1a0a28", desc:"+2 sets, rest -25s. Elite-level movements — most people never get here.",       setsAdj:+2, restAdj:-25, upgradeLevel:5 },
+  legend:       { label:"LEGEND",       color:"#ef4444", bg:"#280a0a", desc:"+3 sets, rest -30s. Maximum difficulty. You are built different.",              setsAdj:+3, restAdj:-30, upgradeLevel:6 }
 };
 
 function calcBMI(weight, height){ return weight / ((height/100)**2); }
@@ -996,39 +1171,101 @@ function calcTier(age, weight, height){
 function adjEx(ex){
   if(!userProfile) return ex;
   const cfg = TIER_CONFIG[userProfile.tier];
-  return Object.assign({}, ex, {
-    sets: Math.max(1, ex.sets + cfg.setsAdj),
-    rest: Math.max(20, ex.rest + cfg.restAdj)
+  const tierLevel = TIER_ORDER.indexOf(userProfile.tier) + 1;
+  // Apply exercise upgrade first, then adjust sets/rest
+  const upgraded = getUpgradedExercise(ex, tierLevel);
+  return Object.assign({}, upgraded, {
+    sets: Math.max(1, upgraded.sets + cfg.setsAdj),
+    rest: Math.max(20, upgraded.rest + cfg.restAdj)
   });
 }
 
 function previewTier(){
-  const age=parseInt(document.getElementById('setupAge').value);
-  const weight=parseFloat(document.getElementById('setupWeight').value);
-  const height=parseFloat(document.getElementById('setupHeight').value);
-  const el=document.getElementById('tierPreview');
-  if(!age||!weight||!height){ el.classList.remove('show'); return; }
-  const tier=calcTier(age,weight,height);
-  const cfg=TIER_CONFIG[tier];
-  const bmi=calcBMI(weight,height).toFixed(1);
-  el.className='tier-preview show';
-  el.style.background=cfg.bg;
-  el.style.border='1.5px solid '+cfg.color+'40';
-  el.innerHTML=`<div class="tier-preview-label" style="color:${cfg.color}">YOUR TIER</div>
-    <div class="tier-preview-val" style="color:${cfg.color}">${cfg.label}</div>
-    <div class="tier-preview-desc" style="color:#ccc">${cfg.desc}</div>
-    <div style="font-family:'Space Mono',monospace;font-size:10px;color:#666;margin-top:8px">BMI ${bmi}</div>`;
+  const age    = parseInt(document.getElementById('setupAge')?.value);
+  const weight = parseFloat(document.getElementById('setupWeight')?.value);
+  const height = parseFloat(document.getElementById('setupHeight')?.value);
+  const el = document.getElementById('tierPreview');
+  if(!el) return;
+  if(!age || !weight || !height || !_selectedExp || !_selectedGym){ el.classList.remove('show'); return; }
+  const tier = calcTierFromProfile(age, weight, height, _selectedExp, _selectedGym);
+  const cfg  = TIER_CONFIG[tier];
+  const bmi  = calcBMI(weight, height).toFixed(1);
+  const gymLabel = { none:'Bodyweight only', home:'Home equipment', gym:'Full gym access' }[_selectedGym] || '';
+  const expLabel = { beginner:'Complete Beginner', some:'Some Experience', intermediate:'Intermediate', advanced:'Advanced' }[_selectedExp] || '';
+  el.className = 'tier-preview show';
+  el.style.borderLeft = '2px solid '+cfg.color;
+  el.innerHTML = `
+    <div class="tier-preview-label" style="color:${cfg.color}">YOUR STARTING TIER</div>
+    <div class="tier-preview-val" style="color:${cfg.color};font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic">${cfg.label}</div>
+    <div class="tier-preview-desc" style="color:var(--text);margin-top:5px">${cfg.desc}</div>
+    <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);margin-top:10px;display:flex;gap:14px">
+      <span>BMI ${bmi}</span><span>${expLabel}</span><span>${gymLabel}</span>
+    </div>`;
+}
+
+// ── SETUP STEP LOGIC ────────────────────────────────────────────────────
+let _selectedExp = null;
+let _selectedGym = null;
+
+function goStep(n){
+  if(n === 2){
+    const age = parseInt(document.getElementById('setupAge').value);
+    const weight = parseFloat(document.getElementById('setupWeight').value);
+    const height = parseFloat(document.getElementById('setupHeight').value);
+    if(!age || !weight || !height){ alert('Please fill in your age, weight and height.'); return; }
+  }
+  if(n === 3 && !_selectedExp){ alert('Please select your experience level.'); return; }
+  [1,2,3].forEach(i => {
+    document.getElementById('setupStep'+i).style.display = i===n ? 'block' : 'none';
+    const dot = document.getElementById('dot'+i);
+    if(dot) dot.classList.toggle('active', i===n);
+  });
+  if(n === 3) previewTier();
+}
+
+function selectExp(val, el){
+  _selectedExp = val;
+  document.querySelectorAll('.exp-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function selectGym(val, el){
+  _selectedGym = val;
+  document.querySelectorAll('.gym-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  previewTier();
+}
+
+// Map experience + BMI to starting tier
+function calcTierFromProfile(age, weight, height, exp, gym){
+  const bmi = calcBMI(weight, height);
+
+  // Experience directly maps to starting tier
+  const expMap = {
+    'beginner':     'beginner',
+    'some':         bmi > 27 ? 'beginner' : 'intermediate',
+    'intermediate': bmi > 30 ? 'intermediate' : 'advanced',
+    'advanced':     bmi > 30 ? 'advanced' : 'elite'
+  };
+  let tier = expMap[exp] || 'beginner';
+
+  // Gym access can boost available exercises (stored separately)
+  return tier;
 }
 
 function saveProfile(){
-  const name=document.getElementById('setupName').value.trim();
-  const age=parseInt(document.getElementById('setupAge').value);
-  const weight=parseFloat(document.getElementById('setupWeight').value);
-  const height=parseFloat(document.getElementById('setupHeight').value);
-  if(!age||!weight||!height){ alert('Please fill in age, weight and height.'); return; }
-  const tier=calcTier(age,weight,height);
-  userProfile={name,age,weight,height,tier};
+  const name   = document.getElementById('setupName').value.trim();
+  const age    = parseInt(document.getElementById('setupAge').value);
+  const weight = parseFloat(document.getElementById('setupWeight').value);
+  const height = parseFloat(document.getElementById('setupHeight').value);
+  if(!age || !weight || !height){ alert('Please fill in age, weight and height.'); return; }
+  if(!_selectedExp){ goStep(2); alert('Please select your experience level.'); return; }
+  if(!_selectedGym){ alert('Please select your gym access.'); return; }
+
+  const tier = calcTierFromProfile(age, weight, height, _selectedExp, _selectedGym);
+  userProfile = { name, age, weight, height, tier, level: TIER_ORDER.indexOf(tier)+1, experience: _selectedExp, gym: _selectedGym };
   localStorage.setItem('calitrainProfile', JSON.stringify(userProfile));
+  localStorage.setItem('calitrainHasVisited', '1');
   document.getElementById('setupScreen').classList.add('hidden');
   applyProfileToHeader();
   render();
@@ -1036,37 +1273,65 @@ function saveProfile(){
 
 function applyProfileToHeader(){
   if(!userProfile) return;
-  const cfg=TIER_CONFIG[userProfile.tier];
-  const greet=userProfile.name ? userProfile.name.toUpperCase()+' · ' : '';
-  const tierBadge=`<span class="tier-badge" style="background:${cfg.color}22;color:${cfg.color}">${cfg.label}</span>`;
-  document.getElementById('headerLabel').innerHTML=greet+'BEGINNER · 69 KG · SUMMER EDITION'+tierBadge;
+  const cfg  = TIER_CONFIG[userProfile.tier];
+  const greet= userProfile.name ? userProfile.name.toUpperCase()+' · ' : '';
+  const lvl  = userProfile.level || 1;
+  const gymIcon = { none:'🏠', home:'🎽', gym:'🏋️' }[userProfile.gym] || '';
+  const tierBadge = `<span class="tier-badge" style="background:${cfg.color}22;color:${cfg.color};letter-spacing:1px">${cfg.label} LV.${lvl}</span>`;
+  const info = (userProfile.weight ? userProfile.weight+'KG · ' : '')+'SUMMER EDITION '+gymIcon;
+  document.getElementById('headerLabel').innerHTML = greet + info + tierBadge;
 }
 
 function openProfile(){
-  const p=userProfile;
+  const p = userProfile;
   if(p){
-    document.getElementById('setupName').value=p.name||'';
-    document.getElementById('setupAge').value=p.age;
-    document.getElementById('setupWeight').value=p.weight;
-    document.getElementById('setupHeight').value=p.height;
-    previewTier();
+    document.getElementById('setupName').value  = p.name   || '';
+    document.getElementById('setupAge').value   = p.age    || '';
+    document.getElementById('setupWeight').value= p.weight || '';
+    document.getElementById('setupHeight').value= p.height || '';
+    // Restore experience selection
+    if(p.experience){
+      _selectedExp = p.experience;
+      document.querySelectorAll('.exp-card').forEach(c => c.classList.remove('selected'));
+      const expMap = { beginner:0, some:1, intermediate:2, advanced:3 };
+      const cards = document.querySelectorAll('.exp-card');
+      if(cards[expMap[p.experience]]) cards[expMap[p.experience]].classList.add('selected');
+    }
+    // Restore gym selection
+    if(p.gym){
+      _selectedGym = p.gym;
+      document.querySelectorAll('.gym-card').forEach(c => c.classList.remove('selected'));
+      const gymMap = { none:0, home:1, gym:2 };
+      const gcards = document.querySelectorAll('.gym-card');
+      if(gcards[gymMap[p.gym]]) gcards[gymMap[p.gym]].classList.add('selected');
+    }
   }
+  goStep(1);
   document.getElementById('setupScreen').classList.remove('hidden');
 }
 
 function initProfile(){
-  const saved=localStorage.getItem('calitrainProfile');
+  const saved = localStorage.getItem('calitrainProfile');
   if(saved){
-    userProfile=JSON.parse(saved);
+    userProfile = JSON.parse(saved);
+    _selectedExp = userProfile.experience || 'beginner';
+    _selectedGym = userProfile.gym || 'none';
+    document.getElementById('setupScreen').classList.add('hidden');
+    applyProfileToHeader();
+  } else if(localStorage.getItem('calitrainHasVisited')){
+    userProfile = { name:'', age:22, weight:70, height:170, tier:'beginner', level:1, experience:'beginner', gym:'none' };
+    _selectedExp = 'beginner';
+    _selectedGym = 'none';
     document.getElementById('setupScreen').classList.add('hidden');
     applyProfileToHeader();
   }
+  // First-time visitor: setup screen stays visible (step 1 shown by default)
 }
 
 
 // ── STREAK & PROGRESSION SYSTEM ─────────────────────────────────────────
 
-const TIER_ORDER = ['beginner','intermediate','advanced'];
+const TIER_ORDER = ['beginner','intermediate','advanced','elite','master','legend'];
 
 function getCompletedDates(){
   const raw = localStorage.getItem('calitrainDates');
@@ -1212,7 +1477,7 @@ function openLevelUp(){
   const setsDiff = toCfg.setsAdj - fromCfg.setsAdj;
   const restDiff = toCfg.restAdj - fromCfg.restAdj;
 
-  const nextStreakReq = appSettings.streak_required * 2;
+  const nextStreakReq = appSettings.streak_required + 7;
   const nextManualReq = appSettings.manual_days_required + 5;
   document.getElementById('levelupChanges').innerHTML =
     `<div class="levelup-change-row"><span>Sets per exercise</span><span class="levelup-change-val">${setsDiff>0?'+':''}${setsDiff} set${Math.abs(setsDiff)!==1?'s':''}</span></div>
@@ -1231,12 +1496,14 @@ async function confirmLevelUp(){
   const tierIdx = TIER_ORDER.indexOf(userProfile.tier);
   if(tierIdx >= TIER_ORDER.length-1) return;
   userProfile.tier = TIER_ORDER[tierIdx+1];
+  userProfile.level = tierIdx + 2; // 1-based level
   localStorage.setItem('calitrainProfile', JSON.stringify(userProfile));
+  localStorage.setItem('calitrainHasVisited', '1');
   closeLevelUp();
   applyProfileToHeader();
 
   // Escalate difficulty — double streak req, +5 manual days
-  const newStreakReq = appSettings.streak_required * 2;
+  const newStreakReq = appSettings.streak_required + 7;
   const newManualReq = appSettings.manual_days_required + 5;
   try {
     await fetch('/api/admin/settings', {
