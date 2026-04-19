@@ -4,285 +4,229 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CALITRAIN — Summer Body Edition</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap');
-
-  :root {
-    --gold: #c9a96e;
-    --gold-dim: #8a6f42;
-    --dark: #111010;
-    --dark2: #181818;
-    --dark3: #1f1f1f;
-    --dark4: #2a2a2a;
-    --border: rgba(255,255,255,0.06);
-    --text: #e8e4de;
-    --muted: #666;
-    --accent: #c9a96e;
-  }
-
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: var(--text); min-height: 100vh; overflow-x: hidden; padding-bottom: 100px; }
+  body { font-family: 'DM Sans', sans-serif; background: #f7f4ef; color: #1a1a1a; min-height: 100vh; overflow-x: hidden; padding-bottom: 80px; }
   button { cursor: pointer; font-family: inherit; }
 
-  /* ── HEADER ── */
-  .header {
-    background: rgba(17,16,16,0.97);
-    backdrop-filter: blur(12px);
-    padding: 16px 24px;
-    position: sticky; top: 0; z-index: 100;
-    display: flex; justify-content: space-between; align-items: center;
-    border-bottom: 1px solid var(--border);
-  }
-  .header-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 3px; color: var(--gold-dim); margin-bottom: 3px; }
-  .header-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: #fff; font-weight: 300; font-style: italic; letter-spacing: 2px; }
-  .header-right { display: flex; align-items: center; gap: 10px; }
-  .profile-btn {
-    background: none; border: 1px solid var(--border); border-radius: 4px;
-    padding: 7px 14px; font-family: 'Space Mono', monospace; font-size: 8px;
-    font-weight: 700; color: var(--muted); letter-spacing: 2px; cursor: pointer;
-    transition: all 0.2s;
-  }
-  .profile-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
-  .asthma-btn {
-    background: none; border: 1px solid rgba(239,68,68,0.3); border-radius: 4px;
-    padding: 7px 14px; display: flex; align-items: center; gap: 6px;
-    font-family: 'Space Mono', monospace; font-size: 8px; font-weight: 700;
-    color: #ef4444; letter-spacing: 2px; cursor: pointer; transition: all 0.2s;
-  }
-  .tier-badge { display: inline-block; padding: 2px 8px; border-radius: 2px; font-family: 'Space Mono', monospace; font-size: 8px; font-weight: 700; margin-left: 8px; vertical-align: middle; letter-spacing: 1px; }
+  .header { background: #1a1a1a; padding: 18px 20px 14px; position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; }
+  .header-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 3px; font-weight: 700; margin-bottom: 3px; }
+  .header-title { font-family: 'Instrument Serif', serif; font-size: 22px; color: #fff; font-weight: 400; font-style: italic; }
+  .asthma-btn { background: #dc2626; border-radius: 10px; padding: 8px 11px; display: flex; align-items: center; gap: 5px; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; color: #fff; letter-spacing: 1px; border: none; cursor: pointer; }
 
-  /* ── ALERT BAR ── */
-  .alert-bar { background: rgba(146,64,14,0.15); border-bottom: 1px solid rgba(201,169,110,0.2); padding: 8px 24px; display: flex; gap: 12px; align-items: center; }
-  .alert-bar p { font-size: 11px; color: #c9a96e99; line-height: 1.4; letter-spacing: 0.3px; }
+  .alert-bar { background: #fef3c7; border-bottom: 2px solid #f59e0b; padding: 9px 18px; display: flex; gap: 10px; align-items: center; }
+  .alert-bar p { font-size: 12px; color: #92400e; line-height: 1.4; font-weight: 500; }
 
-  /* ── STREAK BAR ── */
-  .streak-bar { background: var(--dark2); border-bottom: 1px solid var(--border); padding: 10px 24px; display: flex; justify-content: space-between; align-items: center; }
-  .streak-left { display: flex; align-items: center; gap: 10px; }
-  .streak-fire { font-size: 14px; }
-  .streak-count { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--gold); font-weight: 300; }
-  .streak-label { font-family: 'Space Mono', monospace; font-size: 7px; color: var(--muted); letter-spacing: 2px; margin-top: 1px; }
-  .streak-progress { flex: 1; margin: 0 20px; }
-  .streak-prog-label { font-family: 'Space Mono', monospace; font-size: 7px; color: var(--muted); margin-bottom: 5px; text-align: right; letter-spacing: 1px; }
-  .streak-prog-bg { height: 1px; background: var(--dark4); border-radius: 1px; overflow: hidden; }
-  .streak-prog-fill { height: 100%; border-radius: 1px; background: var(--gold); transition: width 0.5s ease; }
-  .levelup-btn {
-    background: none; border: 1px solid var(--gold-dim); border-radius: 4px;
-    padding: 7px 14px; font-family: 'Space Mono', monospace; font-size: 8px;
-    font-weight: 700; color: var(--gold); cursor: pointer; letter-spacing: 2px;
-    transition: all 0.2s;
-  }
-  .levelup-btn:hover { background: var(--gold); color: #000; }
+  .goal-banner { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-bottom: 3px solid #f59e0b; padding: 14px 20px; display: flex; gap: 12px; align-items: center; transition: border-color 0.3s; }
+  .goal-text-title { font-family: 'Instrument Serif', serif; font-size: 18px; color: #fff; font-style: italic; }
+  .goal-text-sub { font-size: 12px; color: #aaa; margin-top: 2px; }
 
-  /* ── WEEK NAV ── */
-  .week-strip { display: flex; background: var(--dark2); border-bottom: 1px solid var(--border); }
-  .week-day { flex: 1; min-width: 38px; text-align: center; padding: 14px 4px 12px; cursor: pointer; position: relative; transition: background 0.2s; }
-  .week-day:hover:not(.rest) { background: rgba(255,255,255,0.02); }
-  .week-day.rest { cursor: default; opacity: 0.25; }
-  .week-day-top-bar {
-    position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: var(--border); transition: all 0.3s;
-  }
-  .week-day.active .week-day-top-bar { background: var(--accent); }
-  .week-day.done .week-day-top-bar {
-    background: var(--gold);
-    box-shadow: 0 0 8px var(--gold), 0 0 20px rgba(201,169,110,0.4);
-  }
-  .week-day.active.done .week-day-top-bar {
-    background: var(--accent);
-    box-shadow: 0 0 10px var(--accent), 0 0 28px rgba(201,169,110,0.5);
-  }
-  .week-day-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 2px; color: var(--muted); margin-bottom: 6px; }
-  .week-day.active .week-day-label { color: var(--gold); }
-  .week-day.done .week-day-label { color: var(--gold-dim); }
-  .week-day-bar { display: none; }
-  .week-day-num { font-size: 9px; color: var(--muted); font-weight: 600; font-family: 'Space Mono', monospace; }
-  .week-day.active .week-day-num { color: #fff; }
-  .week-day.done .week-day-num { color: var(--gold); }
+  .week-strip { display: flex; gap: 4px; padding: 14px 12px 0; background: #fff; border-bottom: 1px solid #eee; }
+  .week-day { flex: 1; min-width: 38px; text-align: center; padding-bottom: 10px; cursor: pointer; }
+  .week-day.rest { cursor: default; opacity: 0.4; }
+  .week-day-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 1px; color: #bbb; margin-bottom: 6px; }
+  .week-day.active .week-day-label { color: var(--accent, #f59e0b); }
+  .week-day-bar { height: 4px; border-radius: 2px; background: #e5e7eb; transition: background 0.2s; }
+  .week-day.active .week-day-bar { background: var(--accent, #f59e0b); }
+  .week-day-num { margin-top: 5px; font-size: 10px; color: #ccc; font-weight: 600; }
+  .week-day.active .week-day-num { color: #1a1a1a; }
 
-  /* ── DAY TABS ── */
-  .day-tabs { display: flex; background: var(--dark2); border-bottom: 1px solid var(--border); overflow-x: auto; }
-  .day-tab { flex: 1; min-width: 54px; padding: 10px 2px; font-family: 'Space Mono', monospace; font-size: 8px; font-weight: 700; letter-spacing: 2px; color: var(--muted); border: none; border-bottom: 1px solid transparent; margin-bottom: -1px; background: none; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
-  .day-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+  .day-tabs { display: flex; background: #fff; border-bottom: 2px solid #eee; overflow-x: auto; }
+  .day-tab { flex: 1; min-width: 54px; padding: 11px 2px; font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1px; color: #aaa; border: none; border-bottom: 3px solid transparent; margin-bottom: -2px; background: none; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+  .day-tab.active { color: #1a1a1a; border-bottom-color: var(--accent, #f59e0b); }
 
-  /* ── DAY INFO ── */
-  .day-info { padding: 24px 24px 18px; background: var(--dark2); border-bottom: 1px solid var(--border); }
-  .day-info-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
-  .day-title { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 300; color: #fff; letter-spacing: 1px; }
-  .day-sub { font-size: 11px; color: var(--muted); margin-top: 4px; letter-spacing: 0.5px; }
-  .intensity-badge { display: inline-block; padding: 3px 10px; border-radius: 2px; font-family: 'Space Mono', monospace; font-size: 8px; font-weight: 700; letter-spacing: 1px; }
-  .day-dur { font-size: 9px; color: var(--muted); margin-top: 5px; text-align: right; font-family: 'Space Mono', monospace; letter-spacing: 1px; }
+  .day-info { padding: 18px 18px 12px; background: #fff; }
+  .day-info-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+  .day-title { font-family: 'Instrument Serif', serif; font-size: 28px; font-weight: 400; }
+  .day-sub { font-size: 13px; color: #888; margin-top: 2px; }
+  .intensity-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; }
+  .day-dur { font-size: 12px; color: #aaa; margin-top: 4px; text-align: right; }
+
   .muscle-map { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
-  .muscle-chip { padding: 4px 11px; border-radius: 2px; font-size: 10px; font-weight: 500; background: rgba(255,255,255,0.05); color: rgba(232,228,222,0.75); border: none; letter-spacing: 0.5px; font-family: "DM Sans", sans-serif; }
-  .muscle-chip.primary { color: var(--gold); background: rgba(201,169,110,0.12); border: none; }
-  .progress-row { display: flex; justify-content: space-between; margin-bottom: 5px; }
-  .progress-label { font-family: 'Space Mono', monospace; font-size: 8px; color: var(--muted); letter-spacing: 2px; }
-  .progress-pct { font-family: 'Space Mono', monospace; font-size: 8px; font-weight: 700; color: var(--gold); }
-  .progress-bar-bg { height: 1px; background: var(--dark4); overflow: hidden; }
-  .progress-bar-fill { height: 100%; transition: width 0.4s ease; }
-  .stats-row { display: flex; gap: 0; margin-top: 16px; border: 1px solid var(--border); }
-  .stat-box { flex: 1; background: var(--dark3); padding: 14px 8px; text-align: center; }
-  .stat-box:not(:last-child) { border-right: 1px solid var(--border); }
-  .stat-val { font-family: 'Cormorant Garamond', serif; font-size: 26px; color: #fff; font-weight: 300; }
-  .stat-lbl { font-family: 'Space Mono', monospace; font-size: 7px; color: var(--muted); letter-spacing: 2px; margin-top: 2px; }
+  .muscle-chip { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; background: #f7f4ef; color: #666; border: 1px solid #e8e3dc; }
+  .muscle-chip.primary { color: #fff; border: none; }
 
-  /* ── WARMUP ── */
-  .warmup-box { margin: 14px 20px 0; background: rgba(22,163,74,0.06); border: 1px solid rgba(22,163,74,0.15); padding: 12px 16px; display: flex; gap: 12px; }
-  .warmup-title { font-family: 'Space Mono', monospace; font-size: 8px; color: #4ade80; font-weight: 700; letter-spacing: 2px; }
-  .warmup-text { font-size: 12px; color: rgba(74,222,128,0.7); line-height: 1.7; margin-top: 5px; }
+  .progress-row { display: flex; justify-content: space-between; margin-bottom: 6px; }
+  .progress-label { font-family: 'Space Mono', monospace; font-size: 11px; color: #aaa; }
+  .progress-pct { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; }
+  .progress-bar-bg { height: 6px; background: #f0f0f0; border-radius: 3px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; border-radius: 3px; transition: width 0.4s ease; }
+  .stats-row { display: flex; gap: 8px; margin-top: 14px; }
+  .stat-box { flex: 1; background: #f7f4ef; border-radius: 10px; padding: 10px 8px; text-align: center; }
+  .stat-val { font-family: 'Instrument Serif', serif; font-size: 22px; }
+  .stat-lbl { font-family: 'Space Mono', monospace; font-size: 9px; color: #aaa; letter-spacing: 1px; }
 
-  /* ── EXERCISE CARDS ── */
-  .ex-list { padding: 14px 20px 20px; display: flex; flex-direction: column; gap: 10px; }
-  .ex-card { background: #1c1c1c; border: none; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04); transition: all 0.2s; overflow: hidden; }
-  .ex-card:hover { background: #202020; box-shadow: 0 4px 20px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.07); }
-  .ex-header { padding: 16px 18px; cursor: pointer; display: flex; gap: 14px; align-items: center; }
-  .ex-num { width: 30px; height: 30px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; color: rgba(201,169,110,0.5); border: none; transition: all 0.2s; }
-  .ex-name { font-size: 15px; font-weight: 500; color: #ffffff; letter-spacing: 0.2px; }
-  .ex-meta { font-size: 10px; color: rgba(200,196,190,0.6); margin-top: 3px; letter-spacing: 0.5px; font-family: 'Space Mono', monospace; }
-  .ex-chevron { color: var(--muted); font-size: 12px; flex-shrink: 0; transition: transform 0.2s; margin-left: auto; }
+  .warmup-box { margin: 12px 16px 0; background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 12px; padding: 12px 14px; display: flex; gap: 10px; }
+  .warmup-title { font-family: 'Space Mono', monospace; font-size: 11px; color: #16a34a; font-weight: 700; }
+  .warmup-text { font-size: 12px; color: #166534; line-height: 1.5; margin-top: 4px; }
+
+  .ex-list { padding: 12px 16px 16px; display: flex; flex-direction: column; gap: 10px; }
+  .ex-card { background: #fff; border: 1.5px solid #ede9e3; border-radius: 16px; overflow: hidden; transition: border-color 0.2s, box-shadow 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+  .ex-header { padding: 14px 16px; cursor: pointer; display: flex; gap: 14px; align-items: center; }
+  .ex-num { width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0; background: #f7f4ef; display: flex; align-items: center; justify-content: center; font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; color: #aaa; transition: all 0.2s; }
+  .ex-name { font-size: 16px; font-weight: 600; }
+  .ex-meta { font-size: 12px; color: #aaa; margin-top: 2px; }
+  .ex-chevron { color: #ccc; font-size: 16px; flex-shrink: 0; transition: transform 0.2s; }
   .ex-chevron.open { transform: rotate(180deg); }
-  .ex-body { border-top: 1px solid rgba(255,255,255,0.05); padding: 16px 18px 18px; display: none; background: #161616; border-radius: 0 0 14px 14px; }
+  .ex-body { border-top: 1px solid #f0ece6; padding: 14px 16px 16px; display: none; }
   .ex-body.open { display: block; }
 
-  /* ── INFO BOXES ── */
-  .info-box { padding: 10px 13px; margin-bottom: 8px; display: flex; gap: 10px; align-items: flex-start; border-left: 2px solid; }
-  .info-box-title { font-family: 'Space Mono', monospace; font-size: 8px; font-weight: 700; letter-spacing: 2px; }
-  .info-box-text { font-size: 12px; line-height: 1.7; margin-top: 3px; }
-  .breath-box { background: rgba(2,132,199,0.06); border-left-color: #0284c7; }
-  .breath-box .info-box-title { color: #38bdf8; }
-  .breath-box .info-box-text { color: rgba(186,230,253,0.8); }
-  .tip-box { background: rgba(255,255,255,0.02); border-left-color: var(--dark4); flex-direction: column; }
-  .tip-box .info-box-title { color: var(--muted); }
-  .tip-box .info-box-text { color: rgba(232,228,222,0.65); }
-  .mod-box { background: rgba(201,169,110,0.06); border-left-color: var(--gold-dim); }
-  .mod-box .info-box-text { color: rgba(201,169,110,0.8); }
-  .sets-label { font-family: 'Space Mono', monospace; font-size: 8px; color: var(--muted); letter-spacing: 2px; margin: 14px 0 8px; }
-  .sets-row { display: flex; gap: 5px; }
-  .set-btn { flex: 1; height: 44px; background: var(--dark4); border: 1px solid var(--border); color: var(--muted); font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; cursor: pointer; transition: all 0.15s; letter-spacing: 1px; }
-  .set-btn:hover { border-color: var(--gold-dim); color: var(--gold); }
+  .info-box { border-radius: 10px; padding: 10px 12px; margin-bottom: 10px; display: flex; gap: 8px; align-items: flex-start; }
+  .info-box-title { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; }
+  .info-box-text { font-size: 13px; line-height: 1.5; margin-top: 3px; }
+  .breath-box { background: #eff6ff; border: 1.5px solid #bfdbfe; }
+  .breath-box .info-box-title { color: #3b82f6; }
+  .breath-box .info-box-text { color: #1e40af; }
+  .tip-box { background: #f7f4ef; flex-direction: column; }
+  .tip-box .info-box-title { color: #888; }
+  .tip-box .info-box-text { color: #444; }
+  .mod-box { background: #fefce8; border: 1px solid #fde68a; }
+  .mod-box .info-box-text { color: #78350f; }
 
-  /* ── BOTTOM BOXES ── */
-  .bottom-box { margin: 0 20px 10px; padding: 14px 16px; border-left: 2px solid; }
-  .cooldown-box { background: rgba(168,85,247,0.05); border-left-color: rgba(168,85,247,0.4); }
-  .cooldown-box .b-title { font-family: 'Space Mono', monospace; font-size: 8px; color: #a855f7; font-weight: 700; letter-spacing: 2px; }
-  .cooldown-box .b-text { font-size: 12px; color: rgba(216,180,254,0.7); line-height: 1.7; margin-top: 6px; }
-  .prog-box { background: rgba(255,255,255,0.02); border-left-color: var(--border); margin-bottom: 12px; }
-  .prog-box .b-title { font-family: 'Space Mono', monospace; font-size: 8px; color: var(--muted); font-weight: 700; letter-spacing: 2px; }
-  .prog-box .b-text { font-size: 12px; color: rgba(232,228,222,0.5); line-height: 1.7; margin-top: 5px; }
+  .sets-label { font-family: 'Space Mono', monospace; font-size: 10px; color: #bbb; letter-spacing: 1px; margin: 14px 0 8px; }
+  .sets-row { display: flex; gap: 8px; }
+  .set-btn { flex: 1; height: 48px; border-radius: 10px; background: #f7f4ef; border: 1.5px solid #e8e3dc; color: #888; font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.15s; }
 
-  /* ── REST TIMER ── */
-  .timer-bar { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(17,16,16,0.98); backdrop-filter: blur(16px); padding: 14px 24px 24px; display: flex; gap: 14px; align-items: center; z-index: 90; transform: translateY(100%); transition: transform 0.3s; border-top: 1px solid var(--border); }
+  .bottom-box { margin: 0 16px 14px; border-radius: 14px; padding: 14px 16px; }
+  .cooldown-box { background: #fdf4ff; border: 1.5px solid #e9d5ff; }
+  .cooldown-box .b-title { font-family: 'Space Mono', monospace; font-size: 11px; color: #9333ea; font-weight: 700; }
+  .cooldown-box .b-text { font-size: 13px; color: #6b21a8; line-height: 1.6; margin-top: 6px; }
+  .prog-box { background: #fff; border: 1.5px solid #ede9e3; margin-bottom: 16px; }
+  .prog-box .b-title { font-family: 'Space Mono', monospace; font-size: 11px; color: #888; font-weight: 700; }
+  .prog-box .b-text { font-size: 13px; color: #555; line-height: 1.7; margin-top: 6px; }
+
+  .timer-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #1a1a1a; padding: 12px 20px 20px; display: flex; gap: 12px; align-items: center; z-index: 90; transform: translateY(100%); transition: transform 0.3s; border-top: 2px solid #333; }
   .timer-bar.visible { transform: translateY(0); }
-  .timer-display { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 300; color: #fff; flex: 1; letter-spacing: 2px; }
-  .timer-sub { font-size: 8px; color: var(--muted); font-family: 'Space Mono', monospace; margin-top: 2px; letter-spacing: 2px; }
-  .timer-btn { padding: 9px 18px; font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700; border: none; cursor: pointer; letter-spacing: 2px; }
-  .t-start { background: var(--gold); color: #000; }
-  .t-stop { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
-  .t-skip { background: var(--dark4); color: var(--muted); }
-  .rest-timer-btn { width: 100%; margin-top: 10px; padding: 9px; font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700; cursor: pointer; letter-spacing: 2px; border: none; }
+  .timer-display { font-family: 'Space Mono', monospace; font-size: 30px; font-weight: 700; color: #fff; flex: 1; }
+  .timer-sub { font-size: 10px; color: #666; font-family: 'Space Mono', monospace; margin-top: 2px; }
+  .timer-btn { padding: 10px 16px; border-radius: 10px; font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; border: none; cursor: pointer; }
+  .t-start { background: #4ade80; color: #000; }
+  .t-stop { background: #ef4444; color: #fff; }
+  .t-skip { background: #333; color: #aaa; }
 
-  /* ── OVERLAYS ── */
   .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200; display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
   .overlay.open { opacity: 1; pointer-events: all; }
-  .overlay-sheet { width: 100%; background: var(--dark2); border-top: 1px solid var(--border); padding: 28px 24px 48px; transform: translateY(100%); transition: transform 0.3s ease; }
+  .overlay-sheet { width: 100%; background: #fff; border-radius: 20px 20px 0 0; padding: 28px 24px 44px; transform: translateY(100%); transition: transform 0.3s ease; }
   .overlay.open .overlay-sheet { transform: translateY(0); }
-  .overlay-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-  .overlay-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: #fff; font-weight: 300; letter-spacing: 1px; }
-  .overlay-sub { font-size: 10px; color: var(--muted); margin-top: 3px; letter-spacing: 1px; font-family: 'Space Mono', monospace; }
-  .close-btn { background: var(--dark3); border: 1px solid var(--border); width: 32px; height: 32px; font-size: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--muted); }
+  .overlay-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+  .overlay-title { font-family: 'Instrument Serif', serif; font-size: 22px; }
+  .overlay-sub { font-size: 13px; color: #888; margin-top: 2px; }
+  .close-btn { background: #f0f0f0; border-radius: 50%; width: 36px; height: 36px; font-size: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; }
   .a-rule { display: flex; gap: 12px; margin-bottom: 14px; }
-  .a-rule p { font-size: 13px; color: rgba(232,228,222,0.7); line-height: 1.7; }
-  .a-warn { margin-top: 20px; background: rgba(239,68,68,0.05); border: 1px solid rgba(239,68,68,0.2); padding: 12px 16px; }
-  .a-warn p { font-size: 11px; color: rgba(239,68,68,0.8); font-weight: 400; }
+  .a-rule p { font-size: 14px; color: #333; line-height: 1.6; }
+  .a-warn { margin-top: 20px; background: #fff5f5; border: 1.5px solid #fca5a5; border-radius: 12px; padding: 12px 16px; }
+  .a-warn p { font-size: 13px; color: #dc2626; font-weight: 600; }
 
-  /* ── FEEL & DEMO ── */
-  .feel-box { background: rgba(201,169,110,0.05); border: 1px solid rgba(201,169,110,0.15); padding: 10px 13px; margin-bottom: 8px; }
-  .feel-title { font-family: 'Space Mono', monospace; font-size: 8px; font-weight: 700; color: var(--gold-dim); margin-bottom: 7px; letter-spacing: 2px; }
-  .feel-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 5px; }
-  .feel-chip { padding: 3px 9px; font-size: 9px; font-weight: 700; border: 1px solid; letter-spacing: 1px; font-family: 'Space Mono', monospace; }
-  .feel-chip.primary { background: var(--gold); color: #000; border-color: var(--gold); }
-  .feel-chip.secondary { background: transparent; color: var(--gold-dim); border-color: var(--gold-dim); }
-  .feel-desc { font-size: 11px; color: rgba(201,169,110,0.6); line-height: 1.6; margin-top: 4px; }
-  .demo-box { overflow: hidden; margin-bottom: 8px; position: relative; background: #141414; border-radius: 10px; }
-  .demo-img { width: 100%; display: block; max-height: 200px; object-fit: contain; }
-  .demo-label { font-family: 'Space Mono', monospace; font-size: 7px; letter-spacing: 2px; color: var(--muted); padding: 4px 10px 3px; }
-  .demo-watch-btn { display: none; }
+
+  /* ── FEEL & DEMO ─────────────────────────────────────────────────── */
+  .feel-box { background: #fff8f0; border: 1.5px solid #fed7aa; border-radius: 10px; padding: 10px 12px; margin-bottom: 10px; }
+  .feel-title { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; color: #ea580c; margin-bottom: 7px; }
+  .feel-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
+  .feel-chip { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; border: 1.5px solid; }
+  .feel-chip.primary { background: #ea580c; color: #fff; border-color: #ea580c; }
+  .feel-chip.secondary { background: #fff8f0; color: #ea580c; border-color: #fed7aa; }
+  .feel-desc { font-size: 12px; color: #9a3412; line-height: 1.5; margin-top: 4px; }
+
+  .demo-box { border-radius: 14px; overflow: hidden; margin-bottom: 10px; position: relative; background: #111; }
+  .demo-img { width: 100%; display: block; max-height: 200px; object-fit: cover; border-radius: 14px; }
+  .demo-img-loading { width: 100%; height: 140px; background: linear-gradient(90deg,#1a1a1a 25%,#2a2a2a 50%,#1a1a1a 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 14px; display: flex; align-items: center; justify-content: center; }
   @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+  .demo-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 1px; color: #666; padding: 6px 12px 2px; }
+  .demo-watch-btn { display: flex; align-items: center; gap: 6px; width: 100%; padding: 10px 12px; background: #f7f4ef; border: 1.5px solid #ede9e3; border-radius: 10px; margin-bottom: 10px; cursor: pointer; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; color: #555; letter-spacing: 1px; text-decoration: none; }
+  .demo-watch-btn:hover { background: #ede9e3; }
 
-  /* ── LEVEL UP ── */
+  /* ── ADMIN PANEL ─────────────────────────────────────────────────── */
+  .admin-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:700;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity 0.25s; }
+  .admin-overlay.open { opacity:1;pointer-events:all; }
+  .admin-card { background:#111;border-radius:24px;padding:28px 24px;width:100%;max-width:380px;border:1.5px solid #2a2a2a; }
+  .admin-title { font-family:'Instrument Serif',serif;font-size:22px;color:#fff;margin-bottom:4px; }
+  .admin-sub { font-size:12px;color:#555;margin-bottom:22px;font-family:'Space Mono',monospace;letter-spacing:1px; }
+  .admin-field { margin-bottom:16px; }
+  .admin-label { font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;color:#666;margin-bottom:8px; }
+  .admin-input { width:100%;background:#1a1a1a;border:1.5px solid #2a2a2a;border-radius:10px;padding:12px 14px;font-size:15px;color:#fff;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s; }
+  .admin-input:focus { border-color:#f59e0b; }
+  .admin-btn { width:100%;padding:14px;background:#f59e0b;border-radius:12px;border:none;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:#000;letter-spacing:2px;cursor:pointer;margin-top:4px; }
+  .admin-btn.danger { background:#ef4444;color:#fff; }
+  .admin-btn.secondary { background:#2a2a2a;color:#aaa;margin-top:10px; }
+  .admin-error { color:#ef4444;font-size:12px;margin-bottom:12px;font-family:'Space Mono',monospace;display:none; }
+  .admin-success { color:#4ade80;font-size:12px;margin-bottom:12px;font-family:'Space Mono',monospace;display:none; }
+  .admin-setting-row { display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #1e1e1e; }
+  .admin-setting-label { font-size:13px;color:#ccc; }
+  .admin-setting-sub { font-size:11px;color:#555;margin-top:2px; }
+  .admin-setting-input { width:70px;background:#1a1a1a;border:1.5px solid #2a2a2a;border-radius:8px;padding:8px 10px;font-size:14px;color:#fff;font-family:'Space Mono',monospace;text-align:center;outline:none; }
+  .admin-setting-input:focus { border-color:#f59e0b; }
+  .admin-divider { height:1px;background:#1e1e1e;margin:16px 0; }
+  .admin-close { position:absolute;top:16px;right:16px;background:#2a2a2a;border:none;border-radius:50%;width:32px;height:32px;color:#aaa;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center; }
+  .admin-streak-note { background:#1c1000;border:1px solid #f59e0b33;border-radius:10px;padding:10px 12px;font-size:12px;color:#d97706;margin-bottom:16px;line-height:1.5; }
+  .rest-timer-btn { width: 100%; margin-top: 10px; padding: 10px; border-radius: 10px; font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; cursor: pointer; letter-spacing: 1px; border: none; }
+  /* ── STREAK & LEVEL UP ───────────────────────────────────────────── */
+  .streak-bar { background: #111; border-bottom: 1px solid #2a2a2a; padding: 10px 18px; display: flex; justify-content: space-between; align-items: center; }
+  .streak-left { display: flex; align-items: center; gap: 10px; }
+  .streak-fire { font-size: 20px; }
+  .streak-count { font-family: 'Instrument Serif', serif; font-size: 22px; color: #fff; }
+  .streak-label { font-family: 'Space Mono', monospace; font-size: 10px; color: #555; letter-spacing: 1px; margin-top: 1px; }
+  .streak-progress { flex: 1; margin: 0 14px; }
+  .streak-prog-label { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; margin-bottom: 4px; text-align: right; }
+  .streak-prog-bg { height: 4px; background: #2a2a2a; border-radius: 2px; overflow: hidden; }
+  .streak-prog-fill { height: 100%; border-radius: 2px; background: #f59e0b; transition: width 0.5s ease; }
+
+  .levelup-btn { background: linear-gradient(135deg, #f59e0b, #ef4444); border: none; border-radius: 10px; padding: 8px 12px; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; color: #fff; cursor: pointer; letter-spacing: 1px; animation: pulse-glow 1.5s infinite; }
+  @keyframes pulse-glow { 0%,100%{box-shadow:0 0 8px #f59e0b88} 50%{box-shadow:0 0 18px #f59e0bcc} }
+
   .levelup-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 400; display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
   .levelup-overlay.open { opacity: 1; pointer-events: all; }
-  .levelup-card { background: var(--dark2); border: 1px solid var(--border); padding: 36px 28px; width: 100%; max-width: 380px; text-align: center; }
-  .levelup-emoji { font-size: 40px; margin-bottom: 12px; }
-  .levelup-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; color: #fff; margin-bottom: 6px; font-weight: 300; letter-spacing: 1px; }
-  .levelup-sub { font-size: 12px; color: var(--muted); margin-bottom: 24px; line-height: 1.7; }
+  .levelup-card { background: #1a1a1a; border-radius: 24px; padding: 32px 24px; width: 100%; max-width: 380px; text-align: center; border: 1.5px solid #f59e0b44; }
+  .levelup-emoji { font-size: 52px; margin-bottom: 12px; }
+  .levelup-title { font-family: 'Instrument Serif', serif; font-size: 28px; color: #fff; margin-bottom: 8px; }
+  .levelup-sub { font-size: 13px; color: #888; margin-bottom: 24px; line-height: 1.6; }
   .levelup-from { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 24px; }
-  .levelup-tier-box { padding: 7px 16px; font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700; border: 1px solid var(--border); letter-spacing: 2px; }
-  .levelup-arrow { font-size: 14px; color: var(--muted); }
-  .levelup-changes { background: var(--dark3); border: 1px solid var(--border); padding: 14px; margin-bottom: 24px; text-align: left; }
-  .levelup-change-row { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); padding: 5px 0; border-bottom: 1px solid var(--border); }
+  .levelup-tier-box { padding: 10px 18px; border-radius: 12px; font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; }
+  .levelup-arrow { font-size: 20px; color: #555; }
+  .levelup-changes { background: #242424; border-radius: 14px; padding: 16px; margin-bottom: 24px; text-align: left; }
+  .levelup-change-row { display: flex; justify-content: space-between; font-size: 13px; color: #ccc; padding: 5px 0; border-bottom: 1px solid #2e2e2e; }
   .levelup-change-row:last-child { border-bottom: none; }
-  .levelup-change-val { font-family: 'Space Mono', monospace; font-size: 9px; color: #4ade80; }
-  .levelup-btns { display: flex; gap: 8px; }
-  .levelup-confirm { flex: 1; padding: 13px; background: var(--gold); border: none; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; color: #000; cursor: pointer; letter-spacing: 2px; }
-  .levelup-cancel { padding: 13px 16px; background: var(--dark4); border: 1px solid var(--border); font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); cursor: pointer; }
-  .tier-up-toast { position: fixed; top: 70px; left: 50%; transform: translateX(-50%) translateY(-10px); background: var(--dark2); color: var(--gold); font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700; padding: 10px 20px; z-index: 600; opacity: 0; transition: all 0.4s; pointer-events: none; white-space: nowrap; letter-spacing: 2px; border: 1px solid var(--gold-dim); }
+  .levelup-change-val { font-family: 'Space Mono', monospace; font-size: 11px; color: #4ade80; }
+  .levelup-btns { display: flex; gap: 10px; }
+  .levelup-confirm { flex: 1; padding: 14px; background: #f59e0b; border-radius: 12px; border: none; font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; color: #000; cursor: pointer; letter-spacing: 1px; }
+  .levelup-cancel { padding: 14px 18px; background: #2a2a2a; border-radius: 12px; border: none; font-family: 'Space Mono', monospace; font-size: 12px; color: #888; cursor: pointer; }
+
+  .tier-up-toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-20px); background: linear-gradient(135deg,#f59e0b,#ef4444); color: #fff; font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; padding: 12px 24px; border-radius: 30px; z-index: 600; opacity: 0; transition: all 0.4s; pointer-events: none; white-space: nowrap; letter-spacing: 1px; }
   .tier-up-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  /* ── SETUP SCREEN ── */
-  .setup-screen { position: fixed; inset: 0; background: var(--dark); z-index: 500; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px 24px; overflow-y: auto; }
+  /* ── SETUP SCREEN ─────────────────────────────────────────────────── */
+  .setup-screen { position: fixed; inset: 0; background: #1a1a1a; z-index: 500; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px 24px; overflow-y: auto; }
   .setup-screen.hidden { display: none; }
-  .setup-logo { font-family: 'Cormorant Garamond', serif; font-size: 32px; color: #fff; font-style: italic; margin-bottom: 4px; font-weight: 300; letter-spacing: 3px; }
-  .setup-tagline { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 4px; color: var(--gold); margin-bottom: 36px; }
-  .setup-card { background: var(--dark2); border: 1px solid var(--border); padding: 30px 26px; width: 100%; max-width: 400px; }
-  .setup-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: #fff; margin-bottom: 5px; font-weight: 300; }
-  .setup-sub { font-size: 12px; color: var(--muted); margin-bottom: 26px; line-height: 1.7; }
-  .setup-field { margin-bottom: 16px; }
-  .setup-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 2px; color: var(--muted); margin-bottom: 8px; display: flex; justify-content: space-between; }
-  .setup-input { width: 100%; background: var(--dark3); border: 1px solid var(--border); padding: 12px 16px; font-size: 15px; color: var(--text); font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s; }
-  .setup-input:focus { border-color: var(--gold-dim); }
-  .setup-row { display: flex; gap: 10px; }
+  .setup-logo { font-family: 'Instrument Serif', serif; font-size: 32px; color: #fff; font-style: italic; margin-bottom: 6px; }
+  .setup-tagline { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 3px; color: #f59e0b; margin-bottom: 36px; }
+  .setup-card { background: #242424; border-radius: 20px; padding: 28px 24px; width: 100%; max-width: 400px; }
+  .setup-title { font-family: 'Instrument Serif', serif; font-size: 22px; color: #fff; margin-bottom: 6px; }
+  .setup-sub { font-size: 13px; color: #888; margin-bottom: 24px; line-height: 1.5; }
+  .setup-field { margin-bottom: 18px; }
+  .setup-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; color: #aaa; margin-bottom: 8px; display: flex; justify-content: space-between; }
+  .setup-input { width: 100%; background: #2e2e2e; border: 1.5px solid #3a3a3a; border-radius: 12px; padding: 14px 16px; font-size: 16px; color: #fff; font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s; }
+  .setup-input:focus { border-color: #f59e0b; }
+  .setup-row { display: flex; gap: 12px; }
   .setup-row .setup-field { flex: 1; }
-  .tier-preview { padding: 12px 16px; margin-top: 6px; margin-bottom: 18px; display: none; border-left: 2px solid var(--gold-dim); background: rgba(201,169,110,0.05); }
+  .tier-preview { border-radius: 12px; padding: 14px 16px; margin-top: 8px; margin-bottom: 20px; display: none; }
   .tier-preview.show { display: block; }
-  .tier-preview-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 2px; margin-bottom: 4px; color: var(--gold-dim); }
-  .tier-preview-val { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-style: italic; color: #fff; }
-  .tier-preview-desc { font-size: 11px; margin-top: 4px; line-height: 1.5; color: var(--muted); }
-  .setup-btn { width: 100%; padding: 14px; background: var(--gold); border: none; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; color: #000; letter-spacing: 3px; cursor: pointer; margin-top: 6px; transition: opacity 0.2s; }
-  .setup-btn:active { opacity: 0.85; }
+  .tier-preview-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; margin-bottom: 4px; }
+  .tier-preview-val { font-family: 'Instrument Serif', serif; font-size: 20px; font-style: italic; }
+  .tier-preview-desc { font-size: 12px; margin-top: 4px; line-height: 1.5; opacity: 0.85; }
+  .setup-btn { width: 100%; padding: 16px; background: #f59e0b; border-radius: 14px; border: none; font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; color: #000; letter-spacing: 2px; cursor: pointer; margin-top: 4px; transition: opacity 0.2s; }
+  .setup-btn:active { opacity: 0.8; }
 
-  /* ── ADMIN PANEL ── */
-  .admin-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:700;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity 0.25s; }
-  .admin-overlay.open { opacity:1;pointer-events:all; }
-  .admin-card { background:var(--dark2);border:1px solid var(--border);padding:28px 24px;width:100%;max-width:380px; }
-  .admin-title { font-family:'Cormorant Garamond',serif;font-size:22px;color:#fff;margin-bottom:4px;font-weight:300; }
-  .admin-sub { font-size:9px;color:var(--muted);margin-bottom:22px;font-family:'Space Mono',monospace;letter-spacing:2px; }
-  .admin-field { margin-bottom:14px; }
-  .admin-label { font-family:'Space Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--muted);margin-bottom:8px; }
-  .admin-input { width:100%;background:var(--dark3);border:1px solid var(--border);padding:10px 14px;font-size:14px;color:var(--text);font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s; }
-  .admin-input:focus { border-color:var(--gold-dim); }
-  .admin-btn { width:100%;padding:12px;background:var(--gold);border:none;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;color:#000;letter-spacing:2px;cursor:pointer;margin-top:4px; }
-  .admin-btn.danger { background:rgba(239,68,68,0.15);color:#ef4444;border:1px solid rgba(239,68,68,0.3); }
-  .admin-btn.secondary { background:var(--dark3);color:var(--muted);border:1px solid var(--border);margin-top:7px; }
-  .admin-error { color:#ef4444;font-size:9px;margin-bottom:8px;font-family:'Space Mono',monospace;display:none;letter-spacing:1px; }
-  .admin-success { color:#4ade80;font-size:9px;margin-bottom:8px;font-family:'Space Mono',monospace;display:none;letter-spacing:1px; }
-  .admin-setting-row { display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border); }
-  .admin-setting-label { font-size:13px;color:var(--text); }
-  .admin-setting-sub { font-size:10px;color:var(--muted);margin-top:2px; }
-  .admin-setting-input { width:60px;background:var(--dark3);border:1px solid var(--border);padding:6px 9px;font-size:13px;color:var(--text);font-family:'Space Mono',monospace;text-align:center;outline:none; }
-  .admin-setting-input:focus { border-color:var(--gold-dim); }
-  .admin-divider { height:1px;background:var(--border);margin:12px 0; }
-  .admin-close { position:absolute;top:14px;right:14px;background:var(--dark3);border:1px solid var(--border);width:28px;height:28px;color:var(--muted);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center; }
-  .admin-streak-note { background:rgba(201,169,110,0.06);border:1px solid rgba(201,169,110,0.15);padding:10px 12px;font-size:10px;color:var(--gold-dim);margin-bottom:14px;line-height:1.6;font-family:'Space Mono',monospace; }
+  /* ── PROFILE BUTTON ───────────────────────────────────────────────── */
+  .profile-btn { background: #2a2a2a; border: none; border-radius: 10px; padding: 8px 11px; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; color: #aaa; letter-spacing: 1px; cursor: pointer; margin-right: 8px; }
+  .tier-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; margin-left: 8px; vertical-align: middle; }
 
-  @keyframes pulse-glow { 0%,100%{opacity:1} 50%{opacity:0.7} }
 </style>
 </head>
 <body>
 
 <!-- SETUP SCREEN -->
 <div class="setup-screen" id="setupScreen">
-  <div class="setup-logo">CALITRAIN</div>
+  <div class="setup-logo">CALITRAIN 🌞</div>
   <div class="setup-tagline">SUMMER BODY EDITION</div>
   <div class="setup-card">
     <div class="setup-title">Let's personalise your plan</div>
@@ -323,7 +267,7 @@
     <div class="a-rule"><span style="font-size:20px;flex-shrink:0">🔥</span><p>Never skip your warm-up — it primes your airways for exercise.</p></div>
     <div class="a-rule"><span style="font-size:20px;flex-shrink:0">😮‍💨</span><p>Breathe through your nose when possible to warm and filter air.</p></div>
     <div class="a-rule"><span style="font-size:20px;flex-shrink:0">💪</span><p>Upper body work raises breathing rate less than cardio — still stay controlled.</p></div>
-    <div class="a-warn"><p><span style="display:inline-flex;align-items:center;gap:5px;background:#dc2626;color:#fff;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:1.5px;padding:3px 8px;border-radius:20px;vertical-align:middle;margin-right:6px">⚠ NOTE</span>This is NOT a substitute for medical advice. Always follow your doctor's recommendations.</p></div>
+    <div class="a-warn"><p>⚠️ This is NOT a substitute for medical advice. Always follow your doctor's recommendations.</p></div>
   </div>
 </div>
 
@@ -341,17 +285,23 @@
 <div class="header">
   <div>
     <div class="header-label" id="headerLabel" style="color:#f59e0b">BEGINNER · 69 KG · SUMMER EDITION</div>
-    <div class="header-title" id="headerTitle" onclick="handleSecretTap()" style="cursor:default;user-select:none">CALITRAIN</div>
+    <div class="header-title" id="headerTitle" onclick="handleSecretTap()" style="cursor:default;user-select:none">CALITRAIN 🌞</div>
   </div>
-  <div class="header-right"><button class="profile-btn" onclick="openProfile()">PROFILE</button><button class="asthma-btn" onclick="toggleOverlay()">⚠ ASTHMA</button></div>
+  <button class="profile-btn" onclick="openProfile()">👤 PROFILE</button><button class="asthma-btn" onclick="toggleOverlay()">🫁 ASTHMA</button>
 </div>
 
 <div class="alert-bar">
-  <span style="display:inline-flex;align-items:center;gap:5px;background:#92400e;color:#fef3c7;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1.5px;padding:4px 10px;border-radius:20px;flex-shrink:0">⚠ ASTHMA</span>
+  <span style="font-size:16px">⚠️</span>
   <p><strong>Asthmatic athlete mode.</strong> No explosive jumps. Breathing cues on every exercise. Upper body added for summer. 🌊</p>
 </div>
 
-
+<div class="goal-banner" id="goalBanner">
+  <span style="font-size:28px">🌊</span>
+  <div>
+    <div class="goal-text-title">Built for Summer</div>
+    <div class="goal-text-sub">7 days · Legs · Push · Core · Pull · Mobility · Strength A · Strength B — Zero equipment</div>
+  </div>
+</div>
 
 
 <!-- STREAK BAR -->
@@ -703,56 +653,33 @@ function buildFeelBox(name, accent){
 }
 
 function buildDemoBox(name){
-  const IMAGE_URLS = {
-    "Pause Squat":                "https://fitnessprogramer.com/wp-content/uploads/2021/02/Squat.gif",
-    "Reverse Lunge":              "https://fitnessprogramer.com/wp-content/uploads/2021/09/Reverse-Lunge.gif",
-    "Glute Bridge + 2s Hold":    "https://fitnessprogramer.com/wp-content/uploads/2021/04/Glute-Bridge.gif",
-    "Single-Leg Calf Raise":     "https://fitnessprogramer.com/wp-content/uploads/2021/06/Single-Leg-Calf-Raise.gif",
-    "Wall Sit":                   "https://fitnessprogramer.com/wp-content/uploads/2021/10/Wall-Sit.gif",
-    "Knee Push-Up":              "https://fitnessprogramer.com/wp-content/uploads/2021/02/Knee-Push-Up.gif",
-    "Wide Push-Up (Knee)":       "https://fitnessprogramer.com/wp-content/uploads/2021/02/Wide-Push-Up.gif",
-    "Pike Push-Up":              "https://fitnessprogramer.com/wp-content/uploads/2021/06/Pike-Push-Up.gif",
-    "Tricep Floor Dip":          "https://fitnessprogramer.com/wp-content/uploads/2021/02/Triceps-Dips-On-Floor.gif",
-    "Shoulder Tap Plank":        "https://fitnessprogramer.com/wp-content/uploads/2021/06/Plank-Shoulder-Tap.gif",
-    "Slow Negative Push-Up":     "https://fitnessprogramer.com/wp-content/uploads/2021/02/Push-Up.gif",
-    "Full Plank":                "https://fitnessprogramer.com/wp-content/uploads/2021/02/Plank.gif",
-    "Dead Bug":                  "https://fitnessprogramer.com/wp-content/uploads/2021/06/Dead-Bug.gif",
-    "Full Side Plank":           "https://fitnessprogramer.com/wp-content/uploads/2021/04/Side-Plank.gif",
-    "Slow Bicycle Crunch":       "https://fitnessprogramer.com/wp-content/uploads/2021/02/Bicycle-Crunch.gif",
-    "Marching in Place":         "https://fitnessprogramer.com/wp-content/uploads/2021/02/High-Knee.gif",
-    "Superman Hold":             "https://fitnessprogramer.com/wp-content/uploads/2021/02/Superman.gif",
-    "Table Row (Underhand)":     "https://fitnessprogramer.com/wp-content/uploads/2021/06/Bodyweight-Rows.gif",
-    "Reverse Snow Angels":       "https://fitnessprogramer.com/wp-content/uploads/2021/06/Reverse-Snow-Angel.gif",
-    "Y-T-W Raises":              "https://fitnessprogramer.com/wp-content/uploads/2021/10/YTW-Raises.gif",
-    "Doorframe Row":             "https://fitnessprogramer.com/wp-content/uploads/2021/06/Bodyweight-Rows.gif",
-    "Scapular Push-Up":          "https://fitnessprogramer.com/wp-content/uploads/2021/06/Scapular-Push-Up.gif",
-    "Prone Back Extension":      "https://fitnessprogramer.com/wp-content/uploads/2021/06/Back-Extension.gif",
-    "Hip Circles":               "https://fitnessprogramer.com/wp-content/uploads/2021/04/Hip-Circles.gif",
-    "Donkey Kicks":              "https://fitnessprogramer.com/wp-content/uploads/2021/04/Donkey-Kick.gif",
-    "Glute Bridge March":        "https://fitnessprogramer.com/wp-content/uploads/2021/06/Glute-Bridge-March.gif",
-    "Cat-Cow Stretch":           "https://fitnessprogramer.com/wp-content/uploads/2021/04/Cat-Cow.gif",
-    "Low Lunge Hip Flexor Hold": "https://fitnessprogramer.com/wp-content/uploads/2021/06/Low-Lunge.gif",
-    "Wall Angel":                "https://fitnessprogramer.com/wp-content/uploads/2021/10/Wall-Angel.gif",
-    "Bulgarian Split Squat":     "https://fitnessprogramer.com/wp-content/uploads/2021/09/Bulgarian-Split-Squat.gif",
-    "Sissy Squat":               "https://fitnessprogramer.com/wp-content/uploads/2021/09/Sissy-Squat.gif",
-    "Single-Leg Glute Bridge":   "https://fitnessprogramer.com/wp-content/uploads/2021/06/Single-Leg-Glute-Bridge.gif",
-    "Nordic Hamstring Curl":     "https://fitnessprogramer.com/wp-content/uploads/2021/06/Nordic-Hamstring-Curl.gif",
-    "Slow Negative Squat":       "https://fitnessprogramer.com/wp-content/uploads/2021/02/Squat.gif",
-    "Deep Squat Hold":           "https://fitnessprogramer.com/wp-content/uploads/2021/10/Deep-Squat.gif",
-    "Archer Push-Up":            "https://fitnessprogramer.com/wp-content/uploads/2021/09/Archer-Push-Up.gif",
-    "Diamond Push-Up":           "https://fitnessprogramer.com/wp-content/uploads/2021/09/Diamond-Push-Up.gif",
-    "Pseudo Planche Lean":       "https://fitnessprogramer.com/wp-content/uploads/2021/10/Pseudo-Planche-Push-Up.gif",
-    "Pike Push-Up Negative":     "https://fitnessprogramer.com/wp-content/uploads/2021/06/Pike-Push-Up.gif",
-    "Typewriter Push-Up":        "https://fitnessprogramer.com/wp-content/uploads/2021/09/Typewriter-Push-Up.gif",
-    "Hollow Body Hold":          "https://fitnessprogramer.com/wp-content/uploads/2021/06/Hollow-Body-Hold.gif"
+  const query = encodeURIComponent(name + ' exercise tutorial proper form');
+  const ytSearch = 'https://www.youtube.com/results?search_query=' + query;
+  // Use YouTube thumbnail from a curated video ID map (fallback to search)
+  const VIDEO_IDS = {
+    "Pause Squat":"TG6hzmfh_Tg","Reverse Lunge":"csOgFMNKpv0","Glute Bridge + 2s Hold":"8bbE64NuDTU",
+    "Single-Leg Calf Raise":"gwLzBJYoWlI","Wall Sit":"y-wV4Venusw","Knee Push-Up":"jWxvty2KROs",
+    "Wide Push-Up (Knee)":"IODxDxX7oi4","Pike Push-Up":"x7_I5SO4_QA","Tricep Floor Dip":"6kALZikXxLc",
+    "Shoulder Tap Plank":"LEZck1e5R9M","Slow Negative Push-Up":"IODxDxX7oi4","Full Plank":"ASdvN_XEl_c",
+    "Dead Bug":"YBq_QCPSkso","Full Side Plank":"_rdfjFSFKMY","Slow Bicycle Crunch":"9FGilxCbdz8",
+    "Marching in Place":"HhEIuYYOX7I","Superman Hold":"z6PJMT2y8GQ","Table Row (Underhand)":"iBtSBmBiQ5o",
+    "Reverse Snow Angels":"l9MIw3QKDYI","Y-T-W Raises":"oqDtZxFGr7Y","Doorframe Row":"nOIMnvfuTvA",
+    "Scapular Push-Up":"GQvUw2AqmYE","Prone Back Extension":"qtVYU5FECPA","Hip Circles":"LJNI62N5R8M",
+    "Donkey Kicks":"NXt0RzJ8GEo","Glute Bridge March":"bJG5Wj7jNc8","Cat-Cow Stretch":"kqnua4rHVVA",
+    "Low Lunge Hip Flexor Hold":"YQmpO19RNXI","Wall Angel":"xyRLqoUvWy8","Bulgarian Split Squat":"2C-uNgKwPLE",
+    "Sissy Squat":"6YvKOvJmjHc","Single-Leg Glute Bridge":"8bbE64NuDTU","Nordic Hamstring Curl":"GQJaZMonh2c",
+    "Slow Negative Squat":"TG6hzmfh_Tg","Deep Squat Hold":"naqKh1wULpk","Archer Push-Up":"gKF-pBHdlKA",
+    "Diamond Push-Up":"J0DXoz5_-1U","Pseudo Planche Lean":"KGzObNCS_k4","Pike Push-Up Negative":"x7_I5SO4_QA",
+    "Typewriter Push-Up":"gKF-pBHdlKA","Hollow Body Hold":"LlDNef_Ztsc"
   };
-  const imgUrl = IMAGE_URLS[name];
-  if(!imgUrl) return '';
-  return `<div class="demo-box">
-    <img class="demo-img" src="${imgUrl}" alt="${name} demonstration"
-         onerror="this.parentElement.style.display='none'" loading="lazy"
-         style="max-height:220px;width:100%;object-fit:contain;background:#111;border-radius:10px;" />
-    <div class="demo-label">EXERCISE DEMO</div>
+  const vid = VIDEO_IDS[name];
+  const thumb = vid ? `https://img.youtube.com/vi/${vid}/mqdefault.jpg` : null;
+  const watchUrl = vid ? `https://www.youtube.com/watch?v=${vid}` : ytSearch;
+  return `<div style="margin-bottom:10px">
+    ${thumb ? `<div class="demo-box"><img class="demo-img" src="${thumb}" alt="${name} demo" onerror="this.parentElement.style.display='none'" loading="lazy" /><div class="demo-label">EXERCISE PREVIEW</div></div>` : ''}
+    <a class="demo-watch-btn" href="${watchUrl}" target="_blank" rel="noopener">
+      <span style="font-size:16px">▶️</span> WATCH FULL TUTORIAL
+    </a>
   </div>`;
 }
 
@@ -760,7 +687,7 @@ function render(){
   const d = DAYS[activeDay];
   document.documentElement.style.setProperty('--accent', d.accent);
   document.getElementById('headerLabel').style.color = d.accent;
-
+  document.getElementById('goalBanner').style.borderBottomColor = d.accent;
   renderWeek(); renderTabs(); renderMain();
   updateStreakBar();
 }
@@ -768,15 +695,14 @@ function render(){
 function renderWeek(){
   const el = document.getElementById('weekStrip');
   el.innerHTML = '';
-  // daysDone maps date -> dayIdx that was completed that day
-  const daysDone = JSON.parse(localStorage.getItem('calitrainDaysDone') || '{}');
-  // Build set of completed dayIdx values from the last 7 days
-  const completedDayIdxSet = new Set(Object.values(daysDone));
+  // Use the reliable all-time completed day index set
+  const allDone = new Set(JSON.parse(localStorage.getItem('calitrainAllDone') || '[]'));
+  // Also count current session progress toward completion
+  if(pct(activeDay) >= appSettings.completion_pct) allDone.add(activeDay);
   WEEK.forEach(w=>{
     const div = document.createElement('div');
     const isA = !w.rest && w.dIdx===activeDay;
-    // A slot glows only if its specific day index was completed
-    const isDone = !w.rest && completedDayIdxSet.has(w.dIdx);
+    const isDone = !w.rest && allDone.has(w.dIdx);
     div.className='week-day'+(w.rest?' rest':'')+(isA?' active':'')+(isDone?' done':'');
     if(!w.rest) div.onclick=()=>{activeDay=w.dIdx;render();};
     div.innerHTML=`<div class="week-day-top-bar"></div><div class="week-day-label">${w.day}</div><div class="week-day-num">${w.rest?'REST':'D'+(w.dIdx+1)}</div>`;
@@ -915,26 +841,6 @@ function startRestTimer(s){
   document.getElementById('timerSub').textContent='REST TIMER — tap START';
 }
 
-function playTimerDoneSound(){
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    // Three quick ascending beeps
-    [[0, 880], [0.18, 1046], [0.36, 1318]].forEach(([delay, freq]) => {
-      const osc  = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.type = 'sine';
-      osc.frequency.value = freq;
-      gain.gain.setValueAtTime(0, ctx.currentTime + delay);
-      gain.gain.linearRampToValueAtTime(0.4, ctx.currentTime + delay + 0.01);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + delay + 0.25);
-      osc.start(ctx.currentTime + delay);
-      osc.stop(ctx.currentTime + delay + 0.3);
-    });
-  } catch(e) {}
-}
-
 function toggleTimer(){
   if(!timerRunning){
     timerRunning=true;
@@ -944,7 +850,6 @@ function toggleTimer(){
       timerSeconds--;
       updateTimerDisplay();
       if(timerSeconds<=0){
-        playTimerDoneSound();
         stopTimer();
         document.getElementById('timerSub').textContent='✅ REST DONE!';
         setTimeout(()=>document.getElementById('timerBar').classList.remove('visible'),2000);
@@ -1072,6 +977,35 @@ function getCompletedDates(){
   return raw ? JSON.parse(raw) : [];
 }
 
+function getWeekStart(date){
+  // Week starts on Monday
+  const d = new Date(date);
+  const day = d.getDay(); // 0=Sun,1=Mon...
+  const diff = (day === 0 ? -6 : 1 - day);
+  d.setDate(d.getDate() + diff);
+  return d.toISOString().split('T')[0];
+}
+
+function checkWeeklyReset(){
+  const today = new Date();
+  const dayOfWeek = today.getDay(); // 0=Sun, 1=Mon ... 6=Sat
+  const thisWeekStart = getWeekStart(today);
+  const lastWeekStart = localStorage.getItem('calitrainWeekStart');
+
+  // Only reset on Monday (day 1) when a new week is detected.
+  // Sunday is still part of the OLD week — never reset then.
+  if(dayOfWeek === 1 && lastWeekStart !== thisWeekStart){
+    localStorage.setItem('calitrainAllDone', JSON.stringify([]));
+    localStorage.setItem('calitrainWeekStart', thisWeekStart);
+    console.log('🗓️ Monday detected — weekly progress reset.');
+  }
+
+  // If week start isn't stored yet, just save it without resetting
+  if(!lastWeekStart){
+    localStorage.setItem('calitrainWeekStart', thisWeekStart);
+  }
+}
+
 function markTodayComplete(){
   const dates = getCompletedDates();
   const today = new Date().toISOString().split('T')[0];
@@ -1079,10 +1013,12 @@ function markTodayComplete(){
     dates.push(today);
     localStorage.setItem('calitrainDates', JSON.stringify(dates));
   }
-  // Also track which day index was completed on which date
-  const daysDone = JSON.parse(localStorage.getItem('calitrainDaysDone') || '{}');
-  daysDone[today] = activeDay;
-  localStorage.setItem('calitrainDaysDone', JSON.stringify(daysDone));
+  // Track all completed day indices permanently
+  const allDone = JSON.parse(localStorage.getItem('calitrainAllDone') || '[]');
+  if(!allDone.includes(activeDay)){
+    allDone.push(activeDay);
+    localStorage.setItem('calitrainAllDone', JSON.stringify(allDone));
+  }
 }
 
 function calcStreak(){
@@ -1121,7 +1057,7 @@ function updateStreakBar(){
   bar.style.display = 'flex';
 
   document.getElementById('streakCount').textContent = streak;
-  document.getElementById('streakFire').textContent = streak >= appSettings.streak_required ? '🔥' : streak >= 3 ? '✨' : '💪';
+  document.getElementById('streakFire').textContent = streak >= 7 ? '🔥' : streak >= 3 ? '✨' : '💪';
 
   const canLevelUp = tierIdx < TIER_ORDER.length - 1;
   const streakReady = streak >= appSettings.streak_required;
@@ -1130,12 +1066,10 @@ function updateStreakBar(){
 
   document.getElementById('levelupBtn').style.display = showBtn ? 'block' : 'none';
 
-  // Progress bar toward next level up
-  const sreq = appSettings.streak_required;
-  const mreq = appSettings.manual_days_required;
-  const target = streakReady ? sreq : mreq;
-  const prog = streakReady ? Math.min(streak, sreq) : Math.min(total, mreq);
-  const pct = Math.round((prog / target) * 100);
+  // Progress bar toward next level up (streak-based = /7, manual = /5)
+  const target = streakReady ? appSettings.streak_required : appSettings.manual_days_required;
+  const prog = streakReady ? Math.min(streak,7) : Math.min(total,5);
+  const pct = Math.round((prog/target)*100);
   document.getElementById('streakProgFill').style.width = pct+'%';
 
   if(streakReady){
@@ -1145,9 +1079,8 @@ function updateStreakBar(){
     document.getElementById('streakProgLabel').textContent = total+' days done — level up available';
     document.getElementById('streakProgFill').style.background = '#f59e0b';
   } else {
-    const display = streak > total ? streak : total;
-    const denom   = streak > total ? sreq : mreq;
-    document.getElementById('streakProgLabel').textContent = display+' / '+denom+' to level up';
+    const remaining = Math.min(7-streak, 5-total);
+    document.getElementById('streakProgLabel').textContent = (streakReady?streak:Math.max(streak,total))+' / '+(streak>total?7:5)+' to level up';
     document.getElementById('streakProgFill').style.background = '#f59e0b';
   }
 }
@@ -1157,7 +1090,6 @@ function checkDayComplete(){
   if(p >= appSettings.completion_pct){
     markTodayComplete();
     updateStreakBar();
-    renderWeek(); // update glow
   }
 }
 
@@ -1184,10 +1116,13 @@ function openLevelUp(){
   const setsDiff = toCfg.setsAdj - fromCfg.setsAdj;
   const restDiff = toCfg.restAdj - fromCfg.restAdj;
 
+  const nextStreakReq = appSettings.streak_required * 2;
+  const nextManualReq = appSettings.manual_days_required + 5;
   document.getElementById('levelupChanges').innerHTML =
     `<div class="levelup-change-row"><span>Sets per exercise</span><span class="levelup-change-val">${setsDiff>0?'+':''}${setsDiff} set${Math.abs(setsDiff)!==1?'s':''}</span></div>
      <div class="levelup-change-row"><span>Rest between sets</span><span class="levelup-change-val">${restDiff>0?'+':''}${restDiff}s</span></div>
-     <div class="levelup-change-row"><span>New tier</span><span class="levelup-change-val" style="color:${to.color}">${to.label}</span></div>`;
+     <div class="levelup-change-row"><span>New tier</span><span class="levelup-change-val" style="color:${to.color}">${to.label}</span></div>
+     <div class="levelup-change-row" style="margin-top:4px;border-top:1px solid #2a2a2a;padding-top:8px"><span style="color:var(--muted)">Next level up requires</span><span class="levelup-change-val" style="color:#f59e0b">${nextStreakReq} streak days</span></div>`;
 
   document.getElementById('levelupOverlay').classList.add('open');
 }
@@ -1196,19 +1131,40 @@ function closeLevelUp(){
   document.getElementById('levelupOverlay').classList.remove('open');
 }
 
-function confirmLevelUp(){
+async function confirmLevelUp(){
   const tierIdx = TIER_ORDER.indexOf(userProfile.tier);
   if(tierIdx >= TIER_ORDER.length-1) return;
   userProfile.tier = TIER_ORDER[tierIdx+1];
   localStorage.setItem('calitrainProfile', JSON.stringify(userProfile));
   closeLevelUp();
   applyProfileToHeader();
-  updateStreakBar();
-  render();
-  // Reset completed dates so streak resets fresh
+
+  // Escalate difficulty — double streak req, +5 manual days
+  const newStreakReq = appSettings.streak_required * 2;
+  const newManualReq = appSettings.manual_days_required + 5;
+  try {
+    await fetch('/api/admin/settings', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        streak_required: newStreakReq,
+        manual_days_required: newManualReq,
+        completion_pct: appSettings.completion_pct
+      })
+    });
+    appSettings.streak_required = newStreakReq;
+    appSettings.manual_days_required = newManualReq;
+  } catch(e){}
+
+  // Reset streak and week glow so they earn the next level from scratch
   localStorage.setItem('calitrainDates', JSON.stringify([]));
   localStorage.removeItem('calitrainDaysDone');
-  showToast('🏆 LEVELLED UP TO '+TIER_CONFIG[userProfile.tier].label+'!');
+  localStorage.setItem('calitrainAllDone', JSON.stringify([]));
+  localStorage.setItem('calitrainWeekStart', getWeekStart(new Date()));
+
+  updateStreakBar();
+  render();
+  showToast('🏆 LEVELLED UP TO '+TIER_CONFIG[userProfile.tier].label+'! Next level: '+newStreakReq+' day streak →');
 }
 
 function showToast(msg){
@@ -1307,9 +1263,6 @@ function showAdminSettings(data){
   document.getElementById('adminStreakNote').innerHTML =
     `Current streak: <strong>${streak} days</strong> &nbsp;|&nbsp; Total completed: <strong>${total} days</strong><br>
      Level Up unlocks at: <strong>${req} streak days</strong> or <strong>${data.manual_days_required||5} total days</strong>`;
-  // Pre-fill override with current streak
-  document.getElementById('settingStreakOverride').value = streak;
-  document.getElementById('streakOverrideMsg').style.display = 'none';
 }
 
 async function saveAdminSettings(){
@@ -1340,39 +1293,6 @@ async function doAdminLogout(){
   closeAdmin();
 }
 
-function applyStreakOverride(){
-  const n = parseInt(document.getElementById('settingStreakOverride').value);
-  if(isNaN(n) || n < 0) return;
-
-  // Build n consecutive dates ending today
-  const existing = getCompletedDates();
-  const today = new Date();
-
-  // Remove dates that overlap with the range we'll write (last n days)
-  const cutoff = new Date(today);
-  cutoff.setDate(cutoff.getDate() - n);
-  const cutoffStr = cutoff.toISOString().split('T')[0];
-  const filtered = existing.filter(d => d < cutoffStr);
-
-  if(n > 0){
-    for(let i = n - 1; i >= 0; i--){
-      const d = new Date(today);
-      d.setDate(d.getDate() - i);
-      const ds = d.toISOString().split('T')[0];
-      if(!filtered.includes(ds)) filtered.push(ds);
-    }
-  }
-
-  filtered.sort();
-  localStorage.setItem('calitrainDates', JSON.stringify(filtered));
-  updateStreakBar();
-
-  const msg = document.getElementById('streakOverrideMsg');
-  msg.textContent = n === 0 ? '✅ Streak cleared.' : `✅ Streak set to ${n} day${n===1?'':'s'}.`;
-  msg.style.display = 'block';
-  setTimeout(() => msg.style.display = 'none', 3000);
-}
-
 async function loadProgress(){
   try {
     const res = await fetch('/api/progress');
@@ -1381,6 +1301,7 @@ async function loadProgress(){
   } catch(e) { completedSets = {}; }
   render();
 }
+checkWeeklyReset();
 loadSettings().then(()=>{ initProfile(); loadProgress(); });
 </script>
 
@@ -1429,18 +1350,6 @@ loadSettings().then(()=>{ initProfile(); loadProgress(); });
           <div class="admin-setting-sub">% of sets needed to count as a completed day</div>
         </div>
         <input class="admin-setting-input" id="settingPct" type="number" min="10" max="100" value="70" />
-      </div>
-      <div class="admin-divider"></div>
-      <div class="admin-setting-row" style="border:none;flex-direction:column;align-items:flex-start;gap:10px">
-        <div>
-          <div class="admin-setting-label">Override Current Streak 🔥</div>
-          <div class="admin-setting-sub" style="margin-top:2px">Manually set streak count — injects consecutive completed dates into local storage</div>
-        </div>
-        <div style="display:flex;gap:10px;width:100%;align-items:center">
-          <input class="admin-setting-input" id="settingStreakOverride" type="number" min="0" max="365" value="0" style="width:80px" />
-          <button class="admin-btn" style="margin:0;flex:1;padding:10px 0" onclick="applyStreakOverride()">SET STREAK →</button>
-        </div>
-        <div id="streakOverrideMsg" style="font-family:'Space Mono',monospace;font-size:11px;color:#4ade80;display:none"></div>
       </div>
       <div class="admin-divider"></div>
       <button class="admin-btn" onclick="saveAdminSettings()">SAVE SETTINGS</button>
