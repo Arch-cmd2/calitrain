@@ -1,209 +1,1047 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CALITRAIN — Summer Body Edition</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap');
-
-  :root {
-    --gold: #c9a96e;
-    --gold-dim: #8a6f42;
-    --dark: #111010;
-    --dark2: #181818;
-    --dark3: #1f1f1f;
-    --dark4: #2a2a2a;
-    --border: rgba(255,255,255,0.06);
-    --text: #e8e4de;
-    --muted: #666;
-    --accent: #c9a96e;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: var(--text); min-height: 100vh; overflow-x: hidden; padding-bottom: 100px; }
-  button { cursor: pointer; font-family: inherit; }
-
-  /* ── HEADER ── */
-  .header {
-    background: rgba(17,16,16,0.97);
-    backdrop-filter: blur(12px);
-    padding: 16px 24px;
-    position: sticky; top: 0; z-index: 100;
-    display: flex; justify-content: space-between; align-items: center;
-    border-bottom: 1px solid var(--border);
-  }
-  .header-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 3px; color: var(--gold-dim); margin-bottom: 3px; }
-  .header-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: #fff; font-weight: 300; font-style: italic; letter-spacing: 2px; }
-  .header-right { display: flex; align-items: center; gap: 10px; }
-  .profile-btn {
-    background: none; border: 1px solid var(--border); border-radius: 4px;
-    padding: 7px 14px; font-family: 'Space Mono', monospace; font-size: 8px;
-    font-weight: 700; color: var(--muted); letter-spacing: 2px; cursor: pointer;
-    transition: all 0.2s;
-  }
-  .profile-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
-  .asthma-btn {
-    background: none; border: 1px solid rgba(239,68,68,0.3); border-radius: 4px;
-    padding: 7px 14px; display: flex; align-items: center; gap: 6px;
-    font-family: 'Space Mono', monospace; font-size: 8px; font-weight: 700;
-    color: #ef4444; letter-spacing: 2px; cursor: pointer; transition: all 0.2s;
-  }
-  .tier-badge { display: inline-block; padding: 2px 8px; border-radius: 2px; font-family: 'Space Mono', monospace; font-size: 8px; font-weight: 700; margin-left: 8px; vertical-align: middle; letter-spacing: 1px; }
-
-  /* ── STREAK BAR ── */
-  .streak-bar { background: var(--dark2); border-bottom: 1px solid var(--border); padding: 10px 24px; display: flex; justify-content: space-between; align-items: center; }
-  .streak-left { display: flex; align-items: center; gap: 10px; }
-  .streak-fire { font-size: 14px; }
-  .streak-count { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--gold); font-weight: 300; }
-  .streak-label { font-family: 'Space Mono', monospace; font-size: 7px; color: var(--muted); letter-spacing: 2px; margin-top: 1px; }
-  .streak-progress { flex: 1; margin: 0 20px; }
-  .streak-prog-label { font-family: 'Space Mono', monospace; font-size: 7px; color: var(--muted); margin-bottom: 5px; text-align: right; letter-spacing: 1px; }
-  .streak-prog-bg { height: 1px; background: var(--dark4); border-radius: 1px; overflow: hidden; }
-  .streak-prog-fill { height: 100%; border-radius: 1px; background: var(--gold); transition: width 0.5s ease; }
-
-  /* ── WEEK NAV ── */
-  .week-strip { display: flex; background: var(--dark2); border-bottom: 1px solid var(--border); }
-  .week-day { flex: 1; min-width: 38px; text-align: center; padding: 14px 4px 12px; cursor: pointer; position: relative; transition: background 0.2s; }
-  .week-day:hover:not(.rest) { background: rgba(255,255,255,0.02); }
-  .week-day.rest { cursor: default; opacity: 0.25; }
-  .week-day-top-bar { position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--border); transition: all 0.3s; }
-  .week-day.active .week-day-top-bar { background: var(--accent); }
-  .week-day.done .week-day-top-bar { background: var(--gold); box-shadow: 0 0 8px var(--gold), 0 0 20px rgba(201,169,110,0.4); }
-  .week-day.active.done .week-day-top-bar { background: var(--accent); box-shadow: 0 0 10px var(--accent), 0 0 28px rgba(201,169,110,0.5); }
-  .week-day-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 2px; color: var(--muted); margin-bottom: 6px; }
-  .week-day.active .week-day-label { color: var(--gold); }
-  .week-day.done .week-day-label { color: var(--gold-dim); }
-  .week-day-num { font-size: 9px; color: var(--muted); font-weight: 600; font-family: 'Space Mono', monospace; }
-  .week-day.active .week-day-num { color: #fff; }
-  .week-day.done .week-day-num { color: var(--gold); }
-
-  /* ── DAY TABS ── */
-  .day-tabs { display: flex; background: var(--dark2); border-bottom: 1px solid var(--border); overflow-x: auto; }
-  .day-tab { flex: 1; min-width: 54px; padding: 10px 2px; font-family: 'Space Mono', monospace; font-size: 8px; font-weight: 700; letter-spacing: 2px; color: var(--muted); border: none; border-bottom: 1px solid transparent; margin-bottom: -1px; background: none; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
-  .day-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
-
-  /* ── ADMIN PANEL ── */
-  .admin-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:700;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity 0.25s; }
-  .admin-overlay.open { opacity:1;pointer-events:all; }
-  .admin-card { background:var(--dark2);border:1px solid var(--border);padding:28px 24px;width:100%;max-width:380px; }
-  .admin-title { font-family:'Cormorant Garamond',serif;font-size:22px;color:#fff;margin-bottom:4px;font-weight:300; }
-  .admin-sub { font-size:9px;color:var(--muted);margin-bottom:22px;font-family:'Space Mono',monospace;letter-spacing:2px; }
-  .admin-btn { width:100%;padding:12px;background:var(--gold);border:none;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;color:#000;letter-spacing:2px;cursor:pointer;margin-top:4px; }
-  .admin-setting-row { display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border); }
-  .admin-setting-label { font-size:13px;color:var(--text); }
-  .admin-setting-sub { font-size:10px;color:var(--muted);margin-top:2px; }
-  .admin-setting-input { width:60px;background:var(--dark3);border:1px solid var(--border);padding:6px 9px;font-size:13px;color:var(--text);font-family:'Space Mono',monospace;text-align:center;outline:none; }
-</style>
-</head>
-<body>
-
-<header class="header">
-  <div>
-    <div class="header-label" id="headerLabel">EST. 2026</div>
-    <div class="header-title">CALITRAIN</div>
-  </div>
-</header>
-
-<div class="streak-bar">
-  <div class="streak-left">
-    <div class="streak-fire">🔥</div>
-    <div>
-      <div class="streak-count" id="streakCount">0</div>
-      <div class="streak-label">DAY STREAK</div>
-    </div>
-  </div>
-</div>
+<!-- TOAST -->
+<div class="tier-up-toast" id="tierUpToast"></div>
 
 <div class="week-strip" id="weekStrip"></div>
 <div class="day-tabs" id="dayTabs"></div>
+<div id="mainContent"></div>
 
-<div class="admin-overlay" id="adminOverlay">
-  <div class="admin-card">
-    <div class="admin-title">Admin Controls</div>
-    <div class="admin-sub">Manual Data Override</div>
-    <div class="admin-setting-row">
-      <div>
-        <div class="admin-setting-label">Override Streak</div>
-        <div class="admin-setting-sub">Set your daily streak manually</div>
+<script>
+const DAYS = [
+  {
+    label:"DAY 1", title:"Leg Power", subtitle:"Quads, Glutes & Calves",
+    accent:"#4ade80", intensity:"MODERATE", intColor:"#4ade80", duration:"~30 min",
+    muscles:["Quads","Glutes","Hamstrings","Calves"],
+    warmup:"March in place 2 min → Leg swings 30s each → Hip circles 30s → 3 deep belly breaths.",
+    cooldown:"Standing quad stretch 30s each → Seated hamstring fold 40s → Calf stretch on wall 30s each.",
+    exercises:[
+      { name:"Pause Squat", sets:3, reps:"12", rest:50,
+        breath:"Inhale going DOWN → Hold 2s at bottom → Exhale pushing UP",
+        tip:"Pause 2 seconds at the lowest point. Removes momentum so quads must do all the work — directly builds running push-off and powerful legs.",
+        mod:"Skip the pause and squat normally if knees feel unstable." },
+      { name:"Reverse Lunge", sets:3, reps:"10 each leg", rest:55,
+        breath:"Inhale stepping BACK → Exhale driving UP through front heel",
+        tip:"Step backward, drop the back knee close to the floor. Trains hip extension in every running stride. Also shapes the glutes.",
+        mod:"Hold a wall for balance. 8 reps is fine if 10 is too tiring." },
+      { name:"Glute Bridge + 2s Hold", sets:4, reps:"12", rest:45,
+        breath:"Inhale flat → Exhale lifting HIPS → Hold 2s at top → Inhale lowering",
+        tip:"Squeeze hard for 2 seconds at the top. Time under tension builds glute mass — great for a rounder look and cycling power.",
+        mod:"Drop to 3 sets if 4 feels too hard on your breathing." },
+      { name:"Single-Leg Calf Raise", sets:3, reps:"12 each leg", rest:40,
+        breath:"Breathe normally and steadily throughout.",
+        tip:"Rise slowly and lower over 3 seconds. Builds the ankle push-off strength every runner needs. Defined calves start here.",
+        mod:"Hold a wall. Both legs together if single-leg is too hard." },
+      { name:"Wall Sit", sets:3, reps:"25 sec hold", rest:55,
+        breath:"Slow deep belly breaths — count your exhales to stay calm.",
+        tip:"Back flat, knees at 90°. Isometric quad endurance — the exact demand of cycling hill climbs.",
+        mod:"15–20s is fine if 25s makes your breathing go ragged." }
+    ]
+  },
+  {
+    label:"DAY 2", title:"Push Day", subtitle:"Chest, Shoulders & Triceps",
+    accent:"#f97316", intensity:"MODERATE", intColor:"#f97316", duration:"~30 min",
+    muscles:["Chest","Shoulders","Triceps","Core"],
+    warmup:"Arm circles 30s forward + back → Shoulder rolls 20s → Wall chest stretch 20s each → 3 deep belly breaths.",
+    cooldown:"Cross-arm shoulder stretch 30s each → Tricep overhead stretch 30s each → Chest open doorframe stretch 30s.",
+    exercises:[
+      { name:"Knee Push-Up", sets:3, reps:"12", rest:50,
+        breath:"Inhale lowering DOWN → Exhale pressing UP",
+        tip:"Knees on floor, hands slightly wider than shoulders. Builds chest, shoulder, and tricep strength — the foundation of a broader upper body.",
+        mod:"Progress to full push-ups when 12 reps feels easy for 2 weeks straight." },
+      { name:"Wide Push-Up (Knee)", sets:3, reps:"10", rest:50,
+        breath:"Inhale lowering DOWN → Exhale pressing UP",
+        tip:"Hands wider than shoulder-width. Shifts load onto the outer chest — creates the pec width that defines a strong chest from the front.",
+        mod:"Reduce to 8 reps if the wider grip feels unstable." },
+      { name:"Pike Push-Up", sets:3, reps:"8", rest:55,
+        breath:"Inhale lowering head toward floor → Exhale pressing BACK UP",
+        tip:"Hips high in an inverted V, lower your head between your hands. Shoulder-dominant — builds the rounded deltoid shape that makes arms look bigger.",
+        mod:"Only lower halfway if 8 full reps causes shoulder strain." },
+      { name:"Tricep Floor Dip", sets:3, reps:"12", rest:45,
+        breath:"Inhale lowering DOWN → Exhale pressing UP",
+        tip:"Hands behind hips on the floor, bend elbows to lower and press up. Targets triceps — the muscle that makes up 2/3 of your upper arm size.",
+        mod:"Keep feet flat and knees bent to reduce the load." },
+      { name:"Shoulder Tap Plank", sets:3, reps:"10 each side", rest:40,
+        breath:"Exhale as you LIFT the hand → Inhale returning.",
+        tip:"Full plank, tap opposite shoulder slowly. Shoulder stability + anti-rotation core — trains the controlled arm drive used in running.",
+        mod:"Widen your feet for more stability. Slow deliberate taps = more benefit." },
+      { name:"Slow Negative Push-Up", sets:3, reps:"6", rest:55,
+        breath:"Inhale the whole way DOWN (4 seconds) → Exhale pressing back UP",
+        tip:"Lower in 4 full seconds. Eccentric loading builds strength faster than regular reps — the single best exercise for accelerating chest development.",
+        mod:"Start from knees. The slow lowering is the whole point — don't rush." }
+    ]
+  },
+  {
+    label:"DAY 3", title:"Core Engine", subtitle:"Abs, Obliques & Light Cardio",
+    accent:"#60a5fa", intensity:"MODERATE", intColor:"#60a5fa", duration:"~25 min",
+    muscles:["Abs","Obliques","Lower Back","Hip Flexors"],
+    warmup:"March in place 2 min → Cat-cow 30s → Arm circles 30s → 3 deep belly breaths.",
+    cooldown:"Child's pose 40s → Supine twist 30s each → 5 deep diaphragm breaths to close.",
+    exercises:[
+      { name:"Full Plank", sets:3, reps:"25 sec hold", rest:40,
+        breath:"Slow steady breaths — exhale every 5 seconds, never hold.",
+        tip:"Toes on floor, straight line head to heel. Core bracing keeps your midsection tight and protects your lower back in every other exercise.",
+        mod:"Drop to knee plank if your lower back arches or breathing spikes." },
+      { name:"Dead Bug", sets:3, reps:"8 each side", rest:40,
+        breath:"Exhale FULLY and slowly as you lower arm and leg down.",
+        tip:"Lower back pressed to floor every rep. Trains the deep core muscles that pull the abdomen in — creates a flatter-looking stomach at rest.",
+        mod:"Lower one limb at a time if both together is too difficult." },
+      { name:"Full Side Plank", sets:3, reps:"25 sec each side", rest:30,
+        breath:"Breathe into the ribcage facing up.",
+        tip:"Feet stacked, body in a straight line. Builds the obliques — the side muscles that create a defined waist and V-shape when body fat drops.",
+        mod:"Drop to knee-down version if hips sag or breathing spikes." },
+      { name:"Slow Bicycle Crunch", sets:3, reps:"10 each side", rest:35,
+        breath:"Exhale as you ROTATE toward knee → Inhale centering.",
+        tip:"3 seconds per rotation. Best exercise for hitting both the rectus abdominis and obliques — the two muscle groups responsible for visible abs.",
+        mod:"Support your neck if it strains. Slow always beats fast." },
+      { name:"Marching in Place", sets:3, reps:"60 sec", rest:50,
+        breath:"In through NOSE (2 steps) → out through MOUTH (2 steps). Keep this rhythm.",
+        tip:"Knee to hip height, active arms. Raises heart rate safely to burn calories — essential for the fat loss that will reveal the core muscles you're building.",
+        mod:"Slow the march if breathing feels rushed." },
+      { name:"Superman Hold", sets:3, reps:"20 sec hold", rest:40,
+        breath:"Steady calm breaths — try not to tense your jaw.",
+        tip:"Lie face down, lift arms and legs. Trains the entire posterior chain — strong back muscles improve posture and make your front look more defined by contrast.",
+        mod:"Lift arms only (no legs) if lower back is weak." }
+    ]
+  },
+  {
+    label:"DAY 4", title:"Pull Day", subtitle:"Back, Biceps & Rear Delts",
+    accent:"#a78bfa", intensity:"MODERATE", intColor:"#a78bfa", duration:"~30 min",
+    muscles:["Upper Back","Rear Delts","Biceps","Lats","Rhomboids"],
+    warmup:"Arm circles 30s → Shoulder blade squeezes 10 reps → Slow neck rolls 20s → 3 deep belly breaths.",
+    cooldown:"Cross-arm stretch 30s each → Child's pose lat stretch 40s → Doorframe bicep stretch 20s each.",
+    exercises:[
+      { name:"Table Row (Underhand)", sets:3, reps:"10", rest:50,
+        breath:"Exhale pulling CHEST UP → Inhale lowering DOWN",
+        tip:"Lie under a sturdy table, grip the edge underhand, pull chest up to it. The best bodyweight row — builds biceps, back width, and the V-taper that makes your waist look smaller.",
+        mod:"Bend your knees to make it easier. Brace the table against a wall for safety." },
+      { name:"Reverse Snow Angels", sets:3, reps:"12", rest:45,
+        breath:"Exhale sweeping arms UP overhead → Inhale sweeping back DOWN.",
+        tip:"Lie face down, sweep arms from sides to overhead. Targets rear deltoids and rhomboids — pulls shoulders back and improves posture. Visible from behind and the side.",
+        mod:"Lift only a few centimeters off the floor. Range matters less than control." },
+      { name:"Y-T-W Raises", sets:3, reps:"8 each shape", rest:50,
+        breath:"Exhale lifting UP → Inhale lowering DOWN.",
+        tip:"Lie face down, form Y then T then W with your arms. Each targets a different upper back muscle — combined, they build the full rear shoulder width for a balanced look.",
+        mod:"Do only Y and T shapes first week. Add W when those feel comfortable." },
+      { name:"Doorframe Row", sets:3, reps:"10", rest:50,
+        breath:"Exhale pulling CHEST toward frame → Inhale extending arms.",
+        tip:"Grip both sides of a doorframe at chest height, lean back and pull. Trains lats and mid-back — creates the V-taper look (wider back, narrower waist).",
+        mod:"Stand more upright for easier. Lean further back to progress." },
+      { name:"Scapular Push-Up", sets:3, reps:"12", rest:40,
+        breath:"Exhale squeezing shoulder blades TOGETHER → Inhale spreading apart.",
+        tip:"In a plank, squeeze shoulder blades without bending elbows. Trains the serratus anterior — the small wing muscles under your armpits that become visible with lower body fat.",
+        mod:"Can be done from knees. Small movement, big muscle recruitment." },
+      { name:"Prone Back Extension", sets:3, reps:"15", rest:40,
+        breath:"Exhale as you LIFT → Inhale as you LOWER.",
+        tip:"Lie face down, hands by temples, lift chest off the floor. Builds the erector spinae — strong lower back supports every exercise and improves the upright posture that looks confident.",
+        mod:"Only lift as high as comfortable. Stop if lower back feels compressed." }
+    ]
+  },
+  {
+    label:"DAY 5", title:"Flex & Flow", subtitle:"Hips, Mobility & Active Recovery",
+    accent:"#fb7185", intensity:"LOW", intColor:"#60a5fa", duration:"~25 min",
+    muscles:["Hip Flexors","Hamstrings","IT Band","Thoracic Spine","Shoulders"],
+    warmup:"Easy march in place 90s → Hip circles 30s → Gentle neck rolls 20s → 3 deep belly breaths.",
+    cooldown:"Full-body static stretch: quads → hamstrings → chest → lats → hips → 5 slow belly breaths.",
+    exercises:[
+      { name:"Hip Circles", sets:2, reps:"10 each direction", rest:20,
+        breath:"Slow deep belly breaths throughout.",
+        tip:"Wide circles, hands on hips. Lubricates the hip joint for long cycling rides and running sessions.",
+        mod:"Make circles as wide as comfortable without shifting the torso." },
+      { name:"Donkey Kicks", sets:3, reps:"12 each leg", rest:30,
+        breath:"Exhale KICKING up → Inhale lowering down.",
+        tip:"Squeeze the glute 1 full second at the top. Direct glute activation — contributes to the rounded glute shape alongside the bridge work on Day 1.",
+        mod:"Reduce to 10 reps if back arches." },
+      { name:"Glute Bridge March", sets:3, reps:"8 each leg", rest:35,
+        breath:"Exhale lifting the knee → Inhale lowering it back.",
+        tip:"Hold a glute bridge, alternately lift each knee. Trains single-leg glute stability — the exact demand of every running step.",
+        mod:"Lower hips slightly if balance is difficult." },
+      { name:"Cat-Cow Stretch", sets:2, reps:"10 slow reps", rest:20,
+        breath:"Inhale arching (cow) → Exhale rounding (cat). Sync breath and movement.",
+        tip:"Mobilizes the thoracic spine — prevents the forward hunch from push-ups and cycling posture. Good posture is half the battle for looking fit.",
+        mod:"Very slow. This is a breathing exercise as much as a stretch." },
+      { name:"Low Lunge Hip Flexor Hold", sets:2, reps:"40 sec each side", rest:15,
+        breath:"Exhale deeper into the lunge on every breath.",
+        tip:"Hip flexors shorten from sitting and cycling. Tight hip flexors flatten the glutes and cause lower back pain — one of the most important stretches in this entire program.",
+        mod:"Place a folded towel under the back knee for cushion." },
+      { name:"Wall Angel", sets:3, reps:"10 slow reps", rest:30,
+        breath:"Exhale sliding arms UP → Inhale sliding arms back DOWN.",
+        tip:"Back flat against wall, slide arms up in a goalpost shape. Trains the shoulder mobility needed for proper push-up form — and fixes the rounded shoulders that hide your chest definition.",
+        mod:"Only go as far as your arms can stay flat on the wall." }
+    ]
+  }
+,
+  {
+    label:"DAY 6", title:"Lower Strength", subtitle:"Pistols, Hamstrings & Explosive Legs",
+    accent:"#34d399", intensity:"HIGH", intColor:"#34d399", duration:"~35 min",
+    muscles:["Quads","Glutes","Hamstrings","Calves","Core"],
+    warmup:"March in place 2 min → Leg swings 30s each → Deep squat hold 30s → 3 deep belly breaths.",
+    cooldown:"Standing quad stretch 30s each → Seated hamstring fold 40s → Hip flexor lunge 30s each → 5 deep breaths.",
+    exercises:[
+      { name:"Bulgarian Split Squat", sets:4, reps:"10 each leg", rest:60,
+        breath:"Inhale lowering DOWN → Exhale driving UP through front heel",
+        tip:"Rear foot on a chair or step, drop the back knee toward the floor. One of the hardest single-leg strength moves — builds quad and glute strength far beyond regular squats.",
+        mod:"Lower only halfway if knees feel unstable. Hold a wall for balance." },
+      { name:"Sissy Squat", sets:3, reps:"10", rest:55,
+        breath:"Inhale leaning BACK and lowering → Exhale driving back UP",
+        tip:"Hold a wall lightly, lean back as you lower your body keeping hips straight. Isolates the quads completely — the best bodyweight quad isolation exercise you can do.",
+        mod:"Only lean back slightly at first. Increase range as strength builds." },
+      { name:"Single-Leg Glute Bridge", sets:4, reps:"12 each leg", rest:45,
+        breath:"Inhale flat → Exhale driving one hip UP → Hold 2s → Inhale lowering",
+        tip:"One leg extended, drive the planted foot into the floor. Double the load on each glute compared to a regular bridge — essential for single-leg running power.",
+        mod:"Bend the raised leg instead of extending it to reduce difficulty." },
+      { name:"Nordic Hamstring Curl", sets:3, reps:"6", rest:65,
+        breath:"Exhale bracing as you LOWER slowly → Inhale at the bottom",
+        tip:"Hook feet under a sofa, lower your body as slowly as possible using only your hamstrings. The most effective bodyweight hamstring exercise — prevents injury and builds the back of the legs.",
+        mod:"Use your hands to catch yourself at the bottom and push back up if needed." },
+      { name:"Slow Negative Squat", sets:3, reps:"8", rest:50,
+        breath:"Inhale the full way DOWN (5 seconds) → Exhale standing back UP",
+        tip:"Lower in 5 full seconds, stand up normally. Eccentric loading on the quads creates faster strength gains than normal squats — maximum muscle under minimal effort.",
+        mod:"Hold a doorframe while lowering if balance is an issue." },
+      { name:"Deep Squat Hold", sets:3, reps:"40 sec hold", rest:40,
+        breath:"Slow belly breaths — try to relax deeper into the squat on every exhale.",
+        tip:"Full depth squat, heels on the floor. Improves ankle and hip mobility — directly increases your squat depth and reduces knee strain in every lower body exercise.",
+        mod:"Put a folded towel under your heels if they lift off the floor." }
+    ]
+  },
+  {
+    label:"DAY 7", title:"Upper Strength", subtitle:"Archer Push-Ups, Triceps & Shoulder Power",
+    accent:"#f472b6", intensity:"HIGH", intColor:"#f472b6", duration:"~35 min",
+    muscles:["Chest","Shoulders","Triceps","Biceps","Core"],
+    warmup:"Arm circles 30s forward + back → Shoulder rolls 20s → Wall chest stretch 20s each → 3 deep belly breaths.",
+    cooldown:"Cross-arm shoulder stretch 30s each → Tricep overhead stretch 30s each → Chest doorframe stretch 30s → 5 deep breaths.",
+    exercises:[
+      { name:"Archer Push-Up", sets:3, reps:"6 each side", rest:60,
+        breath:"Inhale lowering toward ONE hand → Exhale pressing back to centre",
+        tip:"Wide push-up position, bend one arm and lower toward it while the other stays straight. Puts almost full bodyweight on one arm — builds the unilateral chest and shoulder strength needed for advanced calisthenics.",
+        mod:"Stay wide and reduce range of motion. Start with 4 reps each side." },
+      { name:"Diamond Push-Up", sets:3, reps:"10", rest:55,
+        breath:"Inhale lowering DOWN → Exhale pressing UP",
+        tip:"Hands touching in a diamond shape under your chest. Shifts almost all load to the triceps and inner chest — the exercise that builds arm thickness fastest with no equipment.",
+        mod:"Do from knees. Keep elbows pointing straight back, not flared out." },
+      { name:"Pseudo Planche Lean", sets:3, reps:"20 sec hold", rest:55,
+        breath:"Slow steady breaths — do not hold your breath during the lean.",
+        tip:"In a push-up position, lean forward so shoulders pass your hands. Builds straight-arm pushing strength and the serratus anterior — creates the athletic wing-muscle look under your arms.",
+        mod:"Lean only slightly forward at first. Increase lean each week." },
+      { name:"Pike Push-Up Negative", sets:3, reps:"6", rest:60,
+        breath:"Inhale the entire way DOWN (4 seconds) → Exhale pressing back UP",
+        tip:"Hips high, lower your head to the floor in 4 seconds. Eccentric shoulder loading — builds the deltoid strength and size that makes arms look wider from the front.",
+        mod:"Only lower halfway. Control is more important than depth here." },
+      { name:"Typewriter Push-Up", sets:3, reps:"5 each side", rest:55,
+        breath:"Exhale as you SLIDE to each side → Inhale returning to centre",
+        tip:"At the bottom of a push-up, slide side to side like a typewriter carriage. Loads each pec independently and trains horizontal pushing range of motion — great for chest width.",
+        mod:"Do from knees. Slide only as far as comfortable without shoulder pain." },
+      { name:"Hollow Body Hold", sets:3, reps:"25 sec hold", rest:45,
+        breath:"Exhale FULLY pressing lower back to floor → Hold and breathe shallow",
+        tip:"Lie flat, press lower back down, raise arms overhead and legs slightly off the floor. The foundation of all gymnastics strength — creates the rigid core needed to transfer power from your legs to your upper body.",
+        mod:"Bend your knees or keep arms by your sides to make it easier." }
+    ]
+  }
+];
+
+
+// ── MUSCLE FEEL MAP ──────────────────────────────────────────────────────
+const FEEL_MAP = {
+  "Pause Squat":              { primary:["Quads","Glutes"], secondary:["Hamstrings","Core"], desc:"Deep quad burn at the bottom — feel both thighs fire hard when you pause. Glutes kick in as you rise." },
+  "Reverse Lunge":            { primary:["Glutes","Quads"], secondary:["Hamstrings","Calves"], desc:"Front glute and quad doing all the work. Feel your glute squeeze at the top of each rep." },
+  "Glute Bridge + 2s Hold":   { primary:["Glutes","Hamstrings"], secondary:["Lower Back","Core"], desc:"Intense squeeze in your butt at the top. If you feel your lower back instead — tuck your chin and push through your heels." },
+  "Single-Leg Calf Raise":    { primary:["Calves"], secondary:["Ankle Stabilisers"], desc:"Full burn in the calf (back of lower leg). Rise as high as possible — you should feel a peak contraction at the top." },
+  "Wall Sit":                 { primary:["Quads"], secondary:["Glutes","Calves"], desc:"Quads should be on fire within 10 seconds. Front of both thighs — if it's too easy, slide lower." },
+  "Knee Push-Up":             { primary:["Chest","Triceps"], secondary:["Shoulders","Core"], desc:"Feel the chest stretch going down and squeeze together coming up. Triceps (back of arms) burn on the press." },
+  "Wide Push-Up (Knee)":      { primary:["Outer Chest","Shoulders"], secondary:["Triceps"], desc:"More chest stretch than a regular push-up. Feel the outer pec fibres engaging as you lower." },
+  "Pike Push-Up":             { primary:["Shoulders"], secondary:["Triceps","Upper Chest"], desc:"Front and side delts should burn — top of your shoulders. Not your neck. Keep traps relaxed." },
+  "Tricep Floor Dip":         { primary:["Triceps"], secondary:["Shoulders"], desc:"Back of the arms — the 'squishy' part. If your shoulders ache instead, keep elbows pointing backward not outward." },
+  "Shoulder Tap Plank":       { primary:["Core","Shoulders"], secondary:["Glutes","Obliques"], desc:"Obliques working hard to stop your hips rotating. Squeeze your core like you're bracing for a punch." },
+  "Slow Negative Push-Up":    { primary:["Chest","Triceps"], secondary:["Shoulders","Core"], desc:"Chest should tremble lowering down — that's the eccentric work. More burn here than the press up." },
+  "Full Plank":               { primary:["Core","Shoulders"], secondary:["Glutes","Quads"], desc:"Deep core tight — feel a brace around your entire midsection. Squeeze glutes too for full body tension." },
+  "Dead Bug":                 { primary:["Deep Core","Abs"], secondary:["Hip Flexors"], desc:"Lower back must stay glued to floor — if it lifts, your core has disengaged. Feel the lower abs working." },
+  "Full Side Plank":          { primary:["Obliques"], secondary:["Shoulders","Glutes"], desc:"Side of your waist burning — that's the obliques. Hip should be lifted high. Don't let it sag." },
+  "Slow Bicycle Crunch":      { primary:["Obliques","Abs"], secondary:["Hip Flexors"], desc:"Side of your abs — feel the rotation happening in your ribcage, not just your elbow swinging." },
+  "Marching in Place":        { primary:["Hip Flexors","Calves"], secondary:["Core","Quads"], desc:"Light burn in hip flexors (front of hips). Focus on breathing rhythm — nose in, mouth out." },
+  "Superman Hold":            { primary:["Lower Back","Glutes"], secondary:["Hamstrings","Upper Back"], desc:"Lower back and glutes working together. Squeeze your butt to help lift your legs. Back of the body fires here." },
+  "Table Row (Underhand)":    { primary:["Biceps","Upper Back"], secondary:["Rear Delts","Core"], desc:"Biceps and mid-back both pulling. Feel your shoulder blades squeeze together at the top of each rep." },
+  "Reverse Snow Angels":      { primary:["Rear Delts","Rhomboids"], secondary:["Traps","Lats"], desc:"Back of the shoulders and between the shoulder blades. Tiny burn — this is a small muscle, don't expect huge fatigue." },
+  "Y-T-W Raises":             { primary:["Rear Delts","Rhomboids"], secondary:["Lower Traps","Rotator Cuff"], desc:"Upper back lit up — between and below the shoulder blades. Each shape hits a different part. Burn should move around." },
+  "Doorframe Row":            { primary:["Lats","Mid Back"], secondary:["Biceps","Rear Delts"], desc:"Lats — the wide muscles on the sides of your back. Feel them pulling your elbows down and back." },
+  "Scapular Push-Up":         { primary:["Serratus Anterior"], secondary:["Shoulders"], desc:"Underneath the armpits — the serratus. Small movement, unusual feeling. Shoulder blades spreading apart." },
+  "Prone Back Extension":     { primary:["Lower Back","Erectors"], secondary:["Glutes","Hamstrings"], desc:"Entire lower back lit up. If it hurts, you're going too high — just a small lift is enough." },
+  "Hip Circles":              { primary:["Hip Flexors","Glutes"], secondary:["IT Band","Adductors"], desc:"Hips loosening up — feeling warmth and mobility. Should feel like a release, not a burn." },
+  "Donkey Kicks":             { primary:["Glutes"], secondary:["Hamstrings","Lower Back"], desc:"Glute of the kicking leg — squeeze hard at the top. Feel your butt contracting, not your lower back." },
+  "Glute Bridge March":       { primary:["Glutes","Core"], secondary:["Hamstrings"], desc:"Single glute firing with every march. Core fighting to keep hips level — feel the anti-rotation demand." },
+  "Cat-Cow Stretch":          { primary:["Spine","Thoracic"], secondary:["Hip Flexors","Abs"], desc:"Lengthening through the whole spine. Each vertebra moving. Should feel like a wave — no sharp points." },
+  "Low Lunge Hip Flexor Hold":{ primary:["Hip Flexors"], secondary:["Quad Stretch","Groin"], desc:"Front of the hip/groin on the back leg. One of the tightest spots on most people — breathe into it." },
+  "Wall Angel":               { primary:["Rear Delts","Lower Traps"], secondary:["Rhomboids","Rotator Cuff"], desc:"Upper back and backs of shoulders working. Arms should stay flat on the wall — if they can't, that's your mobility limit." },
+  "Bulgarian Split Squat":    { primary:["Quads","Glutes"], secondary:["Hamstrings","Core"], desc:"Front quad and glute screaming by rep 6. Hardest leg exercise here — shake is normal. Feel the front thigh doing everything." },
+  "Sissy Squat":              { primary:["Quads"], secondary:["Knee Stabilisers"], desc:"Pure quad isolation — the whole front of the thigh. Nothing else should be working. This is one of the best quad exercises." },
+  "Single-Leg Glute Bridge":  { primary:["Glutes","Hamstrings"], secondary:["Core","Lower Back"], desc:"Full glute on the working side. Should feel much harder than the regular version — double the load, double the burn." },
+  "Nordic Hamstring Curl":    { primary:["Hamstrings"], secondary:["Glutes","Lower Back"], desc:"Back of the thigh — hamstrings under maximum tension. The most intense hamstring exercise with no equipment." },
+  "Slow Negative Squat":      { primary:["Quads","Glutes"], secondary:["Hamstrings","Core"], desc:"Quad burn building second by second on the way down. Eccentric load — you'll feel this tomorrow." },
+  "Deep Squat Hold":          { primary:["Hip Flexors","Ankles"], secondary:["Quads","Glutes"], desc:"Hip flexors and ankles opening up. Feel the stretch in your hips — this is mobility work, not strength." },
+  "Archer Push-Up":           { primary:["Chest","Shoulder"], secondary:["Triceps","Core"], desc:"One side of your chest under nearly full bodyweight. Feel the pec stretch deeply on the working arm." },
+  "Diamond Push-Up":          { primary:["Triceps","Inner Chest"], secondary:["Shoulders"], desc:"Back of the arms burning hard. If your chest hurts instead, bring hands slightly wider." },
+  "Pseudo Planche Lean":      { primary:["Serratus","Shoulders"], secondary:["Core","Wrists"], desc:"Shoulders and serratus under straight-arm tension. Feels unusual — like you're pushing the floor away from you." },
+  "Pike Push-Up Negative":    { primary:["Shoulders"], secondary:["Triceps","Upper Chest"], desc:"Front and side deltoids on fire lowering down. Much harder than a regular pike push-up." },
+  "Typewriter Push-Up":       { primary:["Chest","Shoulders"], secondary:["Triceps","Core"], desc:"Chest stretching sideways — unusual range. Feel each pec getting loaded individually as you slide." },
+  "Hollow Body Hold":         { primary:["Deep Core","Abs"], secondary:["Hip Flexors","Quads"], desc:"Entire core braced — front and sides. Lower back must stay pressed down. Feels like every ab muscle is working at once." }
+};
+
+const WEEK = [
+  {day:"MON",dIdx:0},{day:"TUE",dIdx:1},{day:"WED",dIdx:2},
+  {day:"THU",dIdx:3},{day:"FRI",dIdx:4},{day:"SAT",dIdx:5},{day:"SUN",dIdx:6}
+];
+
+const DAY_MAP = {1:0, 2:1, 3:2, 4:3, 5:4, 6:5, 0:6};
+const todayDayIdx = DAY_MAP[new Date().getDay()];
+let activeDay = (todayDayIdx !== undefined) ? todayDayIdx : 0;
+let completedSets = {};
+let timerInterval = null;
+let timerSeconds = 0;
+let timerRunning = false;
+
+function totalSets(d){ return DAYS[d].exercises.reduce((a,e)=>a+adjEx(e).sets,0); }
+function doneSets(d){ return Object.keys(completedSets).filter(k=>k.startsWith(d+'-')&&completedSets[k]).length; }
+function pct(d){ return Math.round((doneSets(d)/totalSets(d))*100); }
+
+
+// ── DEMO & FEEL HELPERS ──────────────────────────────────────────────────
+
+function buildFeelBox(name, accent){
+  const f = FEEL_MAP[name];
+  if(!f) return '';
+  const primaryChips = f.primary.map(m=>`<span class="feel-chip primary">${m}</span>`).join('');
+  const secondaryChips = f.secondary.map(m=>`<span class="feel-chip secondary">${m}</span>`).join('');
+  return `<div class="feel-box">
+    <div class="feel-title">🎯 YOU SHOULD FEEL THIS IN</div>
+    <div class="feel-chips">${primaryChips}${secondaryChips}</div>
+    <div class="feel-desc">${f.desc}</div>
+  </div>`;
+}
+
+function buildDemoBox(name){
+  const query = encodeURIComponent(name + ' exercise tutorial proper form');
+  const ytSearch = 'https://www.youtube.com/results?search_query=' + query;
+  // Use YouTube thumbnail from a curated video ID map (fallback to search)
+  const VIDEO_IDS = {
+    "Pause Squat":"TG6hzmfh_Tg","Reverse Lunge":"csOgFMNKpv0","Glute Bridge + 2s Hold":"8bbE64NuDTU",
+    "Single-Leg Calf Raise":"gwLzBJYoWlI","Wall Sit":"y-wV4Venusw","Knee Push-Up":"jWxvty2KROs",
+    "Wide Push-Up (Knee)":"IODxDxX7oi4","Pike Push-Up":"x7_I5SO4_QA","Tricep Floor Dip":"6kALZikXxLc",
+    "Shoulder Tap Plank":"LEZck1e5R9M","Slow Negative Push-Up":"IODxDxX7oi4","Full Plank":"ASdvN_XEl_c",
+    "Dead Bug":"YBq_QCPSkso","Full Side Plank":"_rdfjFSFKMY","Slow Bicycle Crunch":"9FGilxCbdz8",
+    "Marching in Place":"HhEIuYYOX7I","Superman Hold":"z6PJMT2y8GQ","Table Row (Underhand)":"iBtSBmBiQ5o",
+    "Reverse Snow Angels":"l9MIw3QKDYI","Y-T-W Raises":"oqDtZxFGr7Y","Doorframe Row":"nOIMnvfuTvA",
+    "Scapular Push-Up":"GQvUw2AqmYE","Prone Back Extension":"qtVYU5FECPA","Hip Circles":"LJNI62N5R8M",
+    "Donkey Kicks":"NXt0RzJ8GEo","Glute Bridge March":"bJG5Wj7jNc8","Cat-Cow Stretch":"kqnua4rHVVA",
+    "Low Lunge Hip Flexor Hold":"YQmpO19RNXI","Wall Angel":"xyRLqoUvWy8","Bulgarian Split Squat":"2C-uNgKwPLE",
+    "Sissy Squat":"6YvKOvJmjHc","Single-Leg Glute Bridge":"8bbE64NuDTU","Nordic Hamstring Curl":"GQJaZMonh2c",
+    "Slow Negative Squat":"TG6hzmfh_Tg","Deep Squat Hold":"naqKh1wULpk","Archer Push-Up":"gKF-pBHdlKA",
+    "Diamond Push-Up":"J0DXoz5_-1U","Pseudo Planche Lean":"KGzObNCS_k4","Pike Push-Up Negative":"x7_I5SO4_QA",
+    "Typewriter Push-Up":"gKF-pBHdlKA","Hollow Body Hold":"LlDNef_Ztsc"
+  };
+  const vid = VIDEO_IDS[name];
+  const thumb = vid ? `https://img.youtube.com/vi/${vid}/mqdefault.jpg` : null;
+  const watchUrl = vid ? `https://www.youtube.com/watch?v=${vid}` : ytSearch;
+  return `<div style="margin-bottom:10px">
+    ${thumb ? `<div class="demo-box"><img class="demo-img" src="${thumb}" alt="${name} demo" onerror="this.parentElement.style.display='none'" loading="lazy" /><div class="demo-label">EXERCISE PREVIEW</div></div>` : ''}
+    <a class="demo-watch-btn" href="${watchUrl}" target="_blank" rel="noopener">
+      <span style="font-size:16px">▶️</span> WATCH FULL TUTORIAL
+    </a>
+  </div>`;
+}
+
+function render(){
+  const d = DAYS[activeDay];
+  document.documentElement.style.setProperty('--accent', d.accent);
+  document.getElementById('headerLabel').style.color = d.accent;
+  const banner = document.getElementById('goalBanner'); if(banner) banner.style.borderBottomColor = d.accent;
+  renderWeek(); renderTabs(); renderMain();
+  updateStreakBar();
+}
+
+function renderWeek(){
+  const el = document.getElementById('weekStrip');
+  el.innerHTML = '';
+  // Use the reliable all-time completed day index set
+  const allDone = new Set(JSON.parse(localStorage.getItem('calitrainAllDone') || '[]'));
+  // Also count current session progress toward completion
+  if(pct(activeDay) >= appSettings.completion_pct) allDone.add(activeDay);
+  WEEK.forEach(w=>{
+    const div = document.createElement('div');
+    const isA = !w.rest && w.dIdx===activeDay;
+    const isDone = !w.rest && allDone.has(w.dIdx);
+    div.className='week-day'+(w.rest?' rest':'')+(isA?' active':'')+(isDone?' done':'');
+    if(!w.rest) div.onclick=()=>{activeDay=w.dIdx;render();};
+    div.innerHTML=`<div class="week-day-top-bar"></div><div class="week-day-label">${w.day}</div><div class="week-day-num">${w.rest?'REST':'D'+(w.dIdx+1)}</div>`;
+    el.appendChild(div);
+  });
+}
+
+function renderTabs(){
+  const el=document.getElementById('dayTabs');
+  el.innerHTML='';
+  DAYS.forEach((d,i)=>{
+    const b=document.createElement('button');
+    b.className='day-tab'+(i===activeDay?' active':'');
+    b.textContent=d.label;
+    b.onclick=()=>{activeDay=i;render();};
+    el.appendChild(b);
+  });
+}
+
+function renderMain(){
+  const d=DAYS[activeDay];
+  const p=pct(activeDay);
+  const done=doneSets(activeDay);
+  const total=totalSets(activeDay);
+
+  const muscleHTML=d.muscles.map((m,i)=>
+    `<span class="muscle-chip${i<2?' primary':''}" style="${i<2?`background:${d.accent};border:none;`:''}">${m}</span>`
+  ).join('');
+
+  const exHTML=d.exercises.map((ex,i)=>{ ex=adjEx(ex);
+    const allDone=Array.from({length:ex.sets},(_,s)=>s).every(s=>completedSets[`${activeDay}-${i}-${s}`]);
+    const setsHTML=Array.from({length:ex.sets},(_,s)=>{
+      const done=completedSets[`${activeDay}-${i}-${s}`];
+      return `<button class="set-btn" style="background:${done?d.accent:'#f7f4ef'};border-color:${done?d.accent:'#e8e3dc'};color:${done?'#fff':'#888'}" onclick="toggleSet(${i},${s})">${done?'✓ DONE':'SET '+(s+1)}</button>`;
+    }).join('');
+    return `
+    <div class="ex-card" id="ec${i}" style="border-color:${allDone?d.accent:'#ede9e3'};box-shadow:${allDone?`0 2px 16px ${d.accent}30`:''}">
+      <div class="ex-header" onclick="toggleEx(${i})">
+        <div class="ex-num" style="${allDone?`background:${d.accent};color:#fff;font-size:16px`:''}">${allDone?'✓':String(i+1).padStart(2,'0')}</div>
+        <div style="flex:1;min-width:0">
+          <div class="ex-name" style="${allDone?`color:${d.accent}`:''}">${ex.name}</div>
+          <div class="ex-meta">${ex.sets} sets · ${ex.reps} · ${ex.rest}s rest</div>
+        </div>
+        <div class="ex-chevron" id="chev${i}">▾</div>
       </div>
-      <input class="admin-setting-input" id="settingStreakOverride" type="number" min="0" value="0" />
+      <div class="ex-body" id="eb${i}">
+        ${buildDemoBox(ex.name)}
+        ${buildFeelBox(ex.name, d.accent)}
+        <div class="info-box breath-box">
+          <span style="font-size:16px;flex-shrink:0">😮‍💨</span>
+          <div><div class="info-box-title">BREATHING</div><div class="info-box-text">${ex.breath}</div></div>
+        </div>
+        <div class="info-box tip-box">
+          <div><div class="info-box-title">WHY THIS HELPS</div><div class="info-box-text">${ex.tip}</div></div>
+        </div>
+        <div class="info-box mod-box">
+          <span style="font-size:14px;flex-shrink:0">🔧</span>
+          <div><div class="info-box-text"><strong>Modify:</strong> ${ex.mod}</div></div>
+        </div>
+        <div class="sets-label">TAP TO MARK SETS DONE</div>
+        <div class="sets-row">${setsHTML}</div>
+        <button class="rest-timer-btn" style="background:${d.accent}18;border:1.5px solid ${d.accent}55;color:${d.accent}" onclick="startRestTimer(${ex.rest})">⏱ START REST TIMER (${ex.rest}s)</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('mainContent').innerHTML=`
+    <div class="day-info">
+      <div class="day-info-top">
+        <div><div class="day-title">${d.title}</div><div class="day-sub">${d.subtitle}</div></div>
+        <div style="text-align:right">
+          <div class="intensity-badge" style="background:${d.intColor}22;border:1.5px solid ${d.intColor};color:${d.intColor}">${d.intensity}</div>
+          <div class="day-dur">${d.duration}</div>
+        </div>
+      </div>
+      <div class="muscle-map">${muscleHTML}</div>
+      <div class="progress-row"><span class="progress-label">PROGRESS</span><span class="progress-pct" style="color:${d.accent}">${p}%</span></div>
+      <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${p}%;background:${d.accent}"></div></div>
+      <div class="stats-row">
+        <div class="stat-box"><div class="stat-val">${d.exercises.length}</div><div class="stat-lbl">EXERCISES</div></div>
+        <div class="stat-box"><div class="stat-val">${total}</div><div class="stat-lbl">TOTAL SETS</div></div>
+        <div class="stat-box"><div class="stat-val">${done}</div><div class="stat-lbl">DONE</div></div>
+      </div>
     </div>
-    <button class="admin-btn" onclick="applyStreakOverride()">SET STREAK</button>
-    <div id="streakOverrideMsg" style="color:#4ade80; font-size:10px; margin-top:10px; display:none;"></div>
-    <button class="admin-btn" style="background:#333; color:#ccc; margin-top:10px" onclick="document.getElementById('adminOverlay').classList.remove('open')">CLOSE</button>
+    <div class="warmup-box">
+      <span style="font-size:18px">🌅</span>
+      <div><div class="warmup-title">WARM-UP FIRST · 5 MINUTES</div><div class="warmup-text">${d.warmup}</div></div>
+    </div>
+    <div class="ex-list">${exHTML}</div>
+    <div class="bottom-box cooldown-box">
+      <div class="b-title">🧊 COOL DOWN · 5 MINUTES</div>
+      <div class="b-text">${d.cooldown}</div>
+    </div>
+    <div class="bottom-box prog-box">
+      <div class="b-title">📈 HOW TO PROGRESS</div>
+      <div class="b-text">
+        <strong>Week 1–2:</strong> Do exactly these numbers. Form and breath first, always.<br>
+        <strong>Week 3:</strong> Add 2 reps per exercise. Transition knee push-ups → full push-ups.<br>
+        <strong>Week 4:</strong> Add 1 set to your two hardest exercises per day.<br>
+        <strong>Week 5+:</strong> Add light jogging to Day 3. Lean further back on table rows to progress.
+      </div>
+    </div>`;
+}
+
+function toggleEx(i){
+  const body=document.getElementById('eb'+i);
+  const chev=document.getElementById('chev'+i);
+  const open=body.classList.contains('open');
+  document.querySelectorAll('.ex-body').forEach(b=>b.classList.remove('open'));
+  document.querySelectorAll('.ex-chevron').forEach(c=>c.classList.remove('open'));
+  if(!open){body.classList.add('open');chev.classList.add('open');}
+}
+
+async function toggleSet(exIdx,setIdx){
+  const key=`${activeDay}-${exIdx}-${setIdx}`;
+  completedSets[key]=!completedSets[key];
+  render();
+  const body=document.getElementById('eb'+exIdx);
+  const chev=document.getElementById('chev'+exIdx);
+  if(body){body.classList.add('open');chev.classList.add('open');}
+  await fetch('/api/toggle',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({day:activeDay,exercise:exIdx,set:setIdx,done:completedSets[key]})
+  });
+  checkDayComplete();
+}
+
+function startRestTimer(s){
+  stopTimer();
+  timerSeconds=s; timerRunning=false;
+  updateTimerDisplay();
+  document.getElementById('timerBar').classList.add('visible');
+  document.getElementById('timerToggleBtn').textContent='START';
+  document.getElementById('timerToggleBtn').className='timer-btn t-start';
+  document.getElementById('timerSub').textContent='REST TIMER — tap START';
+}
+
+function toggleTimer(){
+  if(!timerRunning){
+    timerRunning=true;
+    document.getElementById('timerToggleBtn').textContent='PAUSE';
+    document.getElementById('timerToggleBtn').className='timer-btn t-stop';
+    timerInterval=setInterval(()=>{
+      timerSeconds--;
+      updateTimerDisplay();
+      if(timerSeconds<=0){
+        stopTimer();
+        document.getElementById('timerSub').textContent='✅ REST DONE!';
+        setTimeout(()=>document.getElementById('timerBar').classList.remove('visible'),2000);
+      }
+    },1000);
+  } else {
+    timerRunning=false; clearInterval(timerInterval);
+    document.getElementById('timerToggleBtn').textContent='RESUME';
+    document.getElementById('timerToggleBtn').className='timer-btn t-start';
+  }
+}
+
+function stopTimer(){
+  timerRunning=false; clearInterval(timerInterval);
+  document.getElementById('timerBar').classList.remove('visible');
+}
+
+function updateTimerDisplay(){
+  const m=Math.floor(timerSeconds/60), s=timerSeconds%60;
+  document.getElementById('timerDisplay').textContent=m+':'+(s<10?'0':'')+s;
+  document.getElementById('timerDisplay').style.color=timerSeconds<=5?'#ef4444':DAYS[activeDay].accent;
+}
+
+function toggleOverlay(){ document.getElementById('overlay').classList.toggle('open'); }
+function closeOverlay(e){ if(e.target===document.getElementById('overlay')) toggleOverlay(); }
+
+
+// ── PROFILE & TIER SYSTEM ────────────────────────────────────────────────
+
+let userProfile = null;
+
+const TIER_CONFIG = {
+  beginner:     { label:"BEGINNER",     color:"#4ade80", bg:"#052e16", desc:"Sets reduced by 1, rest extended by 20s. Focus on form — strength comes fast.", setsAdj:-1, restAdj:+20 },
+  intermediate: { label:"INTERMEDIATE", color:"#f59e0b", bg:"#1c1000", desc:"Default workout values. Push yourself — this is where real progress happens.", setsAdj:0,  restAdj:0  },
+  advanced:     { label:"ADVANCED",     color:"#f472b6", bg:"#2d0a1a", desc:"Extra set added, rest reduced by 10s. You're ready for a challenge.", setsAdj:+1, restAdj:-10 }
+};
+
+function calcBMI(weight, height){ return weight / ((height/100)**2); }
+
+function calcTier(age, weight, height){
+  const bmi = calcBMI(weight, height);
+  if (age < 16 || age > 55 || bmi > 30) return 'beginner';
+  if (bmi >= 23 && bmi <= 30 && age <= 45) return 'intermediate';
+  if (bmi < 23 && age >= 16 && age <= 45) return 'advanced';
+  return 'intermediate';
+}
+
+function adjEx(ex){
+  if(!userProfile) return ex;
+  const cfg = TIER_CONFIG[userProfile.tier];
+  return Object.assign({}, ex, {
+    sets: Math.max(1, ex.sets + cfg.setsAdj),
+    rest: Math.max(20, ex.rest + cfg.restAdj)
+  });
+}
+
+function previewTier(){
+  const age=parseInt(document.getElementById('setupAge').value);
+  const weight=parseFloat(document.getElementById('setupWeight').value);
+  const height=parseFloat(document.getElementById('setupHeight').value);
+  const el=document.getElementById('tierPreview');
+  if(!age||!weight||!height){ el.classList.remove('show'); return; }
+  const tier=calcTier(age,weight,height);
+  const cfg=TIER_CONFIG[tier];
+  const bmi=calcBMI(weight,height).toFixed(1);
+  el.className='tier-preview show';
+  el.style.background=cfg.bg;
+  el.style.border='1.5px solid '+cfg.color+'40';
+  el.innerHTML=`<div class="tier-preview-label" style="color:${cfg.color}">YOUR TIER</div>
+    <div class="tier-preview-val" style="color:${cfg.color}">${cfg.label}</div>
+    <div class="tier-preview-desc" style="color:#ccc">${cfg.desc}</div>
+    <div style="font-family:'Space Mono',monospace;font-size:10px;color:#666;margin-top:8px">BMI ${bmi}</div>`;
+}
+
+function saveProfile(){
+  const name=document.getElementById('setupName').value.trim();
+  const age=parseInt(document.getElementById('setupAge').value);
+  const weight=parseFloat(document.getElementById('setupWeight').value);
+  const height=parseFloat(document.getElementById('setupHeight').value);
+  if(!age||!weight||!height){ alert('Please fill in age, weight and height.'); return; }
+  const tier=calcTier(age,weight,height);
+  userProfile={name,age,weight,height,tier};
+  localStorage.setItem('calitrainProfile', JSON.stringify(userProfile));
+  document.getElementById('setupScreen').classList.add('hidden');
+  applyProfileToHeader();
+  render();
+}
+
+function applyProfileToHeader(){
+  if(!userProfile) return;
+  const cfg=TIER_CONFIG[userProfile.tier];
+  const greet=userProfile.name ? userProfile.name.toUpperCase()+' · ' : '';
+  const tierBadge=`<span class="tier-badge" style="background:${cfg.color}22;color:${cfg.color}">${cfg.label}</span>`;
+  document.getElementById('headerLabel').innerHTML=greet+'BEGINNER · 69 KG · SUMMER EDITION'+tierBadge;
+}
+
+function openProfile(){
+  const p=userProfile;
+  if(p){
+    document.getElementById('setupName').value=p.name||'';
+    document.getElementById('setupAge').value=p.age;
+    document.getElementById('setupWeight').value=p.weight;
+    document.getElementById('setupHeight').value=p.height;
+    previewTier();
+  }
+  document.getElementById('setupScreen').classList.remove('hidden');
+}
+
+function initProfile(){
+  const saved=localStorage.getItem('calitrainProfile');
+  if(saved){
+    userProfile=JSON.parse(saved);
+    document.getElementById('setupScreen').classList.add('hidden');
+    applyProfileToHeader();
+  }
+}
+
+
+// ── STREAK & PROGRESSION SYSTEM ─────────────────────────────────────────
+
+const TIER_ORDER = ['beginner','intermediate','advanced'];
+
+function getCompletedDates(){
+  const raw = localStorage.getItem('calitrainDates');
+  return raw ? JSON.parse(raw) : [];
+}
+
+function getWeekStart(date){
+  // Week starts on Monday
+  const d = new Date(date);
+  const day = d.getDay(); // 0=Sun,1=Mon...
+  const diff = (day === 0 ? -6 : 1 - day);
+  d.setDate(d.getDate() + diff);
+  return d.toISOString().split('T')[0];
+}
+
+function checkWeeklyReset(){
+  const today = new Date();
+  const dayOfWeek = today.getDay(); // 0=Sun, 1=Mon ... 6=Sat
+  const thisWeekStart = getWeekStart(today);
+  const lastWeekStart = localStorage.getItem('calitrainWeekStart');
+
+  // Only reset on Monday (day 1) when a new week is detected.
+  // Sunday is still part of the OLD week — never reset then.
+  if(dayOfWeek === 1 && lastWeekStart !== thisWeekStart){
+    localStorage.setItem('calitrainAllDone', JSON.stringify([]));
+    localStorage.setItem('calitrainWeekStart', thisWeekStart);
+    console.log('🗓️ Monday detected — weekly progress reset.');
+  }
+
+  // If week start isn't stored yet, just save it without resetting
+  if(!lastWeekStart){
+    localStorage.setItem('calitrainWeekStart', thisWeekStart);
+  }
+}
+
+function markTodayComplete(){
+  const dates = getCompletedDates();
+  const today = new Date().toISOString().split('T')[0];
+  if(!dates.includes(today)){
+    dates.push(today);
+    localStorage.setItem('calitrainDates', JSON.stringify(dates));
+  }
+  // Track all completed day indices permanently
+  const allDone = JSON.parse(localStorage.getItem('calitrainAllDone') || '[]');
+  if(!allDone.includes(activeDay)){
+    allDone.push(activeDay);
+    localStorage.setItem('calitrainAllDone', JSON.stringify(allDone));
+  }
+}
+
+function calcStreak(){
+  const dates = getCompletedDates().sort();
+  if(!dates.length) return 0;
+  let streak = 0;
+  let check = new Date();
+  // allow today or yesterday as latest
+  const todayStr = check.toISOString().split('T')[0];
+  const latest = dates[dates.length-1];
+  const diffDays = Math.round((new Date(todayStr)-new Date(latest))/(1000*60*60*24));
+  if(diffDays > 1) return 0; // broken streak
+  check = new Date(latest);
+  for(let i=dates.length-1; i>=0; i--){
+    const d = new Date(dates[i]);
+    const expected = new Date(check);
+    expected.setDate(expected.getDate() - (i===dates.length-1?0:1));
+    if(dates[i]===check.toISOString().split('T')[0]){
+      streak++;
+      check.setDate(check.getDate()-1);
+    } else { break; }
+  }
+  return streak;
+}
+
+function totalCompleted(){
+  return getCompletedDates().length;
+}
+
+function updateStreakBar(){
+  if(!userProfile) return;
+  const streak = calcStreak();
+  const total = totalCompleted();
+  const tierIdx = TIER_ORDER.indexOf(userProfile.tier);
+  const bar = document.getElementById('streakBar');
+  bar.style.display = 'flex';
+
+  document.getElementById('streakCount').textContent = streak;
+  document.getElementById('streakFire').textContent = streak >= 7 ? '🔥' : streak >= 3 ? '✨' : '💪';
+
+  const canLevelUp = tierIdx < TIER_ORDER.length - 1;
+  const streakReady = streak >= appSettings.streak_required;
+  const manualReady = total >= appSettings.manual_days_required;
+  const showBtn = canLevelUp && (streakReady || manualReady);
+
+  document.getElementById('levelupBtn').style.display = showBtn ? 'block' : 'none';
+
+  // Progress bar toward next level up (streak-based = /7, manual = /5)
+  const target = streakReady ? appSettings.streak_required : appSettings.manual_days_required;
+  const prog = streakReady ? Math.min(streak,7) : Math.min(total,5);
+  const pct = Math.round((prog/target)*100);
+  document.getElementById('streakProgFill').style.width = pct+'%';
+
+  if(streakReady){
+    document.getElementById('streakProgLabel').textContent = '🔥 Streak ready to level up!';
+    document.getElementById('streakProgFill').style.background = '#ef4444';
+  } else if(manualReady){
+    document.getElementById('streakProgLabel').textContent = total+' days done — level up available';
+    document.getElementById('streakProgFill').style.background = '#f59e0b';
+  } else {
+    const remaining = Math.min(7-streak, 5-total);
+    document.getElementById('streakProgLabel').textContent = (streakReady?streak:Math.max(streak,total))+' / '+(streak>total?7:5)+' to level up';
+    document.getElementById('streakProgFill').style.background = '#f59e0b';
+  }
+}
+
+function checkDayComplete(){
+  const p = pct(activeDay);
+  if(p >= appSettings.completion_pct){
+    markTodayComplete();
+    updateStreakBar();
+  }
+}
+
+function openLevelUp(){
+  const tierIdx = TIER_ORDER.indexOf(userProfile.tier);
+  if(tierIdx >= TIER_ORDER.length-1) return;
+  const from = TIER_CONFIG[TIER_ORDER[tierIdx]];
+  const to   = TIER_CONFIG[TIER_ORDER[tierIdx+1]];
+  const streak = calcStreak();
+  const total = totalCompleted();
+
+  document.getElementById('levelupSub').textContent =
+    streak >= 7
+      ? `${streak}-day streak! Your body is adapting — time to push harder.`
+      : `${total} workout days completed. You've built the base — now let's build the gains.`;
+
+  document.getElementById('levelupFrom').innerHTML =
+    `<div class="levelup-tier-box" style="background:${from.color}22;color:${from.color}">${from.label}</div>
+     <div class="levelup-arrow">→</div>
+     <div class="levelup-tier-box" style="background:${to.color}22;color:${to.color}">${to.label}</div>`;
+
+  const fromCfg = TIER_CONFIG[TIER_ORDER[tierIdx]];
+  const toCfg   = TIER_CONFIG[TIER_ORDER[tierIdx+1]];
+  const setsDiff = toCfg.setsAdj - fromCfg.setsAdj;
+  const restDiff = toCfg.restAdj - fromCfg.restAdj;
+
+  const nextStreakReq = appSettings.streak_required * 2;
+  const nextManualReq = appSettings.manual_days_required + 5;
+  document.getElementById('levelupChanges').innerHTML =
+    `<div class="levelup-change-row"><span>Sets per exercise</span><span class="levelup-change-val">${setsDiff>0?'+':''}${setsDiff} set${Math.abs(setsDiff)!==1?'s':''}</span></div>
+     <div class="levelup-change-row"><span>Rest between sets</span><span class="levelup-change-val">${restDiff>0?'+':''}${restDiff}s</span></div>
+     <div class="levelup-change-row"><span>New tier</span><span class="levelup-change-val" style="color:${to.color}">${to.label}</span></div>
+     <div class="levelup-change-row" style="margin-top:4px;border-top:1px solid #2a2a2a;padding-top:8px"><span style="color:var(--muted)">Next level up requires</span><span class="levelup-change-val" style="color:#f59e0b">${nextStreakReq} streak days</span></div>`;
+
+  document.getElementById('levelupOverlay').classList.add('open');
+}
+
+function closeLevelUp(){
+  document.getElementById('levelupOverlay').classList.remove('open');
+}
+
+async function confirmLevelUp(){
+  const tierIdx = TIER_ORDER.indexOf(userProfile.tier);
+  if(tierIdx >= TIER_ORDER.length-1) return;
+  userProfile.tier = TIER_ORDER[tierIdx+1];
+  localStorage.setItem('calitrainProfile', JSON.stringify(userProfile));
+  closeLevelUp();
+  applyProfileToHeader();
+
+  // Escalate difficulty — double streak req, +5 manual days
+  const newStreakReq = appSettings.streak_required * 2;
+  const newManualReq = appSettings.manual_days_required + 5;
+  try {
+    await fetch('/api/admin/settings', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        streak_required: newStreakReq,
+        manual_days_required: newManualReq,
+        completion_pct: appSettings.completion_pct
+      })
+    });
+    appSettings.streak_required = newStreakReq;
+    appSettings.manual_days_required = newManualReq;
+  } catch(e){}
+
+  // Reset streak and week glow so they earn the next level from scratch
+  localStorage.setItem('calitrainDates', JSON.stringify([]));
+  localStorage.removeItem('calitrainDaysDone');
+  localStorage.setItem('calitrainAllDone', JSON.stringify([]));
+  localStorage.setItem('calitrainWeekStart', getWeekStart(new Date()));
+
+  updateStreakBar();
+  render();
+  showToast('🏆 LEVELLED UP TO '+TIER_CONFIG[userProfile.tier].label+'! Next level: '+newStreakReq+' day streak →');
+}
+
+function showToast(msg){
+  const t = document.getElementById('tierUpToast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3500);
+}
+
+
+// ── ADMIN PANEL ──────────────────────────────────────────────────────────
+
+let secretTaps = 0, secretTimer = null;
+let appSettings = { streak_required: 7, manual_days_required: 5, completion_pct: 70 };
+
+async function loadSettings(){
+  try {
+    const res = await fetch('/api/settings');
+    const data = await res.json();
+    appSettings.streak_required     = parseInt(data.streak_required)     || 7;
+    appSettings.manual_days_required = parseInt(data.manual_days_required) || 5;
+    appSettings.completion_pct       = parseInt(data.completion_pct)       || 70;
+  } catch(e) {}
+}
+
+function handleSecretTap(){
+  secretTaps++;
+  clearTimeout(secretTimer);
+  secretTimer = setTimeout(()=>{ secretTaps=0; }, 1500);
+  if(secretTaps >= 5){
+    secretTaps = 0;
+    openAdmin();
+  }
+}
+
+function openAdmin(){
+  document.getElementById('adminOverlay').classList.add('open');
+  document.getElementById('adminError').style.display='none';
+  document.getElementById('adminUser').value='';
+  document.getElementById('adminPass').value='';
+  // Check if already logged in
+  checkAdminSession();
+}
+
+function closeAdmin(){
+  document.getElementById('adminOverlay').classList.remove('open');
+}
+
+async function checkAdminSession(){
+  try {
+    const res = await fetch('/api/admin/settings');
+    if(res.ok){
+      const data = await res.json();
+      showAdminSettings(data);
+    } else {
+      document.getElementById('adminLogin').style.display='block';
+      document.getElementById('adminSettings').style.display='none';
+    }
+  } catch(e){
+    document.getElementById('adminLogin').style.display='block';
+    document.getElementById('adminSettings').style.display='none';
+  }
+}
+
+async function doAdminLogin(){
+  const username = document.getElementById('adminUser').value.trim();
+  const password = document.getElementById('adminPass').value;
+  try {
+    const res = await fetch('/api/admin/login', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({username, password})
+    });
+    if(res.ok){
+      const data = await fetch('/api/admin/settings').then(r=>r.json());
+      showAdminSettings(data);
+    } else {
+      document.getElementById('adminError').style.display='block';
+    }
+  } catch(e){
+    document.getElementById('adminError').style.display='block';
+  }
+}
+
+function showAdminSettings(data){
+  document.getElementById('adminLogin').style.display='none';
+  document.getElementById('adminSettings').style.display='block';
+  document.getElementById('adminSuccess').style.display='none';
+  document.getElementById('settingStreak').value  = data.streak_required     || 7;
+  document.getElementById('settingManual').value  = data.manual_days_required || 5;
+  document.getElementById('settingPct').value     = data.completion_pct       || 70;
+  // Show current streak info
+  const streak = calcStreak();
+  const total  = totalCompleted();
+  const req    = parseInt(data.streak_required) || 7;
+  document.getElementById('adminStreakNote').innerHTML =
+    `Current streak: <strong>${streak} days</strong> &nbsp;|&nbsp; Total completed: <strong>${total} days</strong><br>
+     Level Up unlocks at: <strong>${req} streak days</strong> or <strong>${data.manual_days_required||5} total days</strong>`;
+}
+
+async function saveAdminSettings(){
+  const streak  = parseInt(document.getElementById('settingStreak').value);
+  const manual  = parseInt(document.getElementById('settingManual').value);
+  const pct     = parseInt(document.getElementById('settingPct').value);
+  try {
+    const res = await fetch('/api/admin/settings', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ streak_required: streak, manual_days_required: manual, completion_pct: pct })
+    });
+    if(res.ok){
+      appSettings.streak_required      = streak;
+      appSettings.manual_days_required = manual;
+      appSettings.completion_pct       = pct;
+      document.getElementById('adminSuccess').style.display='block';
+      setTimeout(()=>document.getElementById('adminSuccess').style.display='none', 2500);
+      updateStreakBar();
+    }
+  } catch(e) {}
+}
+
+async function doAdminLogout(){
+  await fetch('/api/admin/logout', { method:'POST' });
+  document.getElementById('adminLogin').style.display='block';
+  document.getElementById('adminSettings').style.display='none';
+  closeAdmin();
+}
+
+async function loadProgress(){
+  try {
+    const res = await fetch('/api/progress');
+    const data = await res.json();
+    completedSets = data.completed || {};
+  } catch(e) { completedSets = {}; }
+  render();
+}
+checkWeeklyReset();
+loadSettings().then(()=>{ initProfile(); loadProgress(); });
+
+function applyStreakOverride() {
+  const val = parseInt(document.getElementById('settingStreakOverride').value);
+  if(isNaN(val) || val < 0) return;
+  const dates = [];
+  const checkDate = new Date();
+  for(let i=0; i<val; i++) {
+    dates.push(checkDate.toISOString().split('T')[0]);
+    checkDate.setDate(checkDate.getDate() - 1);
+  }
+  localStorage.setItem('calitrainDates', JSON.stringify(dates.reverse()));
+  const msg = document.getElementById('streakOverrideMsg');
+  if(msg) {
+    msg.textContent = `Streak overridden to ${val} days!`;
+    msg.style.display = 'block';
+    setTimeout(() => msg.style.display = 'none', 3000);
+  }
+  updateStreakBar();
+}
+
+</script>
+
+<!-- ADMIN OVERLAY -->
+<div class="admin-overlay" id="adminOverlay">
+  <div class="admin-card" style="position:relative">
+    <button class="admin-close" onclick="closeAdmin()">&#x00D7;</button>
+    <div id="adminLogin">
+      <div class="admin-title">Admin Panel &#x1F510;</div>
+      <div class="admin-sub">CALITRAIN &middot; RESTRICTED</div>
+      <div class="admin-error" id="adminError">Wrong username or password.</div>
+      <div class="admin-field">
+        <div class="admin-label">USERNAME</div>
+        <input class="admin-input" id="adminUser" type="text" placeholder="Enter username" />
+      </div>
+      <div class="admin-field">
+        <div class="admin-label">PASSWORD</div>
+        <input class="admin-input" id="adminPass" type="password" placeholder="Enter password" onkeydown="if(event.key==='Enter')doAdminLogin()" />
+      </div>
+      <button class="admin-btn" onclick="doAdminLogin()">UNLOCK &#x2192;</button>
+    </div>
+    <div id="adminSettings" style="display:none">
+      <div class="admin-title">Streak Settings &#x26A1;</div>
+      <div class="admin-sub">CALITRAIN &middot; ADMIN</div>
+      <div class="admin-streak-note" id="adminStreakNote"></div>
+      <div class="admin-success" id="adminSuccess">&#x2705; Settings saved!</div>
+      <div class="admin-setting-row">
+        <div><div class="admin-setting-label">Streak days to Level Up</div><div class="admin-setting-sub">Consecutive days needed for streak Level Up</div></div>
+        <input class="admin-setting-input" id="settingStreak" type="number" min="1" max="60" value="7" />
+      </div>
+      <div class="admin-setting-row">
+        <div><div class="admin-setting-label">Manual Level Up after</div><div class="admin-setting-sub">Total workout days to unlock manual Level Up</div></div>
+        <input class="admin-setting-input" id="settingManual" type="number" min="1" max="60" value="5" />
+      </div>
+      <div class="admin-setting-row" style="border:none">
+        <div><div class="admin-setting-label">Day completion threshold</div><div class="admin-setting-sub">% of sets needed to count as a completed day</div></div>
+        <input class="admin-setting-input" id="settingPct" type="number" min="10" max="100" value="70" />
+      </div>
+      <div class="admin-divider"></div>
+      <div class="admin-setting-row" style="border:none;flex-direction:column;align-items:flex-start;gap:10px">
+        <div>
+          <div class="admin-setting-label">Override Current Streak &#x1F525;</div>
+          <div class="admin-setting-sub" style="margin-top:2px">Manually set streak count</div>
+        </div>
+        <div style="display:flex;gap:10px;width:100%;align-items:center">
+          <input class="admin-setting-input" id="settingStreakOverride" type="number" min="0" max="365" value="0" style="width:80px" />
+          <button class="admin-btn" style="margin:0;flex:1;padding:10px 0" onclick="applyStreakOverride()">SET STREAK &#x2192;</button>
+        </div>
+        <div id="streakOverrideMsg" style="font-family:'Space Mono',monospace;font-size:11px;color:#4ade80;display:none"></div>
+      </div>
+      <div class="admin-divider"></div>
+      <button class="admin-btn" onclick="saveAdminSettings()">SAVE SETTINGS</button>
+      <button class="admin-btn secondary" onclick="doAdminLogout()">LOG OUT</button>
+    </div>
   </div>
 </div>
 
-<script>
-  const DAYS = [
-    { name: 'Monday', accent: '#c9a96e' },
-    { name: 'Tuesday', accent: '#c9a96e' },
-    { name: 'Wednesday', accent: '#c9a96e' },
-    { name: 'Thursday', accent: '#c9a96e' },
-    { name: 'Friday', accent: '#c9a96e' },
-    { name: 'Saturday', accent: '#c9a96e' },
-    { name: 'Sunday', accent: '#c9a96e' }
-  ];
-  let activeDay = new Date().getDay() === 0 ? 6 : new Date().getDay() - 1;
-
-  function render(){
-    const d = DAYS[activeDay];
-    document.documentElement.style.setProperty('--accent', d.accent);
-    
-    const headerLabel = document.getElementById('headerLabel');
-    if(headerLabel) headerLabel.style.color = d.accent;
-
-    // FIX: Removed the non-existent goalBanner reference that was crashing the app
-    
-    renderWeek();
-    updateStreakBar();
-  }
-
-  function renderWeek() {
-    const strip = document.getElementById('weekStrip');
-    strip.innerHTML = DAYS.map((d, i) => `
-      <div class="week-day ${i === activeDay ? 'active' : ''}" onclick="activeDay=${i}; render();">
-        <div class="week-day-top-bar"></div>
-        <div class="week-day-label">${d.name.substring(0,3).toUpperCase()}</div>
-        <div class="week-day-num">${i + 1}</div>
-      </div>
-    `).join('');
-  }
-
-  function updateStreakBar() {
-    const dates = JSON.parse(localStorage.getItem('calitrainDates') || "[]");
-    document.getElementById('streakCount').textContent = dates.length;
-  }
-
-  // NEW: Manual streak override function
-  function applyStreakOverride() {
-    const val = parseInt(document.getElementById('settingStreakOverride').value);
-    if(isNaN(val) || val < 0) return;
-    
-    const dates = [];
-    const checkDate = new Date();
-    for(let i=0; i < val; i++) {
-      dates.push(checkDate.toISOString().split('T')[0]);
-      checkDate.setDate(checkDate.getDate() - 1);
-    }
-    
-    localStorage.setItem('calitrainDates', JSON.stringify(dates.reverse()));
-    
-    const msg = document.getElementById('streakOverrideMsg');
-    if(msg) {
-      msg.textContent = `Streak overridden to ${val} days!`;
-      msg.style.display = 'block';
-      setTimeout(() => msg.style.display = 'none', 3000);
-    }
-    
-    updateStreakBar();
-  }
-
-  // Initial render
-  window.onload = render;
-</script>
-
+<div id="goalBanner" style="display:none;"></div>
 </body>
 </html>
