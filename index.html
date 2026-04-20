@@ -786,6 +786,44 @@ function buildFeelBox(name, accent){
   </div>`;
 }
 
+function buildFallbackSVG(name){
+  const icons = {
+    squat:   {emoji:'🦵', label:'QUADS · GLUTES',  color:'#4ade80'},
+    push:    {emoji:'💪', label:'CHEST · TRICEPS', color:'#f97316'},
+    plank:   {emoji:'🔥', label:'CORE · ABS',      color:'#60a5fa'},
+    pull:    {emoji:'🏋', label:'BACK · BICEPS',   color:'#a78bfa'},
+    hinge:   {emoji:'🍑', label:'GLUTES · HAMS',  color:'#fb7185'},
+    stretch: {emoji:'🧘', label:'MOBILITY',        color:'#34d399'},
+    shoulder:{emoji:'🎯', label:'SHOULDERS',       color:'#f472b6'},
+  };
+  const CAT = {
+    "Pause Squat":"squat","Reverse Lunge":"squat","Wall Sit":"squat",
+    "Bulgarian Split Squat":"squat","Sissy Squat":"squat","Slow Negative Squat":"squat","Deep Squat Hold":"squat",
+    "Knee Push-Up":"push","Wide Push-Up (Knee)":"push","Slow Negative Push-Up":"push",
+    "Archer Push-Up":"push","Diamond Push-Up":"push","Typewriter Push-Up":"push",
+    "Tricep Floor Dip":"push","Pseudo Planche Lean":"push",
+    "Full Plank":"plank","Full Side Plank":"plank","Shoulder Tap Plank":"plank",
+    "Dead Bug":"plank","Hollow Body Hold":"plank","Slow Bicycle Crunch":"plank","Marching in Place":"plank",
+    "Table Row (Underhand)":"pull","Doorframe Row":"pull","Scapular Push-Up":"pull",
+    "Y-T-W Raises":"pull","Reverse Snow Angels":"pull","Prone Back Extension":"pull",
+    "Glute Bridge + 2s Hold":"hinge","Single-Leg Glute Bridge":"hinge","Glute Bridge March":"hinge",
+    "Nordic Hamstring Curl":"hinge","Single-Leg Calf Raise":"hinge","Donkey Kicks":"hinge","Superman Hold":"hinge",
+    "Hip Circles":"stretch","Cat-Cow Stretch":"stretch","Wall Angel":"stretch","Low Lunge Hip Flexor Hold":"stretch",
+    "Pike Push-Up":"shoulder","Pike Push-Up Negative":"shoulder",
+  };
+  const cat = CAT[name] || 'push';
+  const {emoji, label, color} = icons[cat];
+  const short = name.length > 22 ? name.slice(0,20)+'...' : name;
+  return `<svg viewBox="0 0 280 150" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:150px">
+    <rect width="280" height="150" fill="#111" rx="10"/>
+    <rect x="0" y="0" width="280" height="3" fill="${color}" rx="1"/>
+    <text x="140" y="60" text-anchor="middle" font-size="38" font-family="sans-serif">${emoji}</text>
+    <text x="140" y="88" text-anchor="middle" font-size="13" font-weight="600" fill="#ffffff" font-family="DM Sans,sans-serif">${short}</text>
+    <text x="140" y="108" text-anchor="middle" font-size="9" letter-spacing="2" fill="${color}" font-family="Space Mono,monospace">${label}</text>
+    <text x="140" y="135" text-anchor="middle" font-size="8" fill="#444" font-family="Space Mono,monospace" letter-spacing="1">IMAGE UNAVAILABLE — TAP TO RETRY</text>
+  </svg>`;
+}
+
 function buildDemoBox(name){
   const IMAGE_URLS = {
     "Pause Squat":                "https://fitnessprogramer.com/wp-content/uploads/2021/02/Squat.gif",
@@ -834,8 +872,9 @@ function buildDemoBox(name){
   if(!imgUrl) return '';
   return `<div class="demo-box">
     <img class="demo-img" src="${imgUrl}" alt="${name} demonstration"
-         onerror="this.parentElement.style.display='none'" loading="lazy"
+         onerror="this.style.display='none';this.parentElement.querySelector('.demo-fallback').style.display='flex'" loading="lazy"
          style="max-height:220px;width:100%;object-fit:contain;background:#111;border-radius:10px;" />
+    <div class="demo-fallback" style="display:none;align-items:center;justify-content:center;min-height:160px;flex-direction:column;gap:10px;padding:20px">${buildFallbackSVG(name)}</div>
     <div class="demo-label">EXERCISE DEMO</div>
   </div>`;
 }
