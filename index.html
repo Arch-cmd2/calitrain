@@ -195,7 +195,7 @@
   .feel-chip.secondary { background: transparent; color: var(--gold-dim); border-color: var(--gold-dim); }
   .feel-desc { font-size: 11px; color: rgba(201,169,110,0.9); line-height: 1.6; margin-top: 4px; }
   .demo-box { overflow: hidden; margin-bottom: 8px; position: relative; background: #141414; border-radius: 10px; }
-  .demo-img { width: 100%; display: block; max-height: 200px; object-fit: contain; }
+  .demo-img { width: 100%; display: block; max-height: 130px; object-fit: contain; }
   .demo-label { font-family: 'Space Mono', monospace; font-size: 7px; letter-spacing: 2px; color: #aaa; padding: 4px 10px 3px; }
   .demo-watch-btn { display: none; }
   @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
@@ -451,7 +451,7 @@
   <div class="levelup-card">
     <div class="levelup-emoji">&#x1F3C6;</div>
     <div class="levelup-title">Ready to Level Up?</div>
-    <div class="levelup-sub" id="levelupSub">You've earned it. Your workouts will get harder.</div>
+    <div class="levelup-sub" id="levelupSub">You earned it. Your workouts will get harder.</div>
     <div class="levelup-from" id="levelupFrom"></div>
     <div class="levelup-changes" id="levelupChanges"></div>
     <div class="levelup-btns">
@@ -983,8 +983,8 @@ function buildDemoBox(name){
   return `<div class="demo-box">
     <img class="demo-img" src="${imgUrl}" alt="${name} demonstration"
          onerror="this.style.display='none';const fb=this.parentElement.querySelector('.demo-fallback');if(fb)fb.style.display='flex';" loading="lazy"
-         style="max-height:220px;width:100%;object-fit:contain;background:#111;border-radius:10px;" />
-    <div class="demo-fallback" style="display:none;align-items:center;justify-content:center;min-height:160px">${buildFallbackSVG(name)}</div>
+         style="max-height:130px;width:100%;object-fit:contain;background:#111;border-radius:10px;" />
+    <div class="demo-fallback" style="display:none;align-items:center;justify-content:center;min-height:110px">${buildFallbackSVG(name)}</div>
     <div class="demo-label">EXERCISE DEMO</div>
   </div>`;
 }
@@ -1344,11 +1344,13 @@ function saveProfile(){
 
 function applyProfileToHeader(){
   if(!userProfile) return;
-  const cfg  = TIER_CONFIG[userProfile.tier];
-  const greet= userProfile.name ? userProfile.name.toUpperCase()+' · ' : '';
-  const lvl  = userProfile.level || 1;
+  const cfg     = TIER_CONFIG[userProfile.tier];
+  const greet   = userProfile.name ? userProfile.name.toUpperCase()+' · ' : '';
+  const lvl     = userProfile.level || 1;
   const gymIcon = { none:'🏠', home:'🎽', gym:'🏋️' }[userProfile.gym] || '';
-  const tierBadge = `<span class="tier-badge" style="background:${cfg.color}22;color:${cfg.color};letter-spacing:1px">${cfg.label} LV.${lvl}</span>`;
+  const exp     = getExp();
+  const needed  = expForCurrentTier();
+  const tierBadge = `<span class="tier-badge" style="background:${cfg.color}22;color:${cfg.color};letter-spacing:1px">${cfg.label} LV.${lvl} · ${exp}/${needed} EXP</span>`;
   const info = (userProfile.weight ? userProfile.weight+'KG · ' : '')+'SUMMER EDITION '+gymIcon;
   document.getElementById('headerLabel').innerHTML = greet + info + tierBadge;
 }
@@ -1404,6 +1406,23 @@ function initProfile(){
 
 const TIER_ORDER = ['beginner','intermediate','advanced','elite','master','legend'];
 
+// ── EXP SYSTEM ──────────────────────────────────────────────────────────
+// EXP earned per workout completion (scales with tier)
+const EXP_PER_WORKOUT = { beginner:10, intermediate:15, advanced:20, elite:28, master:38, legend:50 };
+// EXP required to unlock Level Up button per tier
+const EXP_TO_LEVELUP  = { beginner:70, intermediate:120, advanced:180, elite:260, master:360, legend:9999 };
+
+function getExp(){ return parseInt(localStorage.getItem('calitrainExp') || '0'); }
+function addExp(amount){
+  const newExp = getExp() + amount;
+  localStorage.setItem('calitrainExp', String(newExp));
+  return newExp;
+}
+function resetExp(){ localStorage.setItem('calitrainExp', '0'); }
+function expForCurrentTier(){ return EXP_TO_LEVELUP[userProfile?.tier] || 70; }
+function expProgress(){ return Math.min(getExp(), expForCurrentTier()); }
+function expPct(){ return Math.round((expProgress() / expForCurrentTier()) * 100); }
+
 function getCompletedDates(){
   const raw = localStorage.getItem('calitrainDates');
   return raw ? JSON.parse(raw) : [];
@@ -1441,11 +1460,21 @@ function checkWeeklyReset(){
 function markTodayComplete(){
   const dates = getCompletedDates();
   const today = new Date().toISOString().split('T')[0];
-  if(!dates.includes(today)){
+  const isNewDay = !dates.includes(today);
+  if(isNewDay){
     dates.push(today);
     localStorage.setItem('calitrainDates', JSON.stringify(dates));
+    // Award EXP for completing a new day
+    const tier = userProfile?.tier || 'beginner';
+    const earned = EXP_PER_WORKOUT[tier] || 10;
+    addExp(earned);
+    setTimeout(()=>showToast('⚡ +' + earned + ' EXP earned!'), 400);
   }
-  // Track all completed day indices permanently
+  // Track which day index was completed on which date
+  const daysDone = JSON.parse(localStorage.getItem('calitrainDaysDone') || '{}');
+  daysDone[today] = activeDay;
+  localStorage.setItem('calitrainDaysDone', JSON.stringify(daysDone));
+  // Track all completed day indices permanently for week strip glow
   const allDone = JSON.parse(localStorage.getItem('calitrainAllDone') || '[]');
   if(!allDone.includes(activeDay)){
     allDone.push(activeDay);
@@ -1482,79 +1511,76 @@ function totalCompleted(){
 
 function updateStreakBar(){
   if(!userProfile) return;
-  const streak = calcStreak();
-  const total = totalCompleted();
+  const streak  = calcStreak();
   const tierIdx = TIER_ORDER.indexOf(userProfile.tier);
-  const bar = document.getElementById('streakBar');
+  const bar     = document.getElementById('streakBar');
   bar.style.display = 'flex';
 
+  // Streak display — completely independent of leveling
   document.getElementById('streakCount').textContent = streak;
-  document.getElementById('streakFire').textContent = streak >= 7 ? '🔥' : streak >= 3 ? '✨' : '💪';
+  document.getElementById('streakFire').textContent  = streak >= 7 ? '🔥' : streak >= 3 ? '✨' : '💪';
 
+  // EXP progress bar
   const canLevelUp = tierIdx < TIER_ORDER.length - 1;
-  const streakReady = streak >= appSettings.streak_required;
-  const manualReady = total >= appSettings.manual_days_required;
-  const showBtn = canLevelUp && (streakReady || manualReady);
+  const exp    = getExp();
+  const needed = expForCurrentTier();
+  const expReady = exp >= needed && canLevelUp;
+  const pct    = Math.min(Math.round((exp / needed) * 100), 100);
 
-  document.getElementById('levelupBtn').style.display = showBtn ? 'block' : 'none';
+  document.getElementById('streakProgFill').style.width      = pct + '%';
+  document.getElementById('streakProgFill').style.background = expReady ? '#4ade80' : 'var(--gold)';
 
-  // Progress bar toward next level up (streak-based = /7, manual = /5)
-  const target = streakReady ? appSettings.streak_required : appSettings.manual_days_required;
-  const prog = streakReady ? Math.min(streak,7) : Math.min(total,5);
-  const pct = Math.round((prog/target)*100);
-  document.getElementById('streakProgFill').style.width = pct+'%';
-
-  if(streakReady){
-    document.getElementById('streakProgLabel').textContent = '🔥 Streak ready to level up!';
-    document.getElementById('streakProgFill').style.background = '#ef4444';
-  } else if(manualReady){
-    document.getElementById('streakProgLabel').textContent = total+' days done — level up available';
-    document.getElementById('streakProgFill').style.background = '#f59e0b';
+  const btn = document.getElementById('levelupBtn');
+  if(expReady){
+    document.getElementById('streakProgLabel').textContent = '⚡ LEVEL UP READY! (' + exp + '/' + needed + ' EXP)';
+    btn.style.display = 'block';
+  } else if(!canLevelUp){
+    document.getElementById('streakProgLabel').textContent = '🔴 MAX LEVEL — LEGEND';
+    btn.style.display = 'none';
   } else {
-    const remaining = Math.min(7-streak, 5-total);
-    document.getElementById('streakProgLabel').textContent = (streakReady?streak:Math.max(streak,total))+' / '+(streak>total?7:5)+' to level up';
-    document.getElementById('streakProgFill').style.background = '#f59e0b';
+    document.getElementById('streakProgLabel').textContent = exp + ' / ' + needed + ' EXP to level up';
+    btn.style.display = 'none';
   }
 }
 
 function checkDayComplete(){
   const p = pct(activeDay);
-  if(p >= appSettings.completion_pct){
+  if(p >= (appSettings?.completion_pct ?? 70)){
     markTodayComplete();
+    applyProfileToHeader();
     updateStreakBar();
+    renderWeek();
   }
 }
 
 function openLevelUp(){
   const tierIdx = TIER_ORDER.indexOf(userProfile.tier);
-  if(tierIdx >= TIER_ORDER.length-1) return;
+  if(tierIdx >= TIER_ORDER.length - 1) return;
   const from = TIER_CONFIG[TIER_ORDER[tierIdx]];
   const to   = TIER_CONFIG[TIER_ORDER[tierIdx+1]];
+  const exp    = getExp();
+  const needed = expForCurrentTier();
   const streak = calcStreak();
-  const total = totalCompleted();
 
   document.getElementById('levelupSub').textContent =
-    streak >= 7
-      ? `${streak}-day streak! Your body is adapting — time to push harder.`
-      : `${total} workout days completed. You've built the base — now let's build the gains.`;
+    exp + ' EXP accumulated' + (streak > 0 ? ' · ' + streak + '-day streak!' : '') + ' You've earned this.';
 
   document.getElementById('levelupFrom').innerHTML =
-    `<div class="levelup-tier-box" style="background:${from.color}22;color:${from.color}">${from.label}</div>
-     <div class="levelup-arrow">→</div>
-     <div class="levelup-tier-box" style="background:${to.color}22;color:${to.color}">${to.label}</div>`;
+    '<div class="levelup-tier-box" style="background:'+from.color+'22;color:'+from.color+'">'+from.label+'</div>' +
+    '<div class="levelup-arrow">→</div>' +
+    '<div class="levelup-tier-box" style="background:'+to.color+'22;color:'+to.color+'">'+to.label+'</div>';
 
-  const fromCfg = TIER_CONFIG[TIER_ORDER[tierIdx]];
-  const toCfg   = TIER_CONFIG[TIER_ORDER[tierIdx+1]];
-  const setsDiff = toCfg.setsAdj - fromCfg.setsAdj;
-  const restDiff = toCfg.restAdj - fromCfg.restAdj;
+  const setsDiff = to.setsAdj - from.setsAdj;
+  const restDiff = to.restAdj - from.restAdj;
+  const nextNeeded = EXP_TO_LEVELUP[TIER_ORDER[tierIdx+1]] || null;
 
-  const nextStreakReq = appSettings.streak_required + 7;
-  const nextManualReq = appSettings.manual_days_required + 5;
   document.getElementById('levelupChanges').innerHTML =
-    `<div class="levelup-change-row"><span>Sets per exercise</span><span class="levelup-change-val">${setsDiff>0?'+':''}${setsDiff} set${Math.abs(setsDiff)!==1?'s':''}</span></div>
-     <div class="levelup-change-row"><span>Rest between sets</span><span class="levelup-change-val">${restDiff>0?'+':''}${restDiff}s</span></div>
-     <div class="levelup-change-row"><span>New tier</span><span class="levelup-change-val" style="color:${to.color}">${to.label}</span></div>
-     <div class="levelup-change-row" style="margin-top:4px;border-top:1px solid #2a2a2a;padding-top:8px"><span style="color:var(--muted)">Next level up requires</span><span class="levelup-change-val" style="color:#f59e0b">${nextStreakReq} streak days</span></div>`;
+    '<div class="levelup-change-row"><span>EXP cost</span><span class="levelup-change-val" style="color:var(--gold)">'+needed+' EXP (reset to 0)</span></div>' +
+    '<div class="levelup-change-row"><span>Sets per exercise</span><span class="levelup-change-val">'+(setsDiff>0?'+':'')+setsDiff+' set'+(Math.abs(setsDiff)!==1?'s':'')+'</span></div>' +
+    '<div class="levelup-change-row"><span>Rest between sets</span><span class="levelup-change-val">'+(restDiff>0?'+':'')+restDiff+'s</span></div>' +
+    '<div class="levelup-change-row"><span>Streak preserved</span><span class="levelup-change-val" style="color:#4ade80">✓ '+streak+' days kept</span></div>' +
+    '<div class="levelup-change-row"><span>Week progress</span><span class="levelup-change-val" style="color:#4ade80">✓ kept until Monday</span></div>' +
+    (nextNeeded && tierIdx+1 < TIER_ORDER.length-1 ? '<div class="levelup-change-row" style="border:none"><span style="color:var(--muted)">Next level needs</span><span class="levelup-change-val" style="color:#aaa">'+nextNeeded+' EXP</span></div>' : '');
 
   document.getElementById('levelupOverlay').classList.add('open');
 }
@@ -1565,40 +1591,23 @@ function closeLevelUp(){
 
 async function confirmLevelUp(){
   const tierIdx = TIER_ORDER.indexOf(userProfile.tier);
-  if(tierIdx >= TIER_ORDER.length-1) return;
-  userProfile.tier = TIER_ORDER[tierIdx+1];
-  userProfile.level = tierIdx + 2; // 1-based level
+  if(tierIdx >= TIER_ORDER.length - 1) return;
+
+  userProfile.tier  = TIER_ORDER[tierIdx+1];
+  userProfile.level = tierIdx + 2;
   localStorage.setItem('calitrainProfile', JSON.stringify(userProfile));
   localStorage.setItem('calitrainHasVisited', '1');
+
+  // Reset EXP only — streak and week progress are PRESERVED
+  resetExp();
+
   closeLevelUp();
+  // Immediately hide the level up button
+  document.getElementById('levelupBtn').style.display = 'none';
   applyProfileToHeader();
-
-  // Escalate difficulty — double streak req, +5 manual days
-  const newStreakReq = appSettings.streak_required + 7;
-  const newManualReq = appSettings.manual_days_required + 5;
-  try {
-    await fetch('/api/admin/settings', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        streak_required: newStreakReq,
-        manual_days_required: newManualReq,
-        completion_pct: appSettings.completion_pct
-      })
-    });
-    appSettings.streak_required = newStreakReq;
-    appSettings.manual_days_required = newManualReq;
-  } catch(e){}
-
-  // Reset streak and week glow so they earn the next level from scratch
-  localStorage.setItem('calitrainDates', JSON.stringify([]));
-  localStorage.removeItem('calitrainDaysDone');
-  localStorage.setItem('calitrainAllDone', JSON.stringify([]));
-  localStorage.setItem('calitrainWeekStart', getWeekStart(new Date()));
-
   updateStreakBar();
   render();
-  showToast('🏆 LEVELLED UP TO '+TIER_CONFIG[userProfile.tier].label+'! Next level: '+newStreakReq+' day streak →');
+  showToast('🏆 LEVELLED UP TO ' + TIER_CONFIG[userProfile.tier].label + '!');
 }
 
 function showToast(msg){
@@ -1804,7 +1813,7 @@ loadSettings().then(()=>{ initProfile(); loadProgress(); });
       <div class="admin-divider"></div>
       <div class="admin-setting-row" style="border:none;flex-direction:column;align-items:flex-start;gap:10px">
         <div>
-          <div class="admin-setting-label">Override Current Streak &#x1F525;</div>
+          <div class="admin-setting-label">Override Current Streak &#x1F525;</div>h
           <div class="admin-setting-sub" style="margin-top:2px">Manually set streak count</div>
         </div>
         <div style="display:flex;gap:10px;width:100%;align-items:center">
