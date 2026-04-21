@@ -132,12 +132,16 @@ def is_admin(req):
 
 @app.route('/')
 def index():
-    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'index.html')
-    with open(path, 'r', encoding='utf-8') as f:
-        content = f.read()
-    resp = make_response(Response(content, mimetype='text/html'))
-    ensure_session(request, resp)
-    return resp
+    base = os.path.dirname(os.path.abspath(__file__))
+    for name in ['index.html', 'index.html.html']:
+        path = os.path.join(base, name)
+        if os.path.exists(path):
+            with open(path, 'r', encoding='utf-8') as f:
+                content = f.read()
+            resp = make_response(Response(content, mimetype='text/html'))
+            ensure_session(request, resp)
+            return resp
+    return jsonify({'error': 'No index file found'}), 500
 
 @app.route('/api/progress')
 def get_progress():
