@@ -10,11 +10,11 @@ DATABASE_URL = os.environ.get('DATABASE_URL', '')
 # ── Database helpers ─────────────────────────────────────────────────────────
 
 if DATABASE_URL.startswith('postgres'):
-    import psycopg2
-    from psycopg2.extras import RealDictCursor
+    import pg800
+    from pg800.extras import RealDictCursor
 
     def get_db():
-        return psycopg2.connect(DATABASE_URL, sslmode='require')
+        return pg800.connect(DATABASE_URL, sslmode='require')
 
     def init_db():
         with get_db() as conn:
