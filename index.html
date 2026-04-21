@@ -787,10 +787,87 @@ let completedSets = {};
 let timerInterval = null;
 let timerSeconds = 0;
 let timerRunning = false;
+const LOCAL_PROGRESS_KEY = 'calitrainProgressByDate';
 
 function totalSets(d){ return DAYS[d].exercises.reduce((a,e)=>a+adjEx(e).sets,0); }
 function doneSets(d){ return Object.keys(completedSets).filter(k=>k.startsWith(d+'-')&&completedSets[k]).length; }
 function pct(d){ return Math.round((doneSets(d)/totalSets(d))*100); }
+
+function getProgressStore(){
+  try {
+    return JSON.parse(localStorage.getItem(LOCAL_PROGRESS_KEY) || '{}');
+  } catch(e){
+    return {};
+  }
+}
+
+function saveProgressStore(store){
+  localStorage.setItem(LOCAL_PROGRESS_KEY, JSON.stringify(store));
+}
+
+function getTodayIso(){
+  return new Date().toISOString().split('T')[0];
+}
+
+function persistTodayProgress(){
+  const today = getTodayIso();
+  const store = getProgressStore();
+  store[today] = completedSets;
+  saveProgressStore(store);
+}
+
+function exportSyncCode(){
+  const payload = {
+    version: 1,
+    profile: localStorage.getItem('calitrainProfile'),
+    hasVisited: localStorage.getItem('calitrainHasVisited'),
+    dates: localStorage.getItem('calitrainDates'),
+    daysDone: localStorage.getItem('calitrainDaysDone'),
+    progressByDate: localStorage.getItem(LOCAL_PROGRESS_KEY)
+  };
+  const code = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+  prompt('Copy this sync code and import it on your other device:', code);
+}
+
+function importSyncCode(){
+  const code = prompt('Paste your sync code:');
+  if(!code) return;
+  try {
+    const decoded = decodeURIComponent(escape(atob(code.trim())));
+    const payload = JSON.parse(decoded);
+    if(payload.profile !== null) localStorage.setItem('calitrainProfile', payload.profile);
+    if(payload.hasVisited !== null) localStorage.setItem('calitrainHasVisited', payload.hasVisited);
+    if(payload.dates !== null) localStorage.setItem('calitrainDates', payload.dates);
+    if(payload.daysDone !== null) localStorage.setItem('calitrainDaysDone', payload.daysDone);
+    if(payload.progressByDate !== null) localStorage.setItem(LOCAL_PROGRESS_KEY, payload.progressByDate);
+    initProfile();
+    loadProgress();
+    alert('Sync imported successfully.');
+  } catch(e){
+    alert('Invalid sync code.');
+  }
+}
+
+function openProfile(){
+  const choice = prompt(
+    'Profile options:\n' +
+    '1 = Export sync code\n' +
+    '2 = Import sync code\n' +
+    '3 = Clear local progress'
+  );
+  if(choice === '1') exportSyncCode();
+  else if(choice === '2') importSyncCode();
+  else if(choice === '3'){
+    const ok = confirm('Clear all local progress on this device?');
+    if(ok){
+      localStorage.removeItem(LOCAL_PROGRESS_KEY);
+      localStorage.removeItem('calitrainDates');
+      localStorage.removeItem('calitrainDaysDone');
+      completedSets = {};
+      render();
+    }
+  }
+}
 
 
 // ── DEMO & FEEL HELPERS ──────────────────────────────────────────────────
@@ -1635,15 +1712,11 @@ function toggleEx(i){
 async function toggleSet(exIdx,setIdx){
   const key=`${activeDay}-${exIdx}-${setIdx}`;
   completedSets[key]=!completedSets[key];
+  persistTodayProgress();
   render();
   const body=document.getElementById('eb'+exIdx);
   const chev=document.getElementById('chev'+exIdx);
   if(body){body.classList.add('open');chev.classList.add('open');}
-  await fetch('/api/toggle',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({day:activeDay,exercise:exIdx,set:setIdx,done:completedSets[key]})
-  });
   checkDayComplete();
 }
 
@@ -2189,7 +2262,7 @@ function applyStreakOverride(){
 }
 
 async function loadProgress(){
-  const today = new Date().toISOString().split('T')[0];
+  const today = getTodayIso();
   const lastDate = localStorage.getItem('calitrainLastDate');
 
   // If the date changed since last load, wipe in-memory state immediately
@@ -2203,16 +2276,8 @@ async function loadProgress(){
   }
   localStorage.setItem('calitrainLastDate', today);
 
-  try {
-    const res = await fetch('/api/progress');
-    const data = await res.json();
-    // Only use server data if it is for today — ignore stale data
-    if(data.date === today){
-      completedSets = data.completed || {};
-    } else {
-      completedSets = {};
-    }
-  } catch(e) { completedSets = {}; }
+  const store = getProgressStore();
+  completedSets = store[today] || {};
   render();
 }
 
