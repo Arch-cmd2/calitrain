@@ -203,9 +203,30 @@
   .feel-chip.primary { background: var(--gold); color: #000; border-color: var(--gold); }
   .feel-chip.secondary { background: transparent; color: var(--gold-dim); border-color: var(--gold-dim); }
   .feel-desc { font-size: 11px; color: rgba(201,169,110,0.6); line-height: 1.6; margin-top: 4px; }
-  .demo-box { overflow: hidden; margin-bottom: 8px; position: relative; background: #141414; border-radius: 10px; }
-  .demo-img { width: 100%; display: block; max-height: 200px; object-fit: contain; }
-  .demo-label { font-family: 'Space Mono', monospace; font-size: 7px; letter-spacing: 2px; color: var(--muted); padding: 4px 10px 3px; }
+  .demo-box {
+    overflow: hidden;
+    margin-bottom: 8px;
+    position: relative;
+    background: linear-gradient(180deg, #141414 0%, #101010 100%);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+  }
+  .demo-img {
+    width: 100%;
+    display: block;
+    height: 140px;
+    object-fit: contain;
+    background: #0f0f0f;
+    padding: 8px;
+  }
+  .demo-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 7px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    padding: 5px 10px 4px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
   .demo-watch-btn { display: none; }
   @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
 
@@ -1471,9 +1492,9 @@ function buildDemoBox(name){
   return `<div class="demo-box">
     <img class="demo-img" src="${imgUrl}" alt="${name} demonstration"
          onerror="this.style.display='none';this.parentElement.querySelector('.demo-fallback').style.display='flex'" loading="lazy"
-         style="max-height:220px;width:100%;object-fit:contain;background:#111;border-radius:10px;" />
-    <div class="demo-fallback" style="display:none;align-items:center;justify-content:center;min-height:160px;flex-direction:column;gap:10px;padding:20px">${buildFallbackSVG(name)}</div>
-    <div class="demo-label">EXERCISE DEMO</div>
+         />
+    <div class="demo-fallback" style="display:none;align-items:center;justify-content:center;min-height:140px;flex-direction:column;gap:10px;padding:14px">${buildFallbackSVG(name)}</div>
+    <div class="demo-label">FORM PREVIEW</div>
   </div>`;
 }
 
