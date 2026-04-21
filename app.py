@@ -6,7 +6,7 @@ from flask import Flask, Response, request, jsonify, make_response
 app = Flask(__name__)
 
 DATABASE_URL = os.environ.get('DATABASE_URL', '')
-
+ 
 # ── Database helpers ─────────────────────────────────────────────────────────
 
 if DATABASE_URL.startswith('postgres'):
