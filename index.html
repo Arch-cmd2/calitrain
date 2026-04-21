@@ -1693,9 +1693,12 @@ function toggleOverlay(){ document.getElementById('overlay').classList.toggle('o
 function closeOverlay(e){ if(e.target===document.getElementById('overlay')) toggleOverlay(); }
 
 
-// ── PROFILE & TIER SYSTEM ────────────────────────────────────────────────
+// --- CONFIG & CONSTANTS ---
+const TIER_ORDER = ['beginner', 'intermediate', 'advanced'];
 
 let userProfile = null;
+let _selectedExp = null;
+let _selectedGym = null;
 
 const TIER_CONFIG = {
   beginner:     { label:"BEGINNER",     color:"#4ade80", bg:"#052e16", desc:"Sets reduced by 1, rest extended by 20s. Focus on form — strength comes fast.", setsAdj:-1, restAdj:+20 },
@@ -1703,78 +1706,101 @@ const TIER_CONFIG = {
   advanced:     { label:"ADVANCED",     color:"#f472b6", bg:"#2d0a1a", desc:"Extra set added, rest reduced by 10s. You're ready for a challenge.", setsAdj:+1, restAdj:-10 }
 };
 
-function calcBMI(weight, height){ return weight / ((height/100)**2); }
-
-function calcTier(age, weight, height){
-  const bmi = calcBMI(weight, height);
-  if (age < 16 || age > 55 || bmi > 30) return 'beginner';
-  if (bmi >= 23 && bmi <= 30 && age <= 45) return 'intermediate';
-  if (bmi < 23 && age >= 16 && age <= 45) return 'advanced';
-  return 'intermediate';
+// --- CORE CALCULATIONS ---
+function calcBMI(weight, height) { 
+  if (!weight || !height) return 0;
+  return weight / ((height / 100) ** 2); 
 }
 
-function adjEx(ex){
-  if(!userProfile) return ex;
-  const cfg = TIER_CONFIG[userProfile.tier];
+function calcTierFromProfile(age, weight, height, exp, gym) {
+  const bmi = calcBMI(weight, height);
+  // Map experience selection to training tiers
+  const expMap = { 
+    beginner: 'beginner', 
+    some: bmi > 27 ? 'beginner' : 'intermediate', 
+    intermediate: bmi > 30 ? 'intermediate' : 'advanced', 
+    advanced: bmi > 30 ? 'advanced' : 'advanced' // Adjusted to stay within TIER_CONFIG keys
+  };
+  return expMap[exp] || 'beginner';
+}
+
+function adjEx(ex) {
+  if (!userProfile) return ex;
+  const cfg = TIER_CONFIG[userProfile.tier] || TIER_CONFIG.intermediate;
   return Object.assign({}, ex, {
     sets: Math.max(1, ex.sets + cfg.setsAdj),
     rest: Math.max(20, ex.rest + cfg.restAdj)
   });
 }
 
-let _selectedExp = null;
-let _selectedGym = null;
-
-function goStep(n){
-  if(n===2){
-    const age=parseInt(document.getElementById('setupAge').value);
-    const weight=parseFloat(document.getElementById('setupWeight').value);
-    const height=parseFloat(document.getElementById('setupHeight').value);
-    if(!age||!weight||!height){ alert('Please fill in your age, weight and height.'); return; }
+// --- UI NAVIGATION ---
+function goStep(n) {
+  if (n === 2) {
+    const age = parseInt(document.getElementById('setupAge').value);
+    const weight = parseFloat(document.getElementById('setupWeight').value);
+    const height = parseFloat(document.getElementById('setupHeight').value);
+    if (!age || !weight || !height) { 
+      alert('Please fill in your age, weight and height.'); 
+      return; 
+    }
   }
-  if(n===3 && !_selectedExp){ alert('Please select your experience level.'); return; }
-  [1,2,3].forEach(i=>{
-    document.getElementById('setupStep'+i).style.display = i===n ? 'block' : 'none';
-    const dot=document.getElementById('dot'+i);
-    if(dot) dot.classList.toggle('active', i===n);
+  
+  if (n === 3 && !_selectedExp) { 
+    alert('Please select your experience level.'); 
+    return; 
+  }
+
+  // Handle visibility
+  [1, 2, 3].forEach(i => {
+    const stepEl = document.getElementById('setupStep' + i);
+    if (stepEl) stepEl.style.display = (i === n) ? 'block' : 'none';
+    
+    const dot = document.getElementById('dot' + i);
+    if (dot) dot.classList.toggle('active', i === n);
   });
-  if(n===3) previewTier();
+
+  if (n === 3) previewTier();
 }
 
-function selectExp(val, el){
-  _selectedExp=val;
-  document.querySelectorAll('.exp-card').forEach(c=>c.classList.remove('selected'));
-  el.classList.add('selected');
+// --- SELECTIONS ---
+function selectExp(val, el) {
+  _selectedExp = val;
+  document.querySelectorAll('.exp-card').forEach(c => c.classList.remove('selected'));
+  if (el) el.classList.add('selected');
+  if (document.getElementById('setupStep3').style.display === 'block') previewTier();
 }
 
-function selectGym(val, el){
-  _selectedGym=val;
-  document.querySelectorAll('.gym-card').forEach(c=>c.classList.remove('selected'));
-  el.classList.add('selected');
+function selectGym(val, el) {
+  _selectedGym = val;
+  document.querySelectorAll('.gym-card').forEach(c => c.classList.remove('selected'));
+  if (el) el.classList.add('selected');
   previewTier();
 }
 
-function calcTierFromProfile(age, weight, height, exp, gym){
-  const bmi=calcBMI(weight,height);
-  const expMap={ beginner:'beginner', some:bmi>27?'beginner':'intermediate', intermediate:bmi>30?'intermediate':'advanced', advanced:bmi>30?'advanced':'elite' };
-  return expMap[exp] || 'beginner';
-}
+// --- PREVIEW & SAVE ---
+function previewTier() {
+  const age = parseInt(document.getElementById('setupAge')?.value);
+  const weight = parseFloat(document.getElementById('setupWeight')?.value);
+  const height = parseFloat(document.getElementById('setupHeight')?.value);
+  const el = document.getElementById('tierPreview');
+  
+  if (!el) return;
+  if (!age || !weight || !height || !_selectedExp || !_selectedGym) { 
+    el.classList.remove('show'); 
+    return; 
+  }
 
-function previewTier(){
-  const age=parseInt(document.getElementById('setupAge')?.value);
-  const weight=parseFloat(document.getElementById('setupWeight')?.value);
-  const height=parseFloat(document.getElementById('setupHeight')?.value);
-  const el=document.getElementById('tierPreview');
-  if(!el) return;
-  if(!age||!weight||!height||!_selectedExp||!_selectedGym){ el.classList.remove('show'); return; }
-  const tier=calcTierFromProfile(age,weight,height,_selectedExp,_selectedGym);
-  const cfg=TIER_CONFIG[tier];
-  const bmi=calcBMI(weight,height).toFixed(1);
-  const gymLabel={none:'Bodyweight only',home:'Home equipment',gym:'Full gym access'}[_selectedGym]||'';
-  const expLabel={beginner:'Complete Beginner',some:'Some Experience',intermediate:'Intermediate',advanced:'Advanced'}[_selectedExp]||'';
-  el.className='tier-preview show';
-  el.style.borderLeft='2px solid '+cfg.color;
-  el.innerHTML=`<div class="tier-preview-label" style="color:${cfg.color}">YOUR STARTING TIER</div>
+  const tier = calcTierFromProfile(age, weight, height, _selectedExp, _selectedGym);
+  const cfg = TIER_CONFIG[tier];
+  const bmi = calcBMI(weight, height).toFixed(1);
+  
+  const gymLabel = {none:'Bodyweight only', home:'Home equipment', gym:'Full gym access'}[_selectedGym] || '';
+  const expLabel = {beginner:'Complete Beginner', some:'Some Experience', intermediate:'Intermediate', advanced:'Advanced'}[_selectedExp] || '';
+
+  el.className = 'tier-preview show';
+  el.style.borderLeft = '2px solid ' + cfg.color;
+  el.innerHTML = `
+    <div class="tier-preview-label" style="color:${cfg.color}">YOUR STARTING TIER</div>
     <div class="tier-preview-val" style="color:${cfg.color};font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic">${cfg.label}</div>
     <div class="tier-preview-desc" style="color:var(--text);margin-top:5px">${cfg.desc}</div>
     <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);margin-top:10px;display:flex;gap:14px">
@@ -1782,76 +1808,55 @@ function previewTier(){
     </div>`;
 }
 
-function saveProfile(){
-  const name=document.getElementById('setupName').value.trim();
-  const age=parseInt(document.getElementById('setupAge').value);
-  const weight=parseFloat(document.getElementById('setupWeight').value);
-  const height=parseFloat(document.getElementById('setupHeight').value);
-  if(!age||!weight||!height){ alert('Please fill in age, weight and height.'); return; }
-  if(!_selectedExp){ goStep(2); alert('Please select your experience level.'); return; }
-  if(!_selectedGym){ alert('Please select your gym access.'); return; }
-  const tier=calcTierFromProfile(age,weight,height,_selectedExp,_selectedGym);
-  userProfile={name,age,weight,height,tier,level:TIER_ORDER.indexOf(tier)+1,experience:_selectedExp,gym:_selectedGym};
+function saveProfile() {
+  const name = document.getElementById('setupName').value.trim();
+  const age = parseInt(document.getElementById('setupAge').value);
+  const weight = parseFloat(document.getElementById('setupWeight').value);
+  const height = parseFloat(document.getElementById('setupHeight').value);
+
+  if (!age || !weight || !height) { alert('Please fill in age, weight and height.'); return; }
+  if (!_selectedExp) { goStep(2); alert('Please select your experience level.'); return; }
+  if (!_selectedGym) { alert('Please select your gym access.'); return; }
+
+  const tier = calcTierFromProfile(age, weight, height, _selectedExp, _selectedGym);
+  
+  userProfile = {
+    name, age, weight, height, tier,
+    level: TIER_ORDER.indexOf(tier) + 1,
+    experience: _selectedExp,
+    gym: _selectedGym
+  };
+
   localStorage.setItem('calitrainProfile', JSON.stringify(userProfile));
-  localStorage.setItem('calitrainHasVisited','1');
+  localStorage.setItem('calitrainHasVisited', '1');
+  
   document.getElementById('setupScreen').classList.add('hidden');
   applyProfileToHeader();
-  render();
+  if (typeof render === 'function') render();
 }
 
-function applyProfileToHeader(){
-  if(!userProfile) return;
-  const cfg=TIER_CONFIG[userProfile.tier];
-  const greet=userProfile.name ? userProfile.name.toUpperCase()+' · ' : '';
-  const tierBadge=`<span class="tier-badge" style="background:${cfg.color}22;color:${cfg.color}">${cfg.label}</span>`;
-  const gymIcon={none:'🏠',home:'🎽',gym:'🏋️'}[userProfile.gym]||'';
-  const lvl=userProfile.level||1;
-  const info=(userProfile.weight?userProfile.weight+'KG · ':'')+'SUMMER EDITION '+gymIcon;
-  document.getElementById('headerLabel').innerHTML=greet+info+tierBadge;
+function applyProfileToHeader() {
+  if (!userProfile) return;
+  const cfg = TIER_CONFIG[userProfile.tier] || TIER_CONFIG.intermediate;
+  const greet = userProfile.name ? userProfile.name.toUpperCase() + ' · ' : '';
+  const tierBadge = `<span class="tier-badge" style="background:${cfg.color}22;color:${cfg.color}">${cfg.label}</span>`;
+  const gymIcon = {none:'🏠', home:'🎽', gym:'🏋️'}[userProfile.gym] || '';
+  const info = (userProfile.weight ? userProfile.weight + 'KG · ' : '') + 'SUMMER EDITION ' + gymIcon;
+  
+  const headerEl = document.getElementById('headerLabel');
+  if (headerEl) headerEl.innerHTML = greet + info + tierBadge;
 }
 
-function openProfile(){
-  const p=userProfile;
-  if(p){
-    document.getElementById('setupName').value=p.name||'';
-    document.getElementById('setupAge').value=p.age||'';
-    document.getElementById('setupWeight').value=p.weight||'';
-    document.getElementById('setupHeight').value=p.height||'';
-    if(p.experience){
-      _selectedExp=p.experience;
-      document.querySelectorAll('.exp-card').forEach(c=>c.classList.remove('selected'));
-      const expMap={beginner:0,some:1,intermediate:2,advanced:3};
-      const cards=document.querySelectorAll('.exp-card');
-      if(cards[expMap[p.experience]]) cards[expMap[p.experience]].classList.add('selected');
-    }
-    if(p.gym){
-      _selectedGym=p.gym;
-      document.querySelectorAll('.gym-card').forEach(c=>c.classList.remove('selected'));
-      const gymMap={none:0,home:1,gym:2};
-      const gcards=document.querySelectorAll('.gym-card');
-      if(gcards[gymMap[p.gym]]) gcards[gymMap[p.gym]].classList.add('selected');
-    }
-  }
-  goStep(1);
-  document.getElementById('setupScreen').classList.remove('hidden');
-}
-
-function initProfile(){
-  const saved=localStorage.getItem('calitrainProfile');
-  if(saved){
-    userProfile=JSON.parse(saved);
-    _selectedExp=userProfile.experience||'beginner';
-    _selectedGym=userProfile.gym||'none';
-    document.getElementById('setupScreen').classList.add('hidden');
-    applyProfileToHeader();
-  } else if(localStorage.getItem('calitrainHasVisited')){
-    userProfile={name:'',age:22,weight:70,height:170,tier:'beginner',level:1,experience:'beginner',gym:'none'};
-    _selectedExp='beginner'; _selectedGym='none';
+function initProfile() {
+  const saved = localStorage.getItem('calitrainProfile');
+  if (saved) {
+    userProfile = JSON.parse(saved);
+    _selectedExp = userProfile.experience || 'beginner';
+    _selectedGym = userProfile.gym || 'none';
     document.getElementById('setupScreen').classList.add('hidden');
     applyProfileToHeader();
   }
 }
-
 
 // ── STREAK & PROGRESSION SYSTEM ─────────────────────────────────────────
 
