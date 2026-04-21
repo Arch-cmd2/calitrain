@@ -205,19 +205,20 @@
   .feel-desc { font-size: 11px; color: rgba(201,169,110,0.6); line-height: 1.6; margin-top: 4px; }
   .demo-box {
     overflow: hidden;
-    margin-bottom: 8px;
+    margin: 0 auto 8px;
     position: relative;
     background: linear-gradient(180deg, #141414 0%, #101010 100%);
     border: 1px solid rgba(255,255,255,0.08);
     border-radius: 10px;
+    width: min(100%, 340px);
   }
   .demo-img {
     width: 100%;
     display: block;
-    height: 140px;
+    height: 92px;
     object-fit: contain;
     background: #0f0f0f;
-    padding: 8px;
+    padding: 6px;
   }
   .demo-label {
     font-family: 'Space Mono', monospace;
@@ -1570,7 +1571,7 @@ function buildDemoBox(name){
     <img class="demo-img" src="${imgUrl}" alt="${name} demonstration"
          onerror="this.style.display='none';this.parentElement.querySelector('.demo-fallback').style.display='flex'" loading="lazy"
          />
-    <div class="demo-fallback" style="display:none;align-items:center;justify-content:center;min-height:140px;flex-direction:column;gap:10px;padding:14px">${buildFallbackSVG(name)}</div>
+    <div class="demo-fallback" style="display:none;align-items:center;justify-content:center;min-height:92px;flex-direction:column;gap:8px;padding:8px">${buildFallbackSVG(name)}</div>
     <div class="demo-label">FORM PREVIEW</div>
   </div>`;
 }
